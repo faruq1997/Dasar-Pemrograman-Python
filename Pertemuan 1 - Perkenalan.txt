@@ -1,0 +1,2 @@
+Pertemuan 1 - Perkenalan + Setting Code Editor
+Tools yang digunakan : Google Colaboratory
