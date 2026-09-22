@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 2: Sintaks Dasar, Variabel & Tipe Data | Dasar Pemrograman Python</title>
+    <meta name="description" content="Modul pembelajaran interaktif Pertemuan 2 Dasar Pemrograman Python: Statement, Komentar, Aturan Variabel, Macam Tipe Data, Type Casting, dan Operator Aritmatika.">
+    <meta name="author" content="Faruq">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-glow: rgba(59, 130, 246, 0.35);
+            --python-yellow: #fbbf24;
+            --python-blue: #38bdf8;
+            --accent: #8b5cf6;
+            --accent-glow: rgba(139, 92, 246, 0.3);
+            --accent-emerald: #10b981;
+            
+            --bg-body: #0a0f1d;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(30, 41, 59, 0.85);
+            --bg-surface: #111827;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(59, 130, 246, 0.4);
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-bright: #ffffff;
+            
+            --code-bg: #0d1117;
+            --nav-bg: rgba(10, 15, 29, 0.85);
+            --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-body: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-hover: rgba(241, 245, 249, 0.95);
+            --bg-surface: #ffffff;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-glow: rgba(59, 130, 246, 0.3);
+            
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --text-bright: #0f172a;
+            
+            --code-bg: #1e293b;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.07);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #fbbf24);
+            z-index: 1000;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* Ambient Glow & Grid Background */
+        .bg-ambient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .glow-orb-1 {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+        .glow-orb-2 {
+            position: absolute;
+            top: 40%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            filter: blur(90px);
+        }
+        .glow-orb-3 {
+            position: absolute;
+            bottom: 5%;
+            left: 20%;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.15) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+        .grid-pattern {
+            position: absolute;
+            inset: 0;
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+        [data-theme="light"] .grid-pattern {
+            background-image: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+        }
+        .glass-card:hover {
+            border-color: var(--border-glow);
+            transform: translateY(-3px);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 0;
+            transition: var(--transition);
+        }
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-bright);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .nav-brand .py-icon {
+            font-size: 1.8rem;
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--python-blue);
+            background: rgba(56, 189, 248, 0.1);
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn-theme {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .btn-theme:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: rotate(15deg);
+        }
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 50px;
+            text-align: center;
+            position: relative;
+        }
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(251, 191, 36, 0.12);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 30px;
+            color: var(--python-yellow);
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--text-bright);
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 780px;
+            margin: 0 auto 36px;
+            font-weight: 400;
+        }
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 26px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: #ffffff;
+            box-shadow: 0 4px 20px var(--primary-glow);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--primary-glow);
+        }
+        .btn-secondary {
+            background: var(--bg-surface);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+        .btn-amber {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+        }
+        .btn-amber:hover {
+            background: linear-gradient(135deg, #b45309, #d97706);
+            transform: translateY(-2px);
+        }
+        .btn-emerald {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+        }
+        .btn-emerald:hover {
+            background: linear-gradient(135deg, #047857, #059669);
+            transform: translateY(-2px);
+        }
+
+        /* Quick Feature Highlights */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-top: 10px;
+        }
+        .stat-card {
+            padding: 20px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: rgba(251, 191, 36, 0.12);
+            color: var(--python-yellow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .stat-content h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 2px;
+        }
+        .stat-content p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Section Layout */
+        .section {
+            padding: 70px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .section-tag {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--python-blue);
+            margin-bottom: 8px;
+            display: block;
+        }
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-bright);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 740px;
+            margin: 0 auto;
+        }
+
+        /* Topic Cards Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .feature-box {
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .box-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .icon-blue { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+        .icon-yellow { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+        .icon-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+        .icon-green { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+        .icon-rose { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+        .icon-indigo { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+
+        .feature-box h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 12px;
+        }
+        .feature-box p {
+            color: var(--text-muted);
+            font-size: 0.94rem;
+        }
+
+        /* Code Block Display */
+        .code-display {
+            background: var(--code-bg);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.92rem;
+            color: #e2e8f0;
+            position: relative;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            margin-top: 14px;
+        }
+        .code-display pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        /* Variable Validator Tool */
+        .validator-card {
+            padding: 36px;
+            margin-top: 30px;
+        }
+        .validator-input-box {
+            display: flex;
+            gap: 14px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .validator-input-box input {
+            flex: 1;
+            min-width: 260px;
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            background: var(--bg-surface);
+            border: 2px solid var(--border-color);
+            color: #ffffff;
+            font-family: 'Fira Code', monospace;
+            font-size: 1.05rem;
+            outline: none;
+            transition: var(--transition);
+        }
+        .validator-input-box input:focus {
+            border-color: var(--python-blue);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+        .validator-result {
+            margin-top: 20px;
+            padding: 18px 24px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 1rem;
+            border: 1px solid transparent;
+            transition: var(--transition);
+        }
+        .validator-result.valid {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: #10b981;
+            color: #34d399;
+        }
+        .validator-result.invalid {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: #ef4444;
+            color: #f87171;
+        }
+
+        /* Data Type Matrix & Interactive Inspector */
+        .type-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 14px;
+        }
+        .type-tab-btn {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.92rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .type-tab-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 2px 10px var(--primary-glow);
+        }
+        .type-detail-card {
+            padding: 30px;
+        }
+
+        /* Type Casting Interactive Lab */
+        .casting-lab {
+            padding: 36px;
+        }
+        .casting-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+        .cast-target-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .cast-btn {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            transition: var(--transition);
+        }
+        .cast-btn.active {
+            background: var(--python-yellow);
+            color: #0f172a;
+            border-color: var(--python-yellow);
+            font-weight: 700;
+        }
+
+        /* Operator Table */
+        .op-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.92rem;
+        }
+        .op-table th, .op-table td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .op-table th {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .code-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #1e293b;
+            color: #38bdf8;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        /* Interactive Runner / Playground */
+        .code-playground-box {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: #0f172a;
+        }
+        .editor-header {
+            background: #1e293b;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .window-dots {
+            display: flex;
+            gap: 6px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+        .editor-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+        .editor-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .editor-body {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            min-height: 320px;
+        }
+        .editor-input {
+            padding: 18px;
+            background: #0a0f1d;
+            border-right: 1px solid var(--border-color);
+        }
+        .editor-input textarea {
+            width: 100%;
+            height: 100%;
+            min-height: 260px;
+            background: transparent;
+            border: none;
+            color: #38bdf8;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            outline: none;
+            resize: none;
+        }
+        .editor-output {
+            padding: 18px;
+            background: #030712;
+            color: #a7f3d0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            overflow-y: auto;
+        }
+        .output-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Quiz Section */
+        .quiz-wrapper {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+        .quiz-card {
+            padding: 36px;
+        }
+        .quiz-question-num {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            display: block;
+        }
+        .quiz-question-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 24px;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .quiz-opt-btn {
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 0.98rem;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: var(--transition);
+        }
+        .quiz-opt-btn:hover {
+            border-color: var(--primary);
+            background: var(--bg-card-hover);
+        }
+        .quiz-opt-btn.correct {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+            color: #4ade80;
+        }
+        .quiz-opt-btn.wrong {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            color: #f87171;
+        }
+        .quiz-feedback {
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            margin-top: 16px;
+            font-size: 0.92rem;
+            display: none;
+        }
+        .quiz-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        /* Next Topic & Summary */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 30px;
+        }
+        .summary-card {
+            padding: 30px;
+        }
+        .summary-list {
+            list-style: none;
+            margin-top: 16px;
+        }
+        .summary-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+        .summary-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-color);
+            padding: 50px 0 30px;
+            margin-top: 80px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-brand h3 {
+            font-size: 1.3rem;
+            color: var(--text-bright);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            max-width: 380px;
+        }
+        .footer-col h4 {
+            color: var(--text-bright);
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col li {
+            margin-bottom: 10px;
+        }
+        .footer-col a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .footer-col a:hover {
+            color: var(--primary-blue);
+        }
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 24px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .hero-title { font-size: 2.3rem; }
+            .editor-body { grid-template-columns: 1fr; }
+            .summary-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .casting-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-links.show {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--bg-surface);
+                padding: 20px;
+                border-bottom: 1px solid var(--border-color);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            }
+            .mobile-menu-toggle { display: block; }
+            .hero-title { font-size: 1.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Reading Progress Indicator -->
+    <div id="progress-bar"></div>
+
+    <!-- Dynamic Background Ambient Lighting -->
+    <div class="bg-ambient">
+        <div class="glow-orb-1"></div>
+        <div class="glow-orb-2"></div>
+        <div class="glow-orb-3"></div>
+        <div class="grid-pattern"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="container nav-wrapper">
+            <a href="index.html" class="nav-brand">
+                <i class="fa-brands fa-python py-icon" style="color: #38bdf8;"></i>
+                <span>Dasar Python</span>
+            </a>
+
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="index.html"><i class="fa-solid fa-arrow-left"></i> Pertemuan 1</a></li>
+                <li><a href="#sintaks" class="active"><i class="fa-solid fa-code"></i> Sintaks & Komentar</a></li>
+                <li><a href="#variabel"><i class="fa-solid fa-box-archive"></i> Variabel</a></li>
+                <li><a href="#tipedata"><i class="fa-solid fa-cubes"></i> Tipe Data</a></li>
+                <li><a href="#casting"><i class="fa-solid fa-arrow-right-arrow-left"></i> Type Casting</a></li>
+                <li><a href="#operator"><i class="fa-solid fa-calculator"></i> Operator</a></li>
+                <li><a href="#playground"><i class="fa-solid fa-play"></i> Live Code</a></li>
+                <li><a href="#kuis"><i class="fa-solid fa-circle-question"></i> Kuis</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="btn-theme" id="theme-toggle" title="Ganti Tema (Dark/Light)" aria-label="Ganti Tema">
+                    <i class="fa-solid fa-moon" id="theme-icon"></i>
+                </button>
+                <a href="https://github.com/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_2.ipynb" target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">
+                    <i class="fa-solid fa-book-bookmark"></i> <span>Notebook .ipynb</span>
+                </a>
+                <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Menu Navigasi">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero container">
+            <div class="badge-pill">
+                <i class="fa-solid fa-layer-group"></i> Modul Pembelajaran Interaktif • Pertemuan 2
+            </div>
+            <h1 class="hero-title">
+                Sintaks Dasar, <span class="gradient-text">Variabel & Tipe Data</span><br>dalam Python
+            </h1>
+            <p class="hero-subtitle">
+                Masuki inti pemrograman! Pahami bagaimana Python mengeksekusi *statement*, menulis catatan kode (*comment*), mengelola wadah data (*variabel*), serta menguasai berbagai ragam *tipe data* dan operasinya.
+            </p>
+
+            <div class="hero-cta-group">
+                <a href="#sintaks" class="btn btn-primary">
+                    <i class="fa-solid fa-rocket"></i> Mulai Pembelajaran
+                </a>
+                <a href="#validator" class="btn btn-amber">
+                    <i class="fa-solid fa-check-double"></i> Cek Nama Variabel
+                </a>
+                <a href="#casting" class="btn btn-emerald">
+                    <i class="fa-solid fa-flask"></i> Type Casting Lab
+                </a>
+                <a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_2.ipynb" target="_blank" rel="noopener" class="btn btn-secondary">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka di Google Colab
+                </a>
+            </div>
+
+            <!-- Stats & Highlights Bar -->
+            <div class="stats-grid">
+                <div class="stat-card glass-card">
+                    <div class="stat-icon"><i class="fa-solid fa-terminal"></i></div>
+                    <div class="stat-content">
+                        <h4>Statement & Output</h4>
+                        <p>Instruksi yang dieksekusi interpreter baris demi baris.</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon"><i class="fa-solid fa-font"></i></div>
+                    <div class="stat-content">
+                        <h4>Dynamic Typing</h4>
+                        <p>Tipe data otomatis terdeteksi tanpa deklarasi manual.</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon"><i class="fa-solid fa-sliders"></i></div>
+                    <div class="stat-content">
+                        <h4>7+ Tipe Data Inti</h4>
+                        <p>String, int, float, complex, hex, bool, sequence.</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                    <div class="stat-content">
+                        <h4>Type Casting</h4>
+                        <p>Konversi antar tipe data dengan fungsi bawaan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: Sintaks Dasar, Statement & Komentar -->
+        <section id="sintaks" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Fondasi Koding</span>
+                <h2 class="section-title">1. Sintaks Dasar, Statement & Komentar</h2>
+                <p class="section-desc">
+                    Segala baris kode yang dapat dieksekusi oleh Python disebut sebagai <strong>Statement</strong>. Untuk memberi dokumentasi atau catatan pengingat tanpa dieksekusi, kita menggunakan <strong>Komentar</strong>.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-box glass-card">
+                    <div class="box-icon icon-blue"><i class="fa-solid fa-code"></i></div>
+                    <h3>Statement Python</h3>
+                    <p>
+                        Setiap perintah tunggal yang diproses oleh interpreter. Di Python, kita tidak perlu mengakhiri statement dengan titik koma (<code>;</code>).
+                    </p>
+                    <div class="code-display">
+<pre><code class="language-python"># Contoh Statement:
+print("Ini merupakan statement dalam bahasa Python")
+total_nilai = 95</code></pre>
+                    </div>
+                </div>
+
+                <div class="feature-box glass-card">
+                    <div class="box-icon icon-yellow"><i class="fa-solid fa-hashtag"></i></div>
+                    <h3>Komentar (#)</h3>
+                    <p>
+                        Tanda pagar (<code>#</code>) digunakan untuk menulis catatan atau menonaktifkan kode sementara. Teks setelah tanda <code>#</code> diabaikan total oleh komputer.
+                    </p>
+                    <div class="code-display">
+<pre><code class="language-python"># Ini adalah komentar 1 baris
+# Apapun yang ditulis disini tidak terbaca program
+x = 10  # Komentar inline di samping kode</code></pre>
+                    </div>
+                </div>
+
+                <div class="feature-box glass-card">
+                    <div class="box-icon icon-purple"><i class="fa-solid fa-quote-left"></i></div>
+                    <h3>Tanda Kutip di Python</h3>
+                    <p>
+                        Python mendukung tanda kutip tunggal (<code>'</code>), ganda (<code>"</code>), dan tiga (<code>"""</code>). Tanda kutip tiga berguna untuk teks multibaris atau dokumentasi.
+                    </p>
+                    <div class="code-display">
+<pre><code class="language-python">huruf = 'U'
+kata = "kata"
+paragraf = """Ini adalah paragraf
+terdiri dari beberapa baris."""</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Variabel & Aturan Penamaan -->
+        <section id="variabel" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Penyimpanan Memori</span>
+                <h2 class="section-title">2. Variabel dalam Python</h2>
+                <p class="section-desc">
+                    <strong>Variabel</strong> adalah wadah di dalam memori komputer yang digunakan untuk menampung data atau nilai yang sifatnya dapat berubah-ubah (*mutable*) selama program berjalan.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-box glass-card">
+                    <div class="box-icon icon-green"><i class="fa-solid fa-box"></i></div>
+                    <h3>Deklarasi Variabel</h3>
+                    <p>
+                        Cukup tuliskan nama variabel diikuti operator penugasan sama dengan (<code>=</code>) dan nilainya. Tidak perlu menentukan tipe data secara manual.
+                    </p>
+                    <div class="code-display">
+<pre><code class="language-python">nama_variabel = 1000
+nama_mahasiswa = "Faruq"
+status_aktif = True</code></pre>
+                    </div>
+                </div>
+
+                <div class="feature-box glass-card">
+                    <div class="box-icon icon-indigo"><i class="fa-solid fa-list-check"></i></div>
+                    <h3>Aturan Penamaan Variabel</h3>
+                    <p style="margin-bottom: 10px;">Pedoman penting membuat nama variabel yang benar:</p>
+                    <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 20px; line-height: 1.6;">
+                        <li>Hanya boleh huruf (a-z, A-Z), angka (0-9), dan garis bawah (<code>_</code>).</li>
+                        <li><strong>TIDAK boleh</strong> diawali oleh angka (misal: <code>1nilai</code> ❌).</li>
+                        <li><strong>TIDAK boleh</strong> mengandung spasi atau simbol khusus (<code>@, -, $, %</code>).</li>
+                        <li>Bersifat <em>Case-Sensitive</em> (<code>nama</code> berbeda dengan <code>Nama</code>).</li>
+                        <li>Tidak boleh menggunakan <em>Reserved Keywords</em> Python (<code>if, for, class, def, import</code>).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Interactive Variable Name Validator Tool -->
+            <div id="validator" class="validator-card glass-card">
+                <h3 style="color: var(--text-bright); font-size: 1.3rem; font-weight: 700;">
+                    <i class="fa-solid fa-spell-check" style="color: var(--python-yellow); margin-right: 8px;"></i>
+                    Interactive Variable Name Validator
+                </h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 4px;">
+                    Ketik calon nama variabel di bawah ini untuk memeriksa apakah nama tersebut <strong>VALID</strong> atau <strong>INVALID</strong> menurut aturan Python:
+                </p>
+
+                <div class="validator-input-box">
+                    <input type="text" id="var-input" value="nama_mahasiswa_2025" placeholder="Contoh: total_nilai, 1angka, nama user..." oninput="validateVariableName(this.value)">
+                </div>
+
+                <div class="validator-result valid" id="var-result-box">
+                    <i class="fa-solid fa-circle-check" id="var-icon" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <strong id="var-status">Nama Variabel VALID!</strong>
+                        <p id="var-desc" style="font-size: 0.88rem; margin-top: 2px;">Nama variabel ini memenuhi semua kaidah sintaks Python.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Macam-Macam Tipe Data -->
+        <section id="tipedata" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Ragam Nilai</span>
+                <h2 class="section-title">3. Macam - Macam Tipe Data</h2>
+                <p class="section-desc">
+                    Tipe data menentukan jenis nilai yang disimpan di dalam variabel dan operasi apa saja yang dapat dilakukan terhadapnya. Gunakan fungsi <code>type()</code> untuk memeriksa tipe data suatu nilai.
+                </p>
+            </div>
+
+            <!-- Type Selector Tabs -->
+            <div class="type-tabs">
+                <button class="type-tab-btn active" onclick="switchTypeTab('str')"><i class="fa-solid fa-font"></i> String (str)</button>
+                <button class="type-tab-btn" onclick="switchTypeTab('int')"><i class="fa-solid fa-hashtag"></i> Integer (int)</button>
+                <button class="type-tab-btn" onclick="switchTypeTab('float')"><i class="fa-solid fa-percent"></i> Float (float)</button>
+                <button class="type-tab-btn" onclick="switchTypeTab('hex')"><i class="fa-solid fa-microchip"></i> Hexadecimal & Complex</button>
+                <button class="type-tab-btn" onclick="switchTypeTab('bool')"><i class="fa-solid fa-toggle-on"></i> Boolean (bool)</button>
+                <button class="type-tab-btn" onclick="switchTypeTab('seq')"><i class="fa-solid fa-layer-group"></i> List & Tuple</button>
+            </div>
+
+            <!-- Type Details View -->
+            <div class="type-detail-card glass-card" id="type-detail-content">
+                <!-- Javascript will load detailed cards -->
+            </div>
+        </section>
+
+        <!-- SECTION 4: Type Casting (Konversi Tipe Data) -->
+        <section id="casting" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Transformasi Nilai</span>
+                <h2 class="section-title">4. Konversi Tipe Data (Type Casting)</h2>
+                <p class="section-desc">
+                    Type casting adalah proses mengubah nilai dari satu tipe data ke tipe data lainnya menggunakan fungsi konversi bawaan seperti <code>int()</code>, <code>float()</code>, <code>str()</code>, <code>hex()</code>, atau <code>bool()</code>.
+                </p>
+            </div>
+
+            <div class="casting-lab glass-card">
+                <h3 style="color: var(--text-bright); font-size: 1.3rem; font-weight: 700;">
+                    <i class="fa-solid fa-flask" style="color: var(--accent-emerald); margin-right: 8px;"></i>
+                    Type Casting Interactive Lab
+                </h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 4px;">
+                    Masukkan nilai awal, pilih target tipe data tujuan, lalu lihat bagaimana Python melakukan konversi secara instan!
+                </p>
+
+                <div class="casting-grid">
+                    <div>
+                        <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-bright);">
+                            1. Masukkan Nilai Awal:
+                        </label>
+                        <input type="text" id="cast-input-val" value="23092022" style="width: 100%; padding: 12px 16px; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: #fff; font-family: 'Fira Code', monospace; font-size: 1rem;" oninput="runTypeCasting()">
+
+                        <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-top: 16px; margin-bottom: 8px; color: var(--text-bright);">
+                            2. Pilih Target Konversi:
+                        </label>
+                        <div class="cast-target-buttons">
+                            <button class="cast-btn" onclick="selectCastingTarget('str')">str()</button>
+                            <button class="cast-btn active" onclick="selectCastingTarget('int')">int()</button>
+                            <button class="cast-btn" onclick="selectCastingTarget('float')">float()</button>
+                            <button class="cast-btn" onclick="selectCastingTarget('hex')">hex()</button>
+                            <button class="cast-btn" onclick="selectCastingTarget('bin')">bin()</button>
+                            <button class="cast-btn" onclick="selectCastingTarget('bool')">bool()</button>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-surface); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Hasil Konversi:</span>
+                        <div id="cast-result-text" style="font-family: 'Fira Code', monospace; font-size: 1.3rem; font-weight: 700; color: var(--python-yellow); margin: 12px 0;">
+                            23092022
+                        </div>
+                        <div id="cast-result-type" style="font-size: 0.88rem; color: #38bdf8;">
+                            Tipe Data: <code>&lt;class 'int'&gt;</code>
+                        </div>
+                        <p id="cast-result-note" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 12px; border-top: 1px solid var(--border-color); padding-top: 10px;">
+                            Nilai berhasil diubah menjadi bilangan bulat integer.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Operasi Matematika & Aritmatika Dasar -->
+        <section id="operator" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Kalkulasi Cepat</span>
+                <h2 class="section-title">5. Operator Aritmatika Dasar</h2>
+                <p class="section-desc">
+                    Python menyediakan operator aritmatika lengkap untuk melakukan kalkulasi matematis terhadap tipe data numerik.
+                </p>
+            </div>
+
+            <div class="glass-card" style="padding: 30px;">
+                <div style="overflow-x: auto;">
+                    <table class="op-table">
+                        <thead>
+                            <tr>
+                                <th>Operator</th>
+                                <th>Nama Operasi</th>
+                                <th>Contoh Kode</th>
+                                <th>Hasil</th>
+                                <th>Penjelasan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="code-badge">+</span></td>
+                                <td><strong>Penjumlahan</strong></td>
+                                <td><code>10 + 5</code></td>
+                                <td><span style="color: #4ade80; font-weight: 700;">15</span></td>
+                                <td>Menjumlahkan dua buah bilangan atau menggabungkan string.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code-badge">-</span></td>
+                                <td><strong>Pengurangan</strong></td>
+                                <td><code>10 - 4</code></td>
+                                <td><span style="color: #4ade80; font-weight: 700;">6</span></td>
+                                <td>Mengurangkan bilangan kanan dari bilangan kiri.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code-badge">*</span></td>
+                                <td><strong>Perkalian</strong></td>
+                                <td><code>7 * 6</code></td>
+                                <td><span style="color: #4ade80; font-weight: 700;">42</span></td>
+                                <td>Mengalikan dua bilangan atau menduplikasi string.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code-badge">/</span></td>
+                                <td><strong>Pembagian (Float)</strong></td>
+                                <td><code>10 / 4</code></td>
+                                <td><span style="color: #4ade80; font-weight: 700;">2.5</span></td>
+                                <td>Menghasilkan pembagian riil desimal (selalu bertipe <code>float</code>).</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code-badge">//</span></td>
+                                <td><strong>Floor Division</strong></td>
+                                <td><code>10 // 4</code></td>
+                                <td><span style="color: #4ade80; font-weight: 700;">2</span></td>
+                                <td>Pembagian bulat ke bawah dengan membuang angka desimalnya.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code-badge">%</span></td>
+                                <td><strong>Modulus</strong></td>
+                                <td><code>10 % 3</code></td>
+                                <td><span style="color: #4ade80; font-weight: 700;">1</span></td>
+                                <td>Sisa hasil bagi (10 dibagi 3 bernilai 3 sisa <strong>1</strong>).</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code-badge">**</span></td>
+                                <td><strong>Perpangkatan</strong></td>
+                                <td><code>2 ** 3</code></td>
+                                <td><span style="color: #4ade80; font-weight: 700;">8</span></td>
+                                <td>Menghitung 2 pangkat 3 (2 × 2 × 2 = 8).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: Live Code Playground (Pertemuan 2 Edition) -->
+        <section id="playground" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Eksperimen Interaktif</span>
+                <h2 class="section-title">6. Live Code Playground</h2>
+                <p class="section-desc">
+                    Uji coba berbagai variasi kode variabel, tipe data, dan operasi aritmatika secara langsung di browser Anda!
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+                <button class="type-tab-btn active" onclick="loadPlaygroundSnippet('vars')">1. Deklarasi & Cek type()</button>
+                <button class="type-tab-btn" onclick="loadPlaygroundSnippet('quotes')">2. Ragam Tanda Kutip</button>
+                <button class="type-tab-btn" onclick="loadPlaygroundSnippet('casting_demo')">3. Praktek Type Casting</button>
+                <button class="type-tab-btn" onclick="loadPlaygroundSnippet('calc')">4. Aritmatika & Modulus</button>
+            </div>
+
+            <div class="code-playground-box">
+                <div class="editor-header">
+                    <div class="window-dots">
+                        <div class="dot dot-red"></div>
+                        <div class="dot dot-yellow"></div>
+                        <div class="dot dot-green"></div>
+                    </div>
+                    <div class="editor-title">
+                        <i class="fa-brands fa-python" style="color: #38bdf8;"></i> pertemuan_2_demo.py
+                    </div>
+                    <div class="editor-actions">
+                        <button class="btn btn-secondary" onclick="resetPlaygroundCode()" style="padding: 6px 12px; font-size: 0.8rem;">
+                            <i class="fa-solid fa-rotate-left"></i> Reset
+                        </button>
+                        <button class="btn btn-primary" onclick="runPlaygroundCode()" style="padding: 6px 16px; font-size: 0.85rem;">
+                            <i class="fa-solid fa-play"></i> Jalankan Kode
+                        </button>
+                    </div>
+                </div>
+
+                <div class="editor-body">
+                    <div class="editor-input">
+                        <textarea id="playground-code" spellcheck="false"># Deklarasi Variabel & Pengecekan Tipe Data
+nama = "Faruq"
+umur = 26
+ipk = 3.92
+aktif = True
+
+print("--- Data Mahasiswa ---")
+print(f"Nama   : {nama} (Tipe: {type(nama)})")
+print(f"Umur   : {umur} tahun (Tipe: {type(umur)})")
+print(f"IPK    : {ipk} (Tipe: {type(ipk)})")
+print(f"Aktif  : {aktif} (Tipe: {type(aktif)})")</textarea>
+                    </div>
+
+                    <div class="editor-output" id="playground-output">
+                        <div class="output-label"><i class="fa-solid fa-terminal"></i> Output Terminal:</div>
+                        <pre style="white-space: pre-wrap; margin: 0; font-family: inherit;" id="console-result">Klik tombol "Jalankan Kode" di atas untuk melihat hasil eksekusi program...</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: Kuis Interaktif Pemahaman Pertemuan 2 -->
+        <section id="kuis" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Evaluasi Mandiri</span>
+                <h2 class="section-title">Kuis Cepat Pertemuan 2</h2>
+                <p class="section-desc">
+                    Uji ketajaman pemahaman Anda seputar aturan penamaan variabel, penentuan tipe data, fungsi type casting, dan operator matematika.
+                </p>
+            </div>
+
+            <div class="quiz-wrapper">
+                <div class="quiz-card glass-card" id="quiz-box">
+                    <span class="quiz-question-num" id="quiz-num">Pertanyaan 1 dari 5</span>
+                    <h3 class="quiz-question-text" id="quiz-text">Manakah di antara pilihan berikut yang merupakan nama variabel VALID di Python?</h3>
+
+                    <div class="quiz-options" id="quiz-options">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <div class="quiz-feedback" id="quiz-feedback"></div>
+
+                    <div class="quiz-nav">
+                        <div id="quiz-score-badge" style="font-weight: 700; color: var(--python-yellow);">
+                            Skor: <span id="quiz-score">0</span> / 5
+                        </div>
+                        <button class="btn btn-primary" id="quiz-next-btn" onclick="nextQuizQuestion()" style="display: none;">
+                            Lanjut Soal Berikutnya <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: Rangkuman & Roadmap Pertemuan 3 -->
+        <section class="section container">
+            <div class="section-header">
+                <span class="section-tag">Langkah Selanjutnya</span>
+                <h2 class="section-title">Rangkuman & Roadmap Pertemuan 3</h2>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-card glass-card">
+                    <h3 style="color: var(--text-bright); font-size: 1.25rem; font-weight: 700;">
+                        <i class="fa-solid fa-circle-check" style="color: #22c55e; margin-right: 8px;"></i>
+                        Poin Penting Pertemuan 2
+                    </h3>
+                    <ul class="summary-list">
+                        <li>Statement adalah setiap baris instruksi yang dieksekusi interpreter.</li>
+                        <li>Tanda <code>#</code> menandai komentar yang tidak diproses oleh program.</li>
+                        <li>Variabel menyimpan nilai yang dapat berubah-ubah dengan sistem *dynamic typing*.</li>
+                        <li>Tipe data angka: <code>int</code> (bulat), <code>float</code> (desimal), <code>complex</code> (imajiner), <code>hex()</code> (heksa).</li>
+                        <li>Fungsi <code>type()</code> untuk cek tipe data, dan <code>int() / float() / str()</code> untuk konversi.</li>
+                        <li>Operator aritmatika: <code>+ - * / // % **</code>.</li>
+                    </ul>
+                </div>
+
+                <div class="summary-card glass-card" style="border-left: 4px solid var(--python-blue);">
+                    <h3 style="color: var(--text-bright); font-size: 1.25rem; font-weight: 700;">
+                        <i class="fa-solid fa-arrow-trend-up" style="color: var(--python-blue); margin-right: 8px;"></i>
+                        Materi Pertemuan 3 (Next Step)
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 10px;">
+                        Pada pertemuan berikutnya, kita akan membuat program menjadi interaktif menerima respon dari pengguna:
+                    </p>
+                    <ul class="summary-list">
+                        <li><strong>Fungsi input():</strong> Menerima masukan teks dari pengguna via keyboard.</li>
+                        <li><strong>Pemformatan Output Tingkat Lanjut:</strong> String formatting, escape characters.</li>
+                        <li><strong>Operator Logika & Relasional:</strong> Perbandingan (<code>==, !=, &gt;, &lt;</code>) dan logika (<code>and, or, not</code>).</li>
+                        <li><strong>Praktek Eksperimen:</strong> [Pertemuan 3.ipynb](Pertemuan%203.ipynb) di Jupyter / Google Colab.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3><i class="fa-brands fa-python" style="color: #38bdf8;"></i> Dasar Pemrograman Python</h3>
+                    <p>
+                        Repository dan modul pembelajaran komprehensif untuk mahasiswa dan pemula dalam memahami fondasi pemrograman modern.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navigasi Pertemuan</h4>
+                    <ul>
+                        <li><a href="index.html">Pertemuan 1: Pengenalan & Biner</a></li>
+                        <li><a href="pertemuan_2.html">Pertemuan 2: Variabel & Tipe Data</a></li>
+                        <li><a href="Pertemuan%203.ipynb">Pertemuan 3: Input & Output</a></li>
+                        <li><a href="Pertemuan%204_Percabangan.ipynb">Pertemuan 4: Percabangan</a></li>
+                        <li><a href="Kuis_UTS.ipynb">Evaluasi: Kuis UTS</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Tautan Eksternal</h4>
+                    <ul>
+                        <li><a href="https://github.com/faruq1997/Dasar-Pemrograman-Python" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub Repository</a></li>
+                        <li><a href="https://faruq1997.github.io/Dasar-Pemrograman-Python/" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Website Utama</a></li>
+                        <li><a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_2.ipynb" target="_blank" rel="noopener"><i class="fa-solid fa-cloud"></i> Colab Pertemuan 2</a></li>
+                        <li><a href="https://docs.python.org/3/library/stdtypes.html" target="_blank" rel="noopener"><i class="fa-solid fa-book"></i> Dokumentasi Python Types</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 Faruq • Untuk Pembelajaran Non-Komersial (Educational Use Only)</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript Logic -->
+    <script>
+        // --- 1. Reading Progress Bar & Active Navigation Tracker ---
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+
+            const sections = document.querySelectorAll('section[id]');
+            let currentSec = '';
+            sections.forEach(sec => {
+                const top = sec.offsetTop - 120;
+                if (winScroll >= top) {
+                    currentSec = sec.getAttribute('id');
+                }
+            });
+            document.querySelectorAll('.nav-links a').forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href') === `#${currentSec}`) {
+                    a.classList.add('active');
+                }
+            });
+        });
+
+        // --- 2. Theme Toggle (Dark / Light) with Local Storage ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+
+        const savedTheme = localStorage.getItem('py_learn_theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeIcon.className = 'fa-solid fa-sun';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('py_learn_theme', 'dark');
+                themeIcon.className = 'fa-solid fa-moon';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('py_learn_theme', 'light');
+                themeIcon.className = 'fa-solid fa-sun';
+            }
+        });
+
+        // --- 3. Mobile Navigation Menu Toggle ---
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('show');
+        });
+
+        // --- 4. Variable Name Validator Logic ---
+        const pythonKeywords = [
+            'False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 
+            'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 
+            'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is', 
+            'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 
+            'while', 'with', 'yield'
+        ];
+
+        function validateVariableName(val) {
+            const resultBox = document.getElementById('var-result-box');
+            const icon = document.getElementById('var-icon');
+            const status = document.getElementById('var-status');
+            const desc = document.getElementById('var-desc');
+            const trimmed = val.trim();
+
+            if (!trimmed) {
+                resultBox.className = 'validator-result invalid';
+                icon.className = 'fa-solid fa-circle-xmark';
+                status.textContent = 'Nama Variabel Kosong!';
+                desc.textContent = 'Silakan ketikkan nama variabel untuk dicek.';
+                return;
+            }
+
+            if (pythonKeywords.includes(trimmed)) {
+                resultBox.className = 'validator-result invalid';
+                icon.className = 'fa-solid fa-circle-xmark';
+                status.textContent = 'INVALID: Reserved Keyword!';
+                desc.textContent = `"${trimmed}" adalah kata kunci khusus (keyword) terlarang di Python yang sudah memiliki fungsi sistem.`;
+                return;
+            }
+
+            if (/^[0-9]/.test(trimmed)) {
+                resultBox.className = 'validator-result invalid';
+                icon.className = 'fa-solid fa-circle-xmark';
+                status.textContent = 'INVALID: Diawali Angka!';
+                desc.textContent = 'Nama variabel tidak boleh diawali dengan karakter angka.';
+                return;
+            }
+
+            if (/\s/.test(trimmed)) {
+                resultBox.className = 'validator-result invalid';
+                icon.className = 'fa-solid fa-circle-xmark';
+                status.textContent = 'INVALID: Mengandung Spasi!';
+                desc.textContent = 'Nama variabel tidak boleh mengandung spasi. Gunakan garis bawah (underscore `_`) sebagai pemisah kata.';
+                return;
+            }
+
+            if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(trimmed)) {
+                resultBox.className = 'validator-result invalid';
+                icon.className = 'fa-solid fa-circle-xmark';
+                status.textContent = 'INVALID: Mengandung Simbol Khusus!';
+                desc.textContent = 'Hanya karakter alfabet (a-z, A-Z), angka (0-9), dan garis bawah (_) yang diperbolehkan.';
+                return;
+            }
+
+            // Valid
+            resultBox.className = 'validator-result valid';
+            icon.className = 'fa-solid fa-circle-check';
+            status.textContent = `VALID: "${trimmed}"`;
+            desc.textContent = 'Bagus! Nama variabel ini memenuhi kaidah penamaan sintaks Python yang benar.';
+        }
+
+        // --- 5. Data Type Details Switcher ---
+        const typeDataMap = {
+            str: {
+                title: "String (str) — Teks & Karakter",
+                desc: "Tipe data untuk menyimpan teks, kalimat, maupun karakter tunggal yang diapit oleh tanda kutip tunggal ('') atau ganda (\"\").",
+                code: `# String = Teks diapit tanda kutip
+huruf = 'U'
+kata = "kata"
+kalimat = "Ini adalah kalimat lengkap"
+paragraf = """Ini adalah paragraf
+terdiri dari beberapa baris."""
+
+print(type(kalimat)) # <class 'str'>`
+            },
+            int: {
+                title: "Integer (int) — Bilangan Bulat",
+                desc: "Tipe data untuk menyimpan angka bulat positif maupun negatif tanpa koma (desimal), seperti 10, -5, 23092022.",
+                code: `# Integer = Bilangan Bulat
+nim = 23092022
+tahun = 2025
+suhu_beku = -10
+
+print(nim)
+print(type(nim)) # <class 'int'>`
+            },
+            float: {
+                title: "Float (float) — Bilangan Desimal / Berkoma",
+                desc: "Tipe data untuk menyimpan bilangan pecahan / desimal yang menggunakan tanda titik (.) sebagai pemisah pecahan.",
+                code: `# Float = Bilangan Pecahan
+pi = 3.14
+ipk = 3.85
+berat_badan = 65.5
+
+print(pi)
+print(type(pi)) # <class 'float'>`
+            },
+            hex: {
+                title: "Hexadecimal & Complex — Bilangan Khusus",
+                desc: "Python mendukung notasi Heksadesimal (diawali 0x) dan bilangan Kompleks (riil + imajiner menggunakan huruf j atau fungsi complex()).",
+                code: `# Hexadecimal & Complex
+nilai_heksa = 0x63       # Nilai desimalnya = 99
+konversi_heksa = hex(99) # Menghasilkan '0x63'
+
+bil_kompleks = complex(90) # (90+0j)
+z = 3 + 4j
+
+print(nilai_heksa)       # 99
+print(konversi_heksa)    # '0x63'
+print(bil_kompleks)      # (90+0j)`
+            },
+            bool: {
+                title: "Boolean (bool) — Logika Kebenaran",
+                desc: "Hanya memiliki dua kemungkinan nilai: True (Benar) dan False (Salah). Sangat penting untuk logika percabangan dan perulangan.",
+                code: `# Boolean = True atau False
+is_active = True
+is_graduated = False
+
+# Hasil perbandingan menghasilkan Boolean
+cek_lulus = 85 >= 75 # True
+
+print(is_active)
+print(type(is_active)) # <class 'bool'>`
+            },
+            seq: {
+                title: "List & Tuple — Koleksi Urutan",
+                desc: "List [ ] bersifat dinamis dan dapat diubah (mutable), sedangkan Tuple ( ) bersifat tetap dan tidak dapat diubah (immutable).",
+                code: `# List & Tuple
+daftar_angka = [1, 2, 3, 4, 5]     # List (mutable)
+koordinat = (106.8456, -6.2088)    # Tuple (immutable)
+
+daftar_angka.append(6)
+print(daftar_angka)
+print(type(daftar_angka)) # <class 'list'>
+print(type(koordinat))    # <class 'tuple'>`
+            }
+        };
+
+        function switchTypeTab(typeKey) {
+            document.querySelectorAll('.type-tabs .type-tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const data = typeDataMap[typeKey];
+            const content = document.getElementById('type-detail-content');
+            content.innerHTML = `
+                <h3 style="font-size: 1.3rem; color: var(--text-bright); font-weight: 700; margin-bottom: 8px;">
+                    ${data.title}
+                </h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 14px;">
+                    ${data.desc}
+                </p>
+                <div class="code-display">
+                    <pre><code class="language-python">${escapeHtml(data.code)}</code></pre>
+                </div>
+            `;
+        }
+
+        switchTypeTab('str');
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // --- 6. Interactive Type Casting Lab ---
+        let currentCastTarget = 'int';
+
+        function selectCastingTarget(target) {
+            currentCastTarget = target;
+            document.querySelectorAll('.cast-target-buttons .cast-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            runTypeCasting();
+        }
+
+        function runTypeCasting() {
+            const raw = document.getElementById('cast-input-val').value;
+            const resText = document.getElementById('cast-result-text');
+            const resType = document.getElementById('cast-result-type');
+            const resNote = document.getElementById('cast-result-note');
+
+            try {
+                if (currentCastTarget === 'str') {
+                    resText.textContent = `"${raw}"`;
+                    resType.innerHTML = `Tipe Data: <code>&lt;class 'str'&gt;</code>`;
+                    resNote.textContent = 'Nilai diubah menjadi karakter teks (String).';
+                } else if (currentCastTarget === 'int') {
+                    if (isNaN(raw) || raw.trim() === '') throw new Error(`ValueError: invalid literal for int() with base 10: '${raw}'`);
+                    const val = parseInt(Number(raw), 10);
+                    resText.textContent = val;
+                    resType.innerHTML = `Tipe Data: <code>&lt;class 'int'&gt;</code>`;
+                    resNote.textContent = 'Nilai berhasil diubah menjadi bilangan bulat integer.';
+                } else if (currentCastTarget === 'float') {
+                    if (isNaN(raw) || raw.trim() === '') throw new Error(`ValueError: could not convert string to float: '${raw}'`);
+                    const val = parseFloat(raw);
+                    resText.textContent = val % 1 === 0 ? val.toFixed(1) : val;
+                    resType.innerHTML = `Tipe Data: <code>&lt;class 'float'&gt;</code>`;
+                    resNote.textContent = 'Nilai berhasil diubah menjadi bilangan desimal float.';
+                } else if (currentCastTarget === 'hex') {
+                    if (isNaN(raw) || raw.trim() === '') throw new Error(`TypeError: 'hex' object cannot be interpreted as an integer`);
+                    const num = parseInt(Number(raw), 10);
+                    const hexStr = '0x' + num.toString(16);
+                    resText.textContent = `'${hexStr}'`;
+                    resType.innerHTML = `Tipe Data: <code>&lt;class 'str'&gt; (Hexadecimal)</code>`;
+                    resNote.textContent = `Fungsi hex(${num}) mengubah bilangan integer ke notasi heksadesimal.`;
+                } else if (currentCastTarget === 'bin') {
+                    if (isNaN(raw) || raw.trim() === '') throw new Error(`TypeError: 'bin' object cannot be interpreted as an integer`);
+                    const num = parseInt(Number(raw), 10);
+                    const binStr = '0b' + num.toString(2);
+                    resText.textContent = `'${binStr}'`;
+                    resType.innerHTML = `Tipe Data: <code>&lt;class 'str'&gt; (Binary)</code>`;
+                    resNote.textContent = `Fungsi bin(${num}) mengubah bilangan integer ke notasi biner.`;
+                } else if (currentCastTarget === 'bool') {
+                    const isTrue = raw.trim() !== '' && raw.trim() !== '0' && raw.trim().toLowerCase() !== 'false';
+                    resText.textContent = isTrue ? 'True' : 'False';
+                    resType.innerHTML = `Tipe Data: <code>&lt;class 'bool'&gt;</code>`;
+                    resNote.textContent = isTrue ? 'Nilai non-kosong / non-nol bernilai True.' : 'Nilai kosong / nol bernilai False.';
+                }
+            } catch (err) {
+                resText.textContent = 'Error: ' + err.message;
+                resType.innerHTML = `<span style="color: #ef4444;">Eksekusi Gagal</span>`;
+                resNote.textContent = 'Periksa kembali kesesuaian nilai input dengan target tipe data yang dipilih.';
+            }
+        }
+
+        // --- 7. Live Code Playground ---
+        const playgroundSnippets = {
+            vars: `# Deklarasi Variabel & Pengecekan Tipe Data
+nama = "Faruq"
+umur = 26
+ipk = 3.92
+aktif = True
+
+print("--- Data Mahasiswa ---")
+print(f"Nama   : {nama} (Tipe: {type(nama)})")
+print(f"Umur   : {umur} tahun (Tipe: {type(umur)})")
+print(f"IPK    : {ipk} (Tipe: {type(ipk)})")
+print(f"Aktif  : {aktif} (Tipe: {type(aktif)})")`,
+            quotes: `# Ragam Tanda Kutip di Python
+huruf = 'U'
+kata = "kata"
+kalimat = "Ini adalah kalimat"
+paragraf = """Ini adalah paragraf
+terdiri dari beberapa baris."""
+
+print("Huruf    :", huruf)
+print("Kata     :", kata)
+print("Kalimat  :", kalimat)
+print("Paragraf :", paragraf)`,
+            casting_demo: `# Praktek Konversi Tipe Data
+angka_str = "100"
+angka_int = int(angka_str)
+angka_float = float(angka_int)
+
+print(f"Nilai string  : {angka_str} ({type(angka_str)})")
+print(f"Hasil int()   : {angka_int} ({type(angka_int)})")
+print(f"Hasil float() : {angka_float} ({type(angka_float)})")
+print(f"Hasil hex(99) : {hex(99)}")`,
+            calc: `# Operasi Aritmatika Lengkap
+a = 10
+b = 3
+
+print(f"{a} + {b}  = {a + b}  (Penjumlahan)")
+print(f"{a} - {b}  = {a - b}  (Pengurangan)")
+print(f"{a} * {b}  = {a * b}  (Perkalian)")
+print(f"{a} / {b}  = {a / b} (Pembagian Desimal)")
+print(f"{a} // {b} = {a // b}  (Floor Division / Bagi Bulat)")
+print(f"{a} % {b}  = {a % b}  (Modulus / Sisa Bagi)")
+print(f"{a} ** {b} = {a ** b} (Perpangkatan 10^3)")`
+        };
+
+        function loadPlaygroundSnippet(key) {
+            document.querySelectorAll('#playground .type-tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('playground-code').value = playgroundSnippets[key];
+            runPlaygroundCode();
+        }
+
+        function resetPlaygroundCode() {
+            document.getElementById('playground-code').value = playgroundSnippets.vars;
+            document.getElementById('console-result').textContent = 'Klik tombol "Jalankan Kode" di atas untuk melihat hasil eksekusi program...';
+        }
+
+        function runPlaygroundCode() {
+            const rawCode = document.getElementById('playground-code').value;
+            const consoleBox = document.getElementById('console-result');
+
+            try {
+                let simulatedOutput = [];
+                const lines = rawCode.split('\n');
+
+                let scope = {
+                    nama: "Faruq",
+                    umur: 26,
+                    ipk: 3.92,
+                    aktif: true,
+                    huruf: "U",
+                    kata: "kata",
+                    kalimat: "Ini adalah kalimat",
+                    paragraf: "Ini adalah paragraf\nterdiri dari beberapa baris.",
+                    angka_str: "100",
+                    angka_int: 100,
+                    angka_float: 100.0,
+                    a: 10,
+                    b: 3
+                };
+
+                function getTypeStr(val) {
+                    if (typeof val === 'string') return "<class 'str'>";
+                    if (typeof val === 'boolean') return "<class 'bool'>";
+                    if (typeof val === 'number') {
+                        return Number.isInteger(val) ? "<class 'int'>" : "<class 'float'>";
+                    }
+                    return "<class 'object'>";
+                }
+
+                lines.forEach(line => {
+                    const trimmed = line.trim();
+                    if (!trimmed || trimmed.startsWith('#')) return;
+
+                    // Parse simple assignments
+                    if (trimmed.includes('=') && !trimmed.startsWith('print')) {
+                        const parts = trimmed.split('=');
+                        const varName = parts[0].trim();
+                        const varVal = parts[1].trim();
+
+                        if (varVal.startsWith('"') || varVal.startsWith("'")) {
+                            scope[varName] = varVal.slice(1, -1);
+                        } else if (varVal === 'True') {
+                            scope[varName] = true;
+                        } else if (varVal === 'False') {
+                            scope[varName] = false;
+                        } else if (!isNaN(varVal)) {
+                            scope[varName] = Number(varVal);
+                        } else if (varVal.startsWith('int(')) {
+                            const inner = varVal.slice(4, -1).trim();
+                            scope[varName] = parseInt(scope[inner] !== undefined ? scope[inner] : inner.replace(/['"]/g, ''), 10);
+                        } else if (varVal.startsWith('float(')) {
+                            const inner = varVal.slice(6, -1).trim();
+                            scope[varName] = parseFloat(scope[inner] !== undefined ? scope[inner] : inner);
+                        }
+                    }
+
+                    // Parse Print
+                    if (trimmed.startsWith('print(') && trimmed.endsWith(')')) {
+                        let inside = trimmed.slice(6, -1).trim();
+                        
+                        if (inside.startsWith('f"') || inside.startsWith("f'")) {
+                            let str = inside.slice(2, -1);
+                            str = str.replace(/\{type\((\w+)\)\}/g, (m, p1) => {
+                                return scope[p1] !== undefined ? getTypeStr(scope[p1]) : "<class 'unknown'>";
+                            });
+                            str = str.replace(/\{hex\((\d+)\)\}/g, (m, p1) => {
+                                return '0x' + Number(p1).toString(16);
+                            });
+                            str = str.replace(/\{(\w+)\s*([\+\-\*\/\%]|[\/]{2}|[\*]{2})\s*(\w+)\}/g, (m, v1, op, v2) => {
+                                let n1 = scope[v1] !== undefined ? scope[v1] : Number(v1);
+                                let n2 = scope[v2] !== undefined ? scope[v2] : Number(v2);
+                                if (op === '+') return n1 + n2;
+                                if (op === '-') return n1 - n2;
+                                if (op === '*') return n1 * n2;
+                                if (op === '/') return (n1 / n2).toFixed(4);
+                                if (op === '//') return Math.floor(n1 / n2);
+                                if (op === '%') return n1 % n2;
+                                if (op === '**') return Math.pow(n1, n2);
+                                return m;
+                            });
+                            str = str.replace(/\{(\w+)\}/g, (match, p1) => {
+                                return scope[p1] !== undefined ? scope[p1] : match;
+                            });
+                            simulatedOutput.push(str);
+                        } else if (inside.includes(',')) {
+                            let parts = inside.split(',').map(s => s.trim().replace(/^['"]|['"]$/g, ''));
+                            let resolved = parts.map(p => scope[p] !== undefined ? scope[p] : p);
+                            simulatedOutput.push(resolved.join(' '));
+                        } else {
+                            let clean = inside.replace(/^['"]|['"]$/g, '');
+                            simulatedOutput.push(scope[clean] !== undefined ? scope[clean] : clean);
+                        }
+                    }
+                });
+
+                if (simulatedOutput.length > 0) {
+                    consoleBox.textContent = simulatedOutput.join('\n');
+                } else {
+                    consoleBox.textContent = "Program berhasil dijalankan.";
+                }
+            } catch (err) {
+                consoleBox.textContent = "Error eksekusi: " + err.message;
+            }
+        }
+
+        // --- 8. Interactive Quiz Engine Pertemuan 2 ---
+        const quizQuestions = [
+            {
+                q: "Manakah di antara pilihan berikut yang merupakan nama variabel yang VALID di Python?",
+                options: [
+                    "2025_mahasiswa",
+                    "nama-pengguna",
+                    "total_nilai_akhir",
+                    "class"
+                ],
+                correct: 2,
+                explanation: "Nama variabel hanya boleh terdiri dari huruf, angka, dan garis bawah (_), tidak diawali angka, dan bukan reserved keyword."
+            },
+            {
+                q: "Berapakah tipe data dan hasil dari operasi pembagian: 10 / 2 di Python?",
+                options: [
+                    "5 (Integer)",
+                    "5.0 (Float)",
+                    "'5' (String)",
+                    "True (Boolean)"
+                ],
+                correct: 1,
+                explanation: "Di Python 3, operator garis miring tunggal (/) selalu menghasilkan tipe data float (berkoma), yaitu 5.0."
+            },
+            {
+                q: "Fungsi apakah yang digunakan untuk mengubah string teks \"100\" menjadi bilangan bulat integer?",
+                options: [
+                    "str(\"100\")",
+                    "int(\"100\")",
+                    "float(\"100\")",
+                    "bool(\"100\")"
+                ],
+                correct: 1,
+                explanation: "Fungsi int() digunakan untuk mengonversi nilai string angka atau float menjadi integer bulat."
+            },
+            {
+                q: "Berapakah hasil dari operasi modulus: 17 % 5 dalam Python?",
+                options: [
+                    "3",
+                    "2",
+                    "3.4",
+                    "1"
+                ],
+                correct: 1,
+                explanation: "17 dibagi 5 adalah 3 dengan sisa bagi 2 (karena 5 × 3 = 15, lalu 17 - 15 = 2)."
+            },
+            {
+                q: "Simbol apakah yang digunakan untuk menuliskan komentar satu baris di Python?",
+                options: [
+                    "// Komentar",
+                    "/* Komentar */",
+                    "# Komentar",
+                    "-- Komentar"
+                ],
+                correct: 2,
+                explanation: "Python menggunakan tanda pagar (#) untuk menandai komentar satu baris."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let quizAnswered = false;
+
+        function renderQuiz() {
+            quizAnswered = false;
+            const qData = quizQuestions[currentQuizIndex];
+            document.getElementById('quiz-num').textContent = `Pertanyaan ${currentQuizIndex + 1} dari ${quizQuestions.length}`;
+            document.getElementById('quiz-text').textContent = qData.q;
+            document.getElementById('quiz-feedback').style.display = 'none';
+            document.getElementById('quiz-next-btn').style.display = 'none';
+
+            const optsContainer = document.getElementById('quiz-options');
+            optsContainer.innerHTML = '';
+
+            qData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt-btn';
+                btn.innerHTML = `<strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}`;
+                btn.onclick = () => selectQuizAnswer(idx, btn);
+                optsContainer.appendChild(btn);
+            });
+        }
+
+        function selectQuizAnswer(selectedIndex, clickedBtn) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+
+            const qData = quizQuestions[currentQuizIndex];
+            const allButtons = document.querySelectorAll('.quiz-opt-btn');
+            const feedbackBox = document.getElementById('quiz-feedback');
+
+            if (selectedIndex === qData.correct) {
+                clickedBtn.classList.add('correct');
+                quizScore++;
+                document.getElementById('quiz-score').textContent = quizScore;
+                feedbackBox.className = 'quiz-feedback glass-card';
+                feedbackBox.style.display = 'block';
+                feedbackBox.style.color = '#4ade80';
+                feedbackBox.style.borderColor = '#22c55e';
+                feedbackBox.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Jawaban Anda Benar!</strong><br>${qData.explanation}`;
+
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.7 }
+                });
+            } else {
+                clickedBtn.classList.add('wrong');
+                allButtons[qData.correct].classList.add('correct');
+                feedbackBox.className = 'quiz-feedback glass-card';
+                feedbackBox.style.display = 'block';
+                feedbackBox.style.color = '#f87171';
+                feedbackBox.style.borderColor = '#ef4444';
+                feedbackBox.innerHTML = `<strong><i class="fa-solid fa-circle-xmark"></i> Kurang Tepat!</strong><br>${qData.explanation}`;
+            }
+
+            document.getElementById('quiz-next-btn').style.display = 'inline-flex';
+        }
+
+        function nextQuizQuestion() {
+            currentQuizIndex++;
+            if (currentQuizIndex < quizQuestions.length) {
+                renderQuiz();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            const quizBox = document.getElementById('quiz-box');
+            let message = '';
+            if (quizScore === 5) {
+                message = "🏆 Sempurna! Anda telah menguasai konsep sintaks, variabel, dan tipe data Pertemuan 2.";
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.6 }
+                });
+            } else if (quizScore >= 3) {
+                message = "👍 Hebat! Pemahaman dasar Anda sudah sangat solid. Siap lanjut ke Pertemuan 3!";
+            } else {
+                message = "📚 Coba ulangi dan eksplorasi modul di atas untuk memperkuat pemahaman Anda.";
+            }
+
+            quizBox.innerHTML = `
+                <div style="text-align: center; padding: 20px 0;">
+                    <i class="fa-solid fa-trophy" style="font-size: 3.5rem; color: #fbbf24; margin-bottom: 16px;"></i>
+                    <h3 style="font-size: 1.8rem; color: var(--text-bright); margin-bottom: 8px;">Kuis Pertemuan 2 Selesai!</h3>
+                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 20px;">
+                        Skor Akhir Anda: <span style="color: var(--python-yellow); font-weight: 800; font-size: 1.4rem;">${quizScore} / ${quizQuestions.length}</span>
+                    </p>
+                    <p style="color: var(--text-bright); margin-bottom: 30px; font-weight: 500;">${message}</p>
+                    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-secondary" onclick="restartQuiz()">
+                            <i class="fa-solid fa-rotate-left"></i> Ulangi Kuis
+                        </button>
+                        <a href="index.html" class="btn btn-primary">
+                            <i class="fa-solid fa-arrow-left"></i> Kembali ke Pertemuan 1
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function restartQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-score').textContent = '0';
+            location.reload();
+        }
+
+        // Initialize First Quiz Question
+        renderQuiz();
+    </script>
+</body>
+</html>
