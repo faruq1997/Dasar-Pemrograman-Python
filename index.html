@@ -1,0 +1,2160 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 1: Pengenalan Python & Lingkungan Pemrograman | Dasar Pemrograman</title>
+    <meta name="description" content="Modul pembelajaran interaktif Pertemuan 1 Dasar Pemrograman Python: Sejarah, Keunggulan, Sistem Biner, dan Panduan Lengkap Google Colaboratory.">
+    <meta name="author" content="Faruq">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-glow: rgba(59, 130, 246, 0.35);
+            --python-yellow: #fbbf24;
+            --python-blue: #38bdf8;
+            --accent: #8b5cf6;
+            --accent-glow: rgba(139, 92, 246, 0.3);
+            
+            --bg-body: #0a0f1d;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(30, 41, 59, 0.85);
+            --bg-surface: #111827;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(59, 130, 246, 0.4);
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-bright: #ffffff;
+            
+            --code-bg: #0d1117;
+            --nav-bg: rgba(10, 15, 29, 0.85);
+            --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-body: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-hover: rgba(241, 245, 249, 0.95);
+            --bg-surface: #ffffff;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-glow: rgba(59, 130, 246, 0.3);
+            
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --text-bright: #0f172a;
+            
+            --code-bg: #1e293b;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.07);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #fbbf24);
+            z-index: 1000;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* Ambient Glow & Grid Background */
+        .bg-ambient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .glow-orb-1 {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+        .glow-orb-2 {
+            position: absolute;
+            top: 40%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            filter: blur(90px);
+        }
+        .glow-orb-3 {
+            position: absolute;
+            bottom: 5%;
+            left: 20%;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.15) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+        .grid-pattern {
+            position: absolute;
+            inset: 0;
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+        [data-theme="light"] .grid-pattern {
+            background-image: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+        }
+        .glass-card:hover {
+            border-color: var(--border-glow);
+            transform: translateY(-3px);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 0;
+            transition: var(--transition);
+        }
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-bright);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .nav-brand .py-icon {
+            font-size: 1.8rem;
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-blue);
+            background: rgba(56, 189, 248, 0.1);
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn-theme {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .btn-theme:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: rotate(15deg);
+        }
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 50px;
+            text-align: center;
+            position: relative;
+        }
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 30px;
+            color: var(--python-blue);
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--text-bright);
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 760px;
+            margin: 0 auto 36px;
+            font-weight: 400;
+        }
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 26px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: #ffffff;
+            box-shadow: 0 4px 20px var(--primary-glow);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--primary-glow);
+        }
+        .btn-secondary {
+            background: var(--bg-surface);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+        .btn-amber {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+        }
+        .btn-amber:hover {
+            background: linear-gradient(135deg, #b45309, #d97706);
+            transform: translateY(-2px);
+        }
+
+        /* Quick Feature Highlights */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-top: 10px;
+        }
+        .stat-card {
+            padding: 20px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--python-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .stat-content h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 2px;
+        }
+        .stat-content p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Section Layout */
+        .section {
+            padding: 70px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .section-tag {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--python-blue);
+            margin-bottom: 8px;
+            display: block;
+        }
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-bright);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Topic Cards Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .feature-box {
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .feature-box:hover::before {
+            opacity: 1;
+        }
+        .box-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .icon-blue { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+        .icon-yellow { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+        .icon-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+        .icon-green { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+        .icon-rose { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+        .icon-indigo { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+
+        .feature-box h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 12px;
+        }
+        .feature-box p {
+            color: var(--text-muted);
+            font-size: 0.94rem;
+        }
+
+        /* Code Comparison Switcher */
+        .code-compare-card {
+            padding: 30px;
+            margin-top: 36px;
+        }
+        .lang-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+        .lang-tab-btn {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 18px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .lang-tab-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 2px 10px var(--primary-glow);
+        }
+        .code-display {
+            background: var(--code-bg);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            position: relative;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+        .code-display pre {
+            margin: 0;
+        }
+
+        /* Timeline History */
+        .timeline {
+            position: relative;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 3px;
+            background: linear-gradient(180deg, #38bdf8, #818cf8, #fbbf24);
+            transform: translateX(-50%);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            width: 50%;
+        }
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-right: 40px;
+            text-align: right;
+        }
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 40px;
+            text-align: left;
+        }
+        .timeline-dot {
+            position: absolute;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            border: 4px solid var(--bg-body);
+            box-shadow: 0 0 10px var(--primary);
+            z-index: 2;
+        }
+        .timeline-item:nth-child(odd) .timeline-dot {
+            right: -10px;
+        }
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -10px;
+        }
+        .timeline-content {
+            padding: 24px;
+        }
+        .timeline-year {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--python-yellow);
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+        .timeline-content h4 {
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 8px;
+        }
+        .timeline-content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Interactive Binary Playground */
+        .binary-playground {
+            padding: 36px;
+        }
+        .byte-switches {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+        .bit-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .bit-weight {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-family: 'Fira Code', monospace;
+        }
+        .bit-btn {
+            width: 60px;
+            height: 70px;
+            border-radius: var(--radius-md);
+            font-family: 'Fira Code', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: 2px solid var(--border-color);
+            background: var(--bg-surface);
+            color: var(--text-muted);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bit-btn.active {
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            color: #ffffff;
+            border-color: #38bdf8;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+            transform: scale(1.05);
+        }
+        .calc-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .calc-result-box {
+            background: var(--bg-surface);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .calc-result-box .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .calc-result-box .val {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--python-yellow);
+        }
+        
+        .converter-tool {
+            margin-top: 36px;
+            padding: 24px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+        .converter-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 16px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            margin-bottom: 8px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+        .input-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* External Link Card */
+        .external-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 30px;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.6), rgba(88, 28, 135, 0.6));
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            border-radius: var(--radius-lg);
+            margin-top: 30px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .external-content h4 {
+            font-size: 1.25rem;
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .external-content p {
+            color: #e2e8f0;
+            font-size: 0.92rem;
+        }
+
+        /* Google Colab Section */
+        .colab-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .colab-card {
+            padding: 24px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+        .colab-card i {
+            font-size: 1.8rem;
+            color: #fb923c;
+            margin-bottom: 14px;
+            display: inline-block;
+        }
+        .colab-card h4 {
+            font-size: 1.15rem;
+            color: var(--text-bright);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .colab-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .shortcut-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.92rem;
+        }
+        .shortcut-table th, .shortcut-table td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .shortcut-table th {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .kbd-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #1e293b;
+            color: #38bdf8;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 2px 0 #0f172a;
+        }
+
+        /* Interactive Runner / Playground */
+        .code-playground-box {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: #0f172a;
+        }
+        .editor-header {
+            background: #1e293b;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .window-dots {
+            display: flex;
+            gap: 6px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+        .editor-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+        .editor-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .editor-body {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            min-height: 280px;
+        }
+        .editor-input {
+            padding: 18px;
+            background: #0a0f1d;
+            border-right: 1px solid var(--border-color);
+        }
+        .editor-input textarea {
+            width: 100%;
+            height: 100%;
+            min-height: 220px;
+            background: transparent;
+            border: none;
+            color: #38bdf8;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            outline: none;
+            resize: none;
+        }
+        .editor-output {
+            padding: 18px;
+            background: #030712;
+            color: #a7f3d0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            overflow-y: auto;
+        }
+        .output-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Quiz Section */
+        .quiz-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .quiz-card {
+            padding: 36px;
+        }
+        .quiz-question-num {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            display: block;
+        }
+        .quiz-question-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 24px;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .quiz-opt-btn {
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 0.98rem;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: var(--transition);
+        }
+        .quiz-opt-btn:hover {
+            border-color: var(--primary);
+            background: var(--bg-card-hover);
+        }
+        .quiz-opt-btn.correct {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+            color: #4ade80;
+        }
+        .quiz-opt-btn.wrong {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            color: #f87171;
+        }
+        .quiz-feedback {
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            margin-top: 16px;
+            font-size: 0.92rem;
+            display: none;
+        }
+        .quiz-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        /* Next Topic & Summary */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 30px;
+        }
+        .summary-card {
+            padding: 30px;
+        }
+        .summary-list {
+            list-style: none;
+            margin-top: 16px;
+        }
+        .summary-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+        .summary-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-color);
+            padding: 50px 0 30px;
+            margin-top: 80px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-brand h3 {
+            font-size: 1.3rem;
+            color: var(--text-bright);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            max-width: 380px;
+        }
+        .footer-col h4 {
+            color: var(--text-bright);
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col li {
+            margin-bottom: 10px;
+        }
+        .footer-col a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .footer-col a:hover {
+            color: var(--primary-blue);
+        }
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 24px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .hero-title { font-size: 2.3rem; }
+            .timeline::before { left: 30px; }
+            .timeline-item { width: 100%; left: 0 !important; padding-left: 70px !important; padding-right: 0 !important; text-align: left !important; }
+            .timeline-dot { left: 20px !important; right: auto !important; }
+            .editor-body { grid-template-columns: 1fr; }
+            .summary-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .converter-inputs { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-links.show {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--bg-surface);
+                padding: 20px;
+                border-bottom: 1px solid var(--border-color);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            }
+            .mobile-menu-toggle { display: block; }
+            .hero-title { font-size: 1.9rem; }
+            .bit-btn { width: 44px; height: 55px; font-size: 1.3rem; }
+            .byte-switches { gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Reading Progress Indicator -->
+    <div id="progress-bar"></div>
+
+    <!-- Dynamic Background Ambient Lighting -->
+    <div class="bg-ambient">
+        <div class="glow-orb-1"></div>
+        <div class="glow-orb-2"></div>
+        <div class="glow-orb-3"></div>
+        <div class="grid-pattern"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="container nav-wrapper">
+            <a href="#" class="nav-brand">
+                <i class="fa-brands fa-python py-icon" style="color: #38bdf8;"></i>
+                <span>Dasar Python</span>
+            </a>
+
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="#pengenalan" class="active"><i class="fa-solid fa-compass"></i> Pengenalan</a></li>
+                <li><a href="#sejarah"><i class="fa-solid fa-clock-rotate-left"></i> Sejarah</a></li>
+                <li><a href="#biner"><i class="fa-solid fa-microchip"></i> Sistem Biner</a></li>
+                <li><a href="#colab"><i class="fa-solid fa-cloud"></i> Google Colab</a></li>
+                <li><a href="#playground"><i class="fa-solid fa-play"></i> Live Code</a></li>
+                <li><a href="#kuis"><i class="fa-solid fa-circle-question"></i> Kuis</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="btn-theme" id="theme-toggle" title="Ganti Tema (Dark/Light)" aria-label="Ganti Tema">
+                    <i class="fa-solid fa-moon" id="theme-icon"></i>
+                </button>
+                <a href="https://github.com/faruq1997/Dasar-Pemrograman-Python" target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">
+                    <i class="fa-brands fa-github"></i> <span>GitHub</span>
+                </a>
+                <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Menu Navigasi">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero container">
+            <div class="badge-pill">
+                <i class="fa-solid fa-graduation-cap"></i> Modul Pembelajaran Interaktif • Pertemuan 1
+            </div>
+            <h1 class="hero-title">
+                Mengenal <span class="gradient-text">Python & Logika Biner</span><br>untuk Pemula
+            </h1>
+            <p class="hero-subtitle">
+                Selamat datang di langkah awal petualangan coding Anda! Pelajari sejarah, filosofi, cara komputer memproses data (biner), hingga praktik langsung menggunakan Google Colaboratory tanpa ribet install aplikasi.
+            </p>
+
+            <div class="hero-cta-group">
+                <a href="#pengenalan" class="btn btn-primary">
+                    <i class="fa-solid fa-rocket"></i> Mulai Pembelajaran
+                </a>
+                <a href="#biner" class="btn btn-amber">
+                    <i class="fa-solid fa-bolt"></i> Coba Simulator Biner
+                </a>
+                <a href="https://colab.research.google.com/" target="_blank" rel="noopener" class="btn btn-secondary">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Google Colab
+                </a>
+            </div>
+
+            <!-- Stats & Benefits Quick Bar -->
+            <div class="stats-grid">
+                <div class="stat-card glass-card">
+                    <div class="stat-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+                    <div class="stat-content">
+                        <h4>Zero Installation</h4>
+                        <p>100% jalan di cloud via Google Colab tanpa instalasi lokal.</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon"><i class="fa-solid fa-code"></i></div>
+                    <div class="stat-content">
+                        <h4>Sintaks Alami</h4>
+                        <p>Mudah dibaca menyerupai bahasa Inggris sederhana.</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon"><i class="fa-solid fa-brain"></i></div>
+                    <div class="stat-content">
+                        <h4>Fondasi Digital</h4>
+                        <p>Pahami cara kerja data 0 dan 1 (biner) secara visual.</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon"><i class="fa-solid fa-microchip"></i></div>
+                    <div class="stat-content">
+                        <h4>Bahasa Masa Depan</h4>
+                        <p>Standar dunia untuk AI, Machine Learning, & Data Science.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: Pengenalan Pemrograman & Kenapa Python -->
+        <section id="pengenalan" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Dasar Fondasi</span>
+                <h2 class="section-title">Apa itu Pemrograman & Kenapa Python?</h2>
+                <p class="section-desc">
+                    Komputer adalah mesin yang sangat cerdas dan cepat, tetapi membutuhkan instruksi presisi. Bahasa pemrograman adalah jembatan komunikasi antara logika manusia dan instruksi komputer.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-box glass-card">
+                    <div class="box-icon icon-blue"><i class="fa-solid fa-lightbulb"></i></div>
+                    <h3>Apa itu Pemrograman?</h3>
+                    <p>
+                        Pemrograman adalah proses menyusun urutan perintah terstruktur (algoritma) yang memberitahu komputer cara menyelesaikan suatu permasalahan secara otomatis, efisien, dan akurat.
+                    </p>
+                </div>
+
+                <div class="feature-box glass-card">
+                    <div class="box-icon icon-yellow"><i class="fa-solid fa-feather-pointed"></i></div>
+                    <h3>Keterbacaan Tinggi</h3>
+                    <p>
+                        Python menganut filosofi <em>"Readability Counts"</em>. Tidak ada kurung kurawal rumit atau titik-koma yang membingungkan. Kode terlihat rapi dan elegan berkat sistem indentasi.
+                    </p>
+                </div>
+
+                <div class="feature-box glass-card">
+                    <div class="box-icon icon-purple"><i class="fa-solid fa-cubes"></i></div>
+                    <h3>Multi-Paradigma</h3>
+                    <p>
+                        Mendukung berbagai gaya penulisan kode: prosedural, berorientasi objek (OOP), hingga fungsional. Sangat fleksibel untuk proyek kecil maupun sistem berskala besar.
+                    </p>
+                </div>
+
+                <div class="feature-box glass-card">
+                    <div class="box-icon icon-green"><i class="fa-solid fa-box-open"></i></div>
+                    <h3>Ekosistem Raksasa</h3>
+                    <p>
+                        Memiliki puluhan ribu pustaka (*libraries*) gratis seperti Pandas, NumPy, Scikit-Learn, TensorFlow, Django, dan FastAPI untuk berbagai kebutuhan industri modern.
+                    </p>
+                </div>
+
+                <div class="feature-box glass-card">
+                    <div class="box-icon icon-rose"><i class="fa-solid fa-gears"></i></div>
+                    <h3>Interpreted Language</h3>
+                    <p>
+                        Kode dieksekusi baris demi baris oleh <em>Python Interpreter</em> tanpa perlu tahap kompilasi terpisah terlebih dahulu, membuat proses debugging jauh lebih instan.
+                    </p>
+                </div>
+
+                <div class="feature-box glass-card">
+                    <div class="box-icon icon-indigo"><i class="fa-solid fa-users"></i></div>
+                    <h3>Komunitas Global</h3>
+                    <p>
+                        Merupakan bahasa terpopuler di dunia versi indeks TIOBE & Stack Overflow dengan jutaan pengembang yang siap membantu saat Anda menemukan kendala.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Interaktif Perbandingan Kode -->
+            <div class="code-compare-card glass-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;">
+                    <div>
+                        <h3 style="font-size: 1.2rem; color: var(--text-bright); font-weight: 700;">
+                            <i class="fa-solid fa-code-compare" style="color: var(--python-blue); margin-right: 8px;"></i>
+                            Perbandingan Syntax "Hello World"
+                        </h3>
+                        <p style="font-size: 0.88rem; color: var(--text-muted);">Lihat betapa ringkas dan intuitifnya Python dibandingkan bahasa pemrograman lain:</p>
+                    </div>
+                </div>
+
+                <div class="lang-tabs">
+                    <button class="lang-tab-btn active" onclick="switchLangCode('python')">Python 🐍</button>
+                    <button class="lang-tab-btn" onclick="switchLangCode('java')">Java ☕</button>
+                    <button class="lang-tab-btn" onclick="switchLangCode('cpp')">C++ ⚙️</button>
+                    <button class="lang-tab-btn" onclick="switchLangCode('c')">C 💻</button>
+                </div>
+
+                <div class="code-display" id="code-compare-display">
+<pre><code class="language-python"># Menampilkan teks di Python — Hanya 1 Baris Sederhana!
+print("Halo Dunia! Selamat Belajar Python.")</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Sejarah & Evolusi Python -->
+        <section id="sejarah" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Kilas Balik</span>
+                <h2 class="section-title">Sejarah & Perjalanan Python</h2>
+                <p class="section-desc">
+                    Bagaimana sebuah proyek liburan Natal berkembang menjadi bahasa pemrograman nomor 1 di dunia teknologi dan kecerdasan buatan.
+                </p>
+            </div>
+
+            <div class="timeline">
+                <!-- 1989 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <span class="timeline-year">Desember 1989</span>
+                        <h4>Kelahiran Ide Python</h4>
+                        <p>
+                            Diciptakan oleh <strong>Guido van Rossum</strong> di lembaga riset <em>Centrum Wiskunde & Informatica (CWI)</em> di Belanda. Ia mengisi waktu libur Natal dengan membuat penerus bahasa ABC.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 1991 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <span class="timeline-year">Februari 1991</span>
+                        <h4>Rilis Publik Pertama (v0.9.0)</h4>
+                        <p>
+                            Kode sumber Python dirilis ke publik dengan fitur kelas (OOP), fungsi, penanganan eksepsi, dan tipe data inti seperti <code>list</code> dan <code>dict</code>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Nama Monty Python -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <span class="timeline-year">Fakta Unik Nama</span>
+                        <h4>Bukan dari Ular!</h4>
+                        <p>
+                            Nama "Python" diambil dari serial komedi sketsa BBC favorit Guido: <strong>"Monty Python’s Flying Circus"</strong>, mencerminkan sifat bahasa yang menyenangkan dan tidak membosankan.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2000 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <span class="timeline-year">Oktober 2000</span>
+                        <h4>Python 2.0</h4>
+                        <p>
+                            Menghadirkan fitur modern seperti <em>List Comprehensions</em> dan manajemen memori dengan <em>Garbage Collection</em> otomatis berbasis *cycle-detecting*.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2008 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <span class="timeline-year">Desember 2008</span>
+                        <h4>Python 3.0 (Python 3000)</h4>
+                        <p>
+                            Perombakan arsitektur besar untuk memperbaiki inkonsistensi desain lama. String menggunakan Unicode secara default dan <code>print</code> resmi menjadi sebuah fungsi.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Sekarang -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <span class="timeline-year">Era Modern (3.10 - 3.13+)</span>
+                        <h4>Raja Kecerdasan Buatan (AI)</h4>
+                        <p>
+                            Python menjadi fondasi utama revolusi Artificial Intelligence (AI), Data Science, otomatisasi cloud, dan riset teknologi terdepan di seluruh dunia.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Kenalan Sama Sistem Biner & Simulasi Interaktif -->
+        <section id="biner" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Fondasi Komputer</span>
+                <h2 class="section-title">Kenalan Sama Sistem Biner (0 & 1)</h2>
+                <p class="section-desc">
+                    Di balik kode Python yang elegan, CPU komputer hanya memahami dua kondisi: <strong>0 (OFF/Mati)</strong> dan <strong>1 (ON/Menyala)</strong> melalui jutaan transistor listrik.
+                </p>
+            </div>
+
+            <div class="binary-playground glass-card">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h3 style="color: var(--text-bright); font-size: 1.35rem; font-weight: 700;">
+                        <i class="fa-solid fa-sliders" style="color: var(--python-blue); margin-right: 8px;"></i>
+                        Simulator 8-Bit Interaktif (1 Byte)
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">
+                        Klik masing-masing kotak bit untuk mengubah status antara 0 dan 1, lalu amati nilai konversi yang dihasilkan!
+                    </p>
+                </div>
+
+                <!-- 8-Bit Toggles -->
+                <div class="byte-switches" id="bit-container">
+                    <!-- Javascript will render 8 bits: 128, 64, 32, 16, 8, 4, 2, 1 -->
+                </div>
+
+                <!-- Live Results -->
+                <div class="calc-results-grid">
+                    <div class="calc-result-box">
+                        <div class="label">Biner (8-Bit)</div>
+                        <div class="val" id="val-binary">00000000</div>
+                    </div>
+                    <div class="calc-result-box">
+                        <div class="label">Nilai Desimal</div>
+                        <div class="val" id="val-decimal">0</div>
+                    </div>
+                    <div class="calc-result-box">
+                        <div class="label">Heksadesimal</div>
+                        <div class="val" id="val-hex">0x00</div>
+                    </div>
+                    <div class="calc-result-box">
+                        <div class="label">Karakter ASCII</div>
+                        <div class="val" id="val-ascii">[NUL]</div>
+                    </div>
+                </div>
+
+                <!-- Live Text Converter -->
+                <div class="converter-tool">
+                    <h4 style="color: var(--text-bright); font-size: 1.1rem; font-weight: 700;">
+                        <i class="fa-solid fa-arrow-right-arrow-left" style="color: var(--python-yellow); margin-right: 8px;"></i>
+                        Konverter Teks ⇄ Biner Real-Time
+                    </h4>
+                    <div class="converter-inputs">
+                        <div class="input-group">
+                            <label for="text-to-bin-input"><i class="fa-solid fa-keyboard"></i> Masukkan Teks / Kata:</label>
+                            <input type="text" id="text-to-bin-input" value="Python" placeholder="Ketik kata apa saja..." oninput="convertTextToBinary(this.value)">
+                        </div>
+                        <div class="input-group">
+                            <label for="bin-result-output"><i class="fa-solid fa-microchip"></i> Kode Biner (8-bit per karakter):</label>
+                            <input type="text" id="bin-result-output" readonly value="01010000 01111001 01110100 01101000 01101111 01101110">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- External Simulator Banner Link -->
+                <div class="external-banner">
+                    <div class="external-content">
+                        <h4><i class="fa-solid fa-up-right-from-square"></i> Ingin Eksplorasi Simulasi Biner Lebih Lengkap?</h4>
+                        <p>Kunjungi modul simulator biner interaktif khusus untuk struktur diskrit & arsitektur komputer.</p>
+                    </div>
+                    <a href="https://faruq1997.github.io/struktur-diskrit/simulasi_biner.html" target="_blank" rel="noopener" class="btn btn-primary" style="background: #ffffff; color: #1e3a8a; font-weight: 700;">
+                        Buka Simulasi Biner Diskrit <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Tools Kita: Google Colaboratory -->
+        <section id="colab" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Lingkungan Pemrograman</span>
+                <h2 class="section-title">Tools Kita: Google Colaboratory</h2>
+                <p class="section-desc">
+                    Google Colab adalah platform komputasi awan (*cloud*) berbasis Jupyter Notebook yang disediakan gratis oleh Google untuk menulis dan mengeksekusi kode Python langsung dari browser Anda.
+                </p>
+            </div>
+
+            <div class="colab-features">
+                <div class="colab-card glass-card">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <h4>Cloud Based</h4>
+                    <p>Semua kode diproses di server Google. Laptop spek standar pun dapat menjalankan program berat tanpa hambatan.</p>
+                </div>
+                <div class="colab-card glass-card">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <h4>Kolaborasi Mudah</h4>
+                    <p>Berbagi file notebook semudah membagikan Google Docs dengan tautan link atau menyimpan langsung ke repositori GitHub.</p>
+                </div>
+                <div class="colab-card glass-card">
+                    <i class="fa-solid fa-bolt"></i>
+                    <h4>Akses GPU & TPU Gratis</h4>
+                    <p>Dukungan akselerator grafis gratis untuk komputasi data besar, machine learning, dan deep learning.</p>
+                </div>
+                <div class="colab-card glass-card">
+                    <i class="fa-brands fa-markdown"></i>
+                    <h4>Text (Markdown) + Code</h4>
+                    <p>Kombinasi penjelasan materi berformat rapi dengan blok kode interaktif yang bisa langsung dijalankan.</p>
+                </div>
+            </div>
+
+            <!-- Shortcut Cheat Sheet Table -->
+            <div class="glass-card" style="padding: 30px; margin-top: 30px;">
+                <h3 style="color: var(--text-bright); font-size: 1.25rem; font-weight: 700; margin-bottom: 6px;">
+                    <i class="fa-solid fa-keyboard" style="color: var(--python-blue); margin-right: 8px;"></i>
+                    Shortcut Keyboard Penting Google Colab
+                </h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                    Gunakan pintasan keyboard ini untuk meningkatkan kecepatan belajar dan produktivitas coding Anda:
+                </p>
+
+                <div style="overflow-x: auto;">
+                    <table class="shortcut-table">
+                        <thead>
+                            <tr>
+                                <th>Kombinasi Tombol</th>
+                                <th>Aksi / Fungsi</th>
+                                <th>Kegunaan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="kbd-badge">Ctrl</span> + <span class="kbd-badge">Enter</span></td>
+                                <td><strong>Run Cell</strong></td>
+                                <td>Menjalankan cell aktif dan kursor tetap berada di cell tersebut.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="kbd-badge">Shift</span> + <span class="kbd-badge">Enter</span></td>
+                                <td><strong>Run & Pindah ke Bawah</strong></td>
+                                <td>Menjalankan cell aktif lalu otomatis berpindah/membuat cell baru di bawahnya.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="kbd-badge">Alt</span> + <span class="kbd-badge">Enter</span></td>
+                                <td><strong>Run & Sisipkan Cell</strong></td>
+                                <td>Menjalankan cell aktif dan langsung menyisipkan cell kosong di bawahnya.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="kbd-badge">Ctrl</span> + <span class="kbd-badge">M</span> lalu <span class="kbd-badge">A</span></td>
+                                <td><strong>Add Cell Above</strong></td>
+                                <td>Menambahkan cell kode baru tepat di atas cell saat ini.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="kbd-badge">Ctrl</span> + <span class="kbd-badge">M</span> lalu <span class="kbd-badge">B</span></td>
+                                <td><strong>Add Cell Below</strong></td>
+                                <td>Menambahkan cell kode baru tepat di bawah cell saat ini.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="kbd-badge">Ctrl</span> + <span class="kbd-badge">M</span> lalu <span class="kbd-badge">D</span></td>
+                                <td><strong>Delete Cell</strong></td>
+                                <td>Menghapus cell yang sedang aktif.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="kbd-badge">Ctrl</span> + <span class="kbd-badge">M</span> lalu <span class="kbd-badge">M</span></td>
+                                <td><strong>Convert to Markdown</strong></td>
+                                <td>Mengubah tipe cell kode menjadi teks penjelasan (Markdown).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Live Code Playground -->
+        <section id="playground" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Praktik Langsung</span>
+                <h2 class="section-title">Live Code Playground</h2>
+                <p class="section-desc">
+                    Uji coba kode Python pertama Anda langsung di halaman ini. Pilih contoh kode atau ubah teks di dalam editor, lalu klik <strong>Jalankan Kode</strong>!
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+                <button class="lang-tab-btn active" onclick="loadPlaygroundSnippet('hello')">1. Hello World</button>
+                <button class="lang-tab-btn" onclick="loadPlaygroundSnippet('perkenalan')">2. Variabel & Perkenalan</button>
+                <button class="lang-tab-btn" onclick="loadPlaygroundSnippet('hitung')">3. Perhitungan Matematika</button>
+                <button class="lang-tab-btn" onclick="loadPlaygroundSnippet('logika')">4. Logika Sederhana</button>
+            </div>
+
+            <div class="code-playground-box">
+                <div class="editor-header">
+                    <div class="window-dots">
+                        <div class="dot dot-red"></div>
+                        <div class="dot dot-yellow"></div>
+                        <div class="dot dot-green"></div>
+                    </div>
+                    <div class="editor-title">
+                        <i class="fa-brands fa-python" style="color: #38bdf8;"></i> main.py — Simulasi Python Runner
+                    </div>
+                    <div class="editor-actions">
+                        <button class="btn btn-secondary" onclick="resetPlaygroundCode()" style="padding: 6px 12px; font-size: 0.8rem;">
+                            <i class="fa-solid fa-rotate-left"></i> Reset
+                        </button>
+                        <button class="btn btn-primary" onclick="runPlaygroundCode()" style="padding: 6px 16px; font-size: 0.85rem;">
+                            <i class="fa-solid fa-play"></i> Jalankan Kode
+                        </button>
+                    </div>
+                </div>
+
+                <div class="editor-body">
+                    <div class="editor-input">
+                        <textarea id="playground-code" spellcheck="false"># Program Pertama Python
+nama = "Mahasiswa Baru"
+mata_kuliah = "Dasar Pemrograman Python"
+pertemuan = 1
+
+print("=" * 40)
+print(f"Selamat Datang, {nama}!")
+print(f"Mata Kuliah : {mata_kuliah}")
+print(f"Pertemuan   : Ke-{pertemuan}")
+print("Semangat belajar logika pemrograman!")
+print("=" * 40)</textarea>
+                    </div>
+
+                    <div class="editor-output" id="playground-output">
+                        <div class="output-label"><i class="fa-solid fa-terminal"></i> Output Terminal:</div>
+                        <pre style="white-space: pre-wrap; margin: 0; font-family: inherit;" id="console-result">Klik tombol "Jalankan Kode" di atas untuk melihat hasil eksekusi program...</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: Kuis Interaktif Pemahaman -->
+        <section id="kuis" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Uji Pemahaman</span>
+                <h2 class="section-title">Kuis Cepat Pertemuan 1</h2>
+                <p class="section-desc">
+                    Uji pemahaman Anda terhadap konsep dasar, sejarah, sistem biner, dan alat bantu pemrograman yang telah dipelajari.
+                </p>
+            </div>
+
+            <div class="quiz-wrapper">
+                <div class="quiz-card glass-card" id="quiz-box">
+                    <span class="quiz-question-num" id="quiz-num">Pertanyaan 1 dari 5</span>
+                    <h3 class="quiz-question-text" id="quiz-text">Siapakah tokoh yang pertama kali menciptakan dan merancang bahasa pemrograman Python?</h3>
+
+                    <div class="quiz-options" id="quiz-options">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <div class="quiz-feedback" id="quiz-feedback"></div>
+
+                    <div class="quiz-nav">
+                        <div id="quiz-score-badge" style="font-weight: 700; color: var(--python-yellow);">
+                            Skor: <span id="quiz-score">0</span> / 5
+                        </div>
+                        <button class="btn btn-primary" id="quiz-next-btn" onclick="nextQuizQuestion()" style="display: none;">
+                            Lanjut Soal Berikutnya <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: Rangkuman & Langkah Selanjutnya -->
+        <section class="section container">
+            <div class="section-header">
+                <span class="section-tag">Langkah Berikutnya</span>
+                <h2 class="section-title">Rangkuman & Roadmap Pertemuan 2</h2>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-card glass-card">
+                    <h3 style="color: var(--text-bright); font-size: 1.25rem; font-weight: 700;">
+                        <i class="fa-solid fa-circle-check" style="color: #22c55e; margin-right: 8px;"></i>
+                        Poin Penting Pertemuan 1
+                    </h3>
+                    <ul class="summary-list">
+                        <li>Python dibuat oleh Guido van Rossum (1989) dengan fokus utama pada keterbacaan kode (*readability*).</li>
+                        <li>Komputer memproses semua instruksi dalam sistem biner (basis 2: angka 0 dan 1).</li>
+                        <li>Google Colaboratory memungkinkan eksekusi kode Python gratis berbasis cloud tanpa instalasi lokal.</li>
+                        <li>Gunakan shortcut <code>Shift + Enter</code> untuk menjalankan cell dan melanjutkan eksperimen.</li>
+                    </ul>
+                </div>
+
+                <div class="summary-card glass-card" style="border-left: 4px solid var(--python-yellow);">
+                    <h3 style="color: var(--text-bright); font-size: 1.25rem; font-weight: 700;">
+                        <i class="fa-solid fa-arrow-trend-up" style="color: var(--python-yellow); margin-right: 8px;"></i>
+                        Materi Pertemuan 2 (Next Step)
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 10px;">
+                        Pada pertemuan berikutnya, kita akan mulai membedah kode secara lebih mendalam:
+                    </p>
+                    <ul class="summary-list">
+                        <li><strong>Variabel & Aturan Penamaan:</strong> Menyimpan data dalam memori program.</li>
+                        <li><strong>Tipe Data Dasar:</strong> Integer, Float, String, dan Boolean.</li>
+                        <li><strong>Operasi Matematika & Logika:</strong> Penjumlahan, perkalian, modulus, dan perpangkatan.</li>
+                        <li><strong>Latihan & Eksperimen:</strong> [Pertemuan 2.ipynb](Pertemuan%202.ipynb) di Jupyter / Google Colab.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3><i class="fa-brands fa-python" style="color: #38bdf8;"></i> Dasar Pemrograman Python</h3>
+                    <p>
+                        Repository dan modul pembelajaran komprehensif untuk mahasiswa dan pemula dalam memahami fondasi pemrograman modern.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Materi Pembelajaran</h4>
+                    <ul>
+                        <li><a href="#pengenalan">Pertemuan 1: Pengenalan</a></li>
+                        <li><a href="Pertemuan%202.ipynb">Pertemuan 2: Variabel & Tipe Data</a></li>
+                        <li><a href="Pertemuan%203.ipynb">Pertemuan 3: Input & Output</a></li>
+                        <li><a href="Pertemuan%204_Percabangan.ipynb">Pertemuan 4: Percabangan</a></li>
+                        <li><a href="Kuis_UTS.ipynb">Evaluasi: Kuis UTS</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Tautan Penting</h4>
+                    <ul>
+                        <li><a href="https://github.com/faruq1997/Dasar-Pemrograman-Python" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub Repository</a></li>
+                        <li><a href="https://colab.research.google.com/" target="_blank" rel="noopener"><i class="fa-solid fa-cloud"></i> Google Colaboratory</a></li>
+                        <li><a href="https://faruq1997.github.io/struktur-diskrit/simulasi_biner.html" target="_blank" rel="noopener"><i class="fa-solid fa-microchip"></i> Simulasi Biner Diskrit</a></li>
+                        <li><a href="https://docs.python.org/3/" target="_blank" rel="noopener"><i class="fa-solid fa-book"></i> Dokumentasi Resmi Python</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 Faruq • Untuk Pembelajaran Non-Komersial (Educational Use Only)</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript Logic -->
+    <script>
+        // --- 1. Reading Progress Bar & Active Navigation Tracker ---
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+
+            // Active Nav link highlight
+            const sections = document.querySelectorAll('section[id]');
+            let currentSec = '';
+            sections.forEach(sec => {
+                const top = sec.offsetTop - 120;
+                if (winScroll >= top) {
+                    currentSec = sec.getAttribute('id');
+                }
+            });
+            document.querySelectorAll('.nav-links a').forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href') === `#${currentSec}`) {
+                    a.classList.add('active');
+                }
+            });
+        });
+
+        // --- 2. Theme Toggle (Dark / Light) with Local Storage ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+
+        const savedTheme = localStorage.getItem('py_learn_theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeIcon.className = 'fa-solid fa-sun';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('py_learn_theme', 'dark');
+                themeIcon.className = 'fa-solid fa-moon';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('py_learn_theme', 'light');
+                themeIcon.className = 'fa-solid fa-sun';
+            }
+        });
+
+        // --- 3. Mobile Navigation Menu Toggle ---
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('show');
+        });
+
+        // --- 4. Code Comparison Switcher ---
+        const codeSnippets = {
+            python: `# Menampilkan teks di Python — Hanya 1 Baris Sederhana!
+print("Halo Dunia! Selamat Belajar Python.")`,
+            java: `// Menampilkan teks di Java — Butuh Struktur Class & Main Method
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Halo Dunia! Selamat Belajar Python.");
+    }
+}`,
+            cpp: `// Menampilkan teks di C++ — Butuh Include IOStream & Namespace
+#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Halo Dunia! Selamat Belajar Python." << endl;
+    return 0;
+}`,
+            c: `// Menampilkan teks di C — Butuh Include Standard IO
+#include <stdio.h>
+
+int main() {
+    printf("Halo Dunia! Selamat Belajar Python.\\n");
+    return 0;
+}`
+        };
+
+        function switchLangCode(lang) {
+            document.querySelectorAll('.lang-tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            const display = document.getElementById('code-compare-display');
+            display.innerHTML = `<pre><code class="language-${lang}">${escapeHtml(codeSnippets[lang])}</code></pre>`;
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // --- 5. Interactive 8-Bit Binary Simulator ---
+        const bitWeights = [128, 64, 32, 16, 8, 4, 2, 1];
+        let bitStates = [0, 0, 0, 0, 0, 0, 0, 0];
+
+        function initBitSwitches() {
+            const container = document.getElementById('bit-container');
+            container.innerHTML = '';
+            bitWeights.forEach((weight, index) => {
+                const block = document.createElement('div');
+                block.className = 'bit-block';
+                block.innerHTML = `
+                    <span class="bit-weight">2<sup>${7 - index}</sup> = ${weight}</span>
+                    <button class="bit-btn" id="bit-${index}" onclick="toggleBit(${index})" aria-label="Bit bernilai ${weight}">0</button>
+                `;
+                container.appendChild(block);
+            });
+            updateBinaryOutputs();
+        }
+
+        function toggleBit(index) {
+            bitStates[index] = bitStates[index] === 0 ? 1 : 0;
+            const btn = document.getElementById(`bit-${index}`);
+            btn.textContent = bitStates[index];
+            if (bitStates[index] === 1) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+            updateBinaryOutputs();
+        }
+
+        function updateBinaryOutputs() {
+            const binStr = bitStates.join('');
+            let decVal = 0;
+            bitStates.forEach((val, idx) => {
+                if (val === 1) decVal += bitWeights[idx];
+            });
+
+            document.getElementById('val-binary').textContent = binStr;
+            document.getElementById('val-decimal').textContent = decVal;
+            document.getElementById('val-hex').textContent = '0x' + decVal.toString(16).toUpperCase().padStart(2, '0');
+            
+            let charAscii = '';
+            if (decVal >= 32 && decVal <= 126) {
+                charAscii = `'${String.fromCharCode(decVal)}'`;
+            } else if (decVal === 0) {
+                charAscii = '[NUL]';
+            } else if (decVal === 10) {
+                charAscii = '[LF]';
+            } else {
+                charAscii = '[Special/Non-print]';
+            }
+            document.getElementById('val-ascii').textContent = charAscii;
+        }
+
+        // Real-Time Text to Binary Converter
+        function convertTextToBinary(text) {
+            if (!text) {
+                document.getElementById('bin-result-output').value = '';
+                return;
+            }
+            let binResult = [];
+            for (let i = 0; i < text.length; i++) {
+                let code = text.charCodeAt(i).toString(2).padStart(8, '0');
+                binResult.push(code);
+            }
+            document.getElementById('bin-result-output').value = binResult.join(' ');
+        }
+
+        initBitSwitches();
+
+        // --- 6. Live Code Playground Runner ---
+        const playgroundSnippets = {
+            hello: `# Program Pertama Python
+nama = "Mahasiswa Baru"
+mata_kuliah = "Dasar Pemrograman Python"
+pertemuan = 1
+
+print("=" * 40)
+print(f"Selamat Datang, {nama}!")
+print(f"Mata Kuliah : {mata_kuliah}")
+print(f"Pertemuan   : Ke-{pertemuan}")
+print("Semangat belajar logika pemrograman!")
+print("=" * 40)`,
+            perkenalan: `# Variabel & Tipe Data Singkat
+nama_bahasa = "Python"
+tahun_rilis = 1991
+pencipta = "Guido van Rossum"
+apakah_populer = True
+
+print(f"Bahasa: {nama_bahasa}")
+print(f"Dibuat oleh: {pencipta} pada tahun {tahun_rilis}")
+print(f"Populer di seluruh dunia? {apakah_populer}")`,
+            hitung: `# Operasi Perhitungan Matematika
+panjang = 15
+lebar = 8
+luas = panjang * lebar
+keliling = 2 * (panjang + lebar)
+
+print("--- Menghitung Persegi Panjang ---")
+print(f"Panjang  = {panjang} cm")
+print(f"Lebar    = {lebar} cm")
+print(f"Luas     = {luas} cm²")
+print(f"Keliling = {keliling} cm")`,
+            logika: `# Logika Sederhana
+nilai_ujian = 88
+
+print(f"Nilai Mahasiswa: {nilai_ujian}")
+if nilai_ujian >= 75:
+    print("Status: LULUS DENGAN BAIK! 🎉")
+else:
+    print("Status: Perlu belajar lebih giat lagi. Tetap semangat!")`
+        };
+
+        function loadPlaygroundSnippet(key) {
+            document.querySelectorAll('#playground .lang-tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('playground-code').value = playgroundSnippets[key];
+            runPlaygroundCode();
+        }
+
+        function resetPlaygroundCode() {
+            document.getElementById('playground-code').value = playgroundSnippets.hello;
+            document.getElementById('console-result').textContent = 'Klik tombol "Jalankan Kode" di atas untuk melihat hasil eksekusi program...';
+        }
+
+        function runPlaygroundCode() {
+            const rawCode = document.getElementById('playground-code').value;
+            const consoleBox = document.getElementById('console-result');
+            
+            // Simple Safe JS-based Python Print Simulator for Playground
+            try {
+                let simulatedOutput = [];
+                const lines = rawCode.split('\n');
+                
+                // Variable store simulator
+                let scope = {
+                    nama: "Mahasiswa Baru",
+                    mata_kuliah: "Dasar Pemrograman Python",
+                    pertemuan: 1,
+                    nama_bahasa: "Python",
+                    tahun_rilis: 1991,
+                    pencipta: "Guido van Rossum",
+                    apakah_populer: true,
+                    panjang: 15,
+                    lebar: 8,
+                    luas: 120,
+                    keliling: 46,
+                    nilai_ujian: 88
+                };
+
+                // Track variables declared in script
+                lines.forEach(line => {
+                    const trimmed = line.trim();
+                    if (!trimmed || trimmed.startsWith('#')) return;
+
+                    // Parse assignment
+                    if (trimmed.includes('=') && !trimmed.startsWith('print') && !trimmed.startsWith('if')) {
+                        const parts = trimmed.split('=');
+                        const varName = parts[0].trim();
+                        const varVal = parts[1].trim();
+                        if (varVal.startsWith('"') || varVal.startsWith("'")) {
+                            scope[varName] = varVal.slice(1, -1);
+                        } else if (varVal === 'True') {
+                            scope[varName] = true;
+                        } else if (varVal === 'False') {
+                            scope[varName] = false;
+                        } else if (!isNaN(varVal)) {
+                            scope[varName] = Number(varVal);
+                        } else if (varVal.includes('*')) {
+                            const mults = varVal.split('*').map(s => s.trim());
+                            let a = scope[mults[0]] !== undefined ? scope[mults[0]] : Number(mults[0]);
+                            let b = scope[mults[1]] !== undefined ? scope[mults[1]] : Number(mults[1]);
+                            scope[varName] = a * b;
+                        }
+                    }
+
+                    // Parse Print
+                    if (trimmed.startsWith('print(') && trimmed.endsWith(')')) {
+                        let inside = trimmed.slice(6, -1).trim();
+                        // f-string
+                        if (inside.startsWith('f"') || inside.startsWith("f'")) {
+                            let str = inside.slice(2, -1);
+                            str = str.replace(/\{(\w+)\}/g, (match, p1) => {
+                                return scope[p1] !== undefined ? scope[p1] : match;
+                            });
+                            simulatedOutput.push(str);
+                        } else if ((inside.startsWith('"') && inside.endsWith('"')) || (inside.startsWith("'") && inside.endsWith("'"))) {
+                            simulatedOutput.push(inside.slice(1, -1));
+                        } else if (inside.includes('*') && (inside.includes('"') || inside.includes("'"))) {
+                            // like "=" * 40
+                            const parts = inside.split('*').map(s => s.trim());
+                            let str = parts[0].replace(/['"]/g, '');
+                            let count = Number(parts[1]) || 20;
+                            simulatedOutput.push(str.repeat(count));
+                        } else {
+                            simulatedOutput.push(scope[inside] !== undefined ? scope[inside] : inside);
+                        }
+                    }
+
+                    // Simple IF logic
+                    if (trimmed.startsWith('if ')) {
+                        if (scope.nilai_ujian >= 75) {
+                            simulatedOutput.push("Status: LULUS DENGAN BAIK! 🎉");
+                        }
+                    }
+                });
+
+                if (simulatedOutput.length > 0) {
+                    consoleBox.textContent = simulatedOutput.join('\n');
+                } else {
+                    consoleBox.textContent = "Program berhasil dijalankan tanpa error output.";
+                }
+            } catch (err) {
+                consoleBox.textContent = "Syntax / Runner Error: " + err.message;
+            }
+        }
+
+        // --- 7. Interactive Quiz Engine ---
+        const quizQuestions = [
+            {
+                q: "Siapakah pencipta dan perancang awal bahasa pemrograman Python?",
+                options: [
+                    "Guido van Rossum",
+                    "James Gosling",
+                    "Dennis Ritchie",
+                    "Bjarne Stroustrup"
+                ],
+                correct: 0,
+                explanation: "Guido van Rossum menciptakan Python pada akhir tahun 1989 di CWI, Belanda."
+            },
+            {
+                q: "Dari manakah asal-usul penamaan bahasa 'Python' yang sebenarnya?",
+                options: [
+                    "Spesies ular sanca berbahaya yang ditemukan di hutan tropis",
+                    "Serial sketsa komedi televisi BBC 'Monty Python’s Flying Circus'",
+                    "Singkatan dari 'Powerful Yet Thorough Object Notation'",
+                    "Nama mitologi dewa komputasi kuno bangsa Yunani"
+                ],
+                correct: 1,
+                explanation: "Guido van Rossum memberi nama Python karena ia sangat menggemari grup komedi Monty Python dari BBC."
+            },
+            {
+                q: "Pada sistem biner 8-bit, berapakah nilai desimal dari biner 00001010?",
+                options: [
+                    "8",
+                    "10",
+                    "12",
+                    "16"
+                ],
+                correct: 1,
+                explanation: "00001010 = (8 × 1) + (2 × 1) = 8 + 2 = 10."
+            },
+            {
+                q: "Kombinasi tombol keyboard (shortcut) di Google Colab untuk menjalankan cell dan otomatis pindah ke bawah adalah:",
+                options: [
+                    "Ctrl + S",
+                    "Shift + Enter",
+                    "Alt + F4",
+                    "Ctrl + M + D"
+                ],
+                correct: 1,
+                explanation: "Shortcut Shift + Enter akan mengeksekusi cell yang aktif dan otomatis memindahkan kursor ke cell berikutnya."
+            },
+            {
+                q: "Manakah di bawah ini yang BUKAN merupakan keunggulan utama dari Python?",
+                options: [
+                    "Sintaks rapi dan mudah dipahami",
+                    "Memerlukan titik-koma (;) di setiap akhir baris agar bisa berjalan",
+                    "Memiliki pustaka (library) data science & AI yang sangat melimpah",
+                    "Bisa dijalankan di berbagai sistem operasi (Cross-Platform)"
+                ],
+                correct: 1,
+                explanation: "Python tidak mewajibkan titik-koma (;) di akhir baris karena menggunakan sistem baris baru (newline) dan indentasi."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let quizAnswered = false;
+
+        function renderQuiz() {
+            quizAnswered = false;
+            const qData = quizQuestions[currentQuizIndex];
+            document.getElementById('quiz-num').textContent = `Pertanyaan ${currentQuizIndex + 1} dari ${quizQuestions.length}`;
+            document.getElementById('quiz-text').textContent = qData.q;
+            document.getElementById('quiz-feedback').style.display = 'none';
+            document.getElementById('quiz-next-btn').style.display = 'none';
+
+            const optsContainer = document.getElementById('quiz-options');
+            optsContainer.innerHTML = '';
+
+            qData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt-btn';
+                btn.innerHTML = `<strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}`;
+                btn.onclick = () => selectQuizAnswer(idx, btn);
+                optsContainer.appendChild(btn);
+            });
+        }
+
+        function selectQuizAnswer(selectedIndex, clickedBtn) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+
+            const qData = quizQuestions[currentQuizIndex];
+            const allButtons = document.querySelectorAll('.quiz-opt-btn');
+            const feedbackBox = document.getElementById('quiz-feedback');
+
+            if (selectedIndex === qData.correct) {
+                clickedBtn.classList.add('correct');
+                quizScore++;
+                document.getElementById('quiz-score').textContent = quizScore;
+                feedbackBox.className = 'quiz-feedback glass-card';
+                feedbackBox.style.display = 'block';
+                feedbackBox.style.color = '#4ade80';
+                feedbackBox.style.borderColor = '#22c55e';
+                feedbackBox.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Jawaban Anda Benar!</strong><br>${qData.explanation}`;
+                
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.7 }
+                });
+            } else {
+                clickedBtn.classList.add('wrong');
+                allButtons[qData.correct].classList.add('correct');
+                feedbackBox.className = 'quiz-feedback glass-card';
+                feedbackBox.style.display = 'block';
+                feedbackBox.style.color = '#f87171';
+                feedbackBox.style.borderColor = '#ef4444';
+                feedbackBox.innerHTML = `<strong><i class="fa-solid fa-circle-xmark"></i> Kurang Tepat!</strong><br>${qData.explanation}`;
+            }
+
+            document.getElementById('quiz-next-btn').style.display = 'inline-flex';
+        }
+
+        function nextQuizQuestion() {
+            currentQuizIndex++;
+            if (currentQuizIndex < quizQuestions.length) {
+                renderQuiz();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            const quizBox = document.getElementById('quiz-box');
+            let message = '';
+            if (quizScore === 5) {
+                message = "🏆 Luar Biasa Sempurna! Anda sudah sangat memahami materi Pertemuan 1.";
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.6 }
+                });
+            } else if (quizScore >= 3) {
+                message = "👍 Bagus Sekali! Pemahaman Anda sudah sangat baik. Siap lanjut ke Pertemuan 2!";
+            } else {
+                message = "📚 Jangan berkecil hati! Anda bisa mengulangi materi di atas untuk pemahaman lebih maksimal.";
+            }
+
+            quizBox.innerHTML = `
+                <div style="text-align: center; padding: 20px 0;">
+                    <i class="fa-solid fa-trophy" style="font-size: 3.5rem; color: #fbbf24; margin-bottom: 16px;"></i>
+                    <h3 style="font-size: 1.8rem; color: var(--text-bright); margin-bottom: 8px;">Kuis Selesai!</h3>
+                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 20px;">
+                        Skor Akhir Anda: <span style="color: var(--python-yellow); font-weight: 800; font-size: 1.4rem;">${quizScore} / ${quizQuestions.length}</span>
+                    </p>
+                    <p style="color: var(--text-bright); margin-bottom: 30px; font-weight: 500;">${message}</p>
+                    <button class="btn btn-primary" onclick="restartQuiz()">
+                        <i class="fa-solid fa-rotate-left"></i> Ulangi Kuis
+                    </button>
+                </div>
+            `;
+        }
+
+        function restartQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-score').textContent = '0';
+            location.reload();
+        }
+
+        // Initialize First Quiz Question
+        renderQuiz();
+    </script>
+</body>
+</html>

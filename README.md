@@ -33,7 +33,7 @@ Repositori ini **didesain untuk pembelajaran**, bukan penggunaan komersial.
 
 | No | Topik | File / Link |
 |----|--------|--------------|
-| 1 | Perkenalan Python & Lingkungan Pemrograman | [Pertemuan 1 - Perkenalan.txt](Pertemuan%201%20-%20Perkenalan.txt) |
+| 1 | Perkenalan Python & Lingkungan Pemrograman | [Web Interaktif (index.html)](index.html) / [Pertemuan 1 - Perkenalan.txt](Pertemuan%201%20-%20Perkenalan.txt) |
 | 2 | Variabel, Tipe Data, dan Operasi Dasar | [Pertemuan 2.ipynb](Pertemuan%202.ipynb) |
 | 3 | Input, Output, dan Operator | [Pertemuan 3.ipynb](Pertemuan%203.ipynb) |
 | 4 | Percabangan (If / Else) | [Pertemuan 4_Percabangan.ipynb](Pertemuan%204_Percabangan.ipynb) |
