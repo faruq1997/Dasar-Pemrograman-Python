@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pertemuan 2: Sintaks Dasar, Variabel & Tipe Data | Dasar Pemrograman Python</title>
-    <meta name="description" content="Modul pembelajaran interaktif Pertemuan 2 Dasar Pemrograman Python: Statement, Komentar, Aturan Variabel, Macam Tipe Data, Type Casting, dan Operator Aritmatika.">
+    <title>Pertemuan 3: Input, Output & Operator Lengkap | Dasar Pemrograman Python</title>
+    <meta name="description" content="Modul pembelajaran interaktif Pertemuan 3 Dasar Pemrograman Python: Fungsi input(), print() format canggih, operator penugasan, logika, perbandingan, bitwise, dan identitas.">
     <meta name="author" content="Faruq">
 
     <!-- Google Fonts -->
@@ -27,6 +27,7 @@
             --accent: #8b5cf6;
             --accent-glow: rgba(139, 92, 246, 0.3);
             --accent-emerald: #10b981;
+            --accent-rose: #f43f5e;
             
             --bg-body: #0a0f1d;
             --bg-card: rgba(17, 24, 39, 0.75);
@@ -280,10 +281,10 @@
             align-items: center;
             gap: 8px;
             padding: 6px 16px;
-            background: rgba(251, 191, 36, 0.12);
-            border: 1px solid rgba(251, 191, 36, 0.3);
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.3);
             border-radius: 30px;
-            color: var(--python-yellow);
+            color: var(--accent-emerald);
             font-size: 0.88rem;
             font-weight: 600;
             margin-bottom: 24px;
@@ -304,7 +305,7 @@
         .hero-subtitle {
             font-size: 1.15rem;
             color: var(--text-muted);
-            max-width: 780px;
+            max-width: 800px;
             margin: 0 auto 36px;
             font-weight: 400;
         }
@@ -358,13 +359,13 @@
             background: linear-gradient(135deg, #b45309, #d97706);
             transform: translateY(-2px);
         }
-        .btn-emerald {
-            background: linear-gradient(135deg, #059669, #10b981);
+        .btn-purple {
+            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
             color: #ffffff;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 20px var(--accent-glow);
         }
-        .btn-emerald:hover {
-            background: linear-gradient(135deg, #047857, #059669);
+        .btn-purple:hover {
+            background: linear-gradient(135deg, #6d28d9, #7c3aed);
             transform: translateY(-2px);
         }
 
@@ -386,8 +387,8 @@
             width: 48px;
             height: 48px;
             border-radius: var(--radius-md);
-            background: rgba(251, 191, 36, 0.12);
-            color: var(--python-yellow);
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--accent-emerald);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -434,7 +435,7 @@
         .section-desc {
             color: var(--text-muted);
             font-size: 1.05rem;
-            max-width: 740px;
+            max-width: 760px;
             margin: 0 auto;
         }
 
@@ -495,124 +496,7 @@
             white-space: pre-wrap;
         }
 
-        /* Variable Validator Tool */
-        .validator-card {
-            padding: 36px;
-            margin-top: 30px;
-        }
-        .validator-input-box {
-            display: flex;
-            gap: 14px;
-            margin-top: 16px;
-            flex-wrap: wrap;
-        }
-        .validator-input-box input {
-            flex: 1;
-            min-width: 260px;
-            padding: 14px 18px;
-            border-radius: var(--radius-md);
-            background: var(--bg-surface);
-            border: 2px solid var(--border-color);
-            color: #ffffff;
-            font-family: 'Fira Code', monospace;
-            font-size: 1.05rem;
-            outline: none;
-            transition: var(--transition);
-        }
-        .validator-input-box input:focus {
-            border-color: var(--python-blue);
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-        }
-        .validator-result {
-            margin-top: 20px;
-            padding: 18px 24px;
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-size: 1rem;
-            border: 1px solid transparent;
-            transition: var(--transition);
-        }
-        .validator-result.valid {
-            background: rgba(16, 185, 129, 0.15);
-            border-color: #10b981;
-            color: #34d399;
-        }
-        .validator-result.invalid {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: #ef4444;
-            color: #f87171;
-        }
-
-        /* Data Type Matrix & Interactive Inspector */
-        .type-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 14px;
-        }
-        .type-tab-btn {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            padding: 10px 20px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-size: 0.92rem;
-            font-weight: 600;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .type-tab-btn.active {
-            background: var(--primary);
-            color: #ffffff;
-            border-color: var(--primary);
-            box-shadow: 0 2px 10px var(--primary-glow);
-        }
-        .type-detail-card {
-            padding: 30px;
-        }
-
-        /* Type Casting Interactive Lab */
-        .casting-lab {
-            padding: 36px;
-        }
-        .casting-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-top: 24px;
-        }
-        .cast-target-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .cast-btn {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 8px 16px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.88rem;
-            transition: var(--transition);
-        }
-        .cast-btn.active {
-            background: var(--python-yellow);
-            color: #0f172a;
-            border-color: var(--python-yellow);
-            font-weight: 700;
-        }
-
-        /* Operator Table */
+        /* Operator Tables */
         .op-table {
             width: 100%;
             border-collapse: collapse;
@@ -641,6 +525,65 @@
             font-family: 'Fira Code', monospace;
             font-size: 0.88rem;
             font-weight: 600;
+        }
+
+        /* Interactive Lab Cards */
+        .lab-card {
+            padding: 36px;
+            margin-top: 30px;
+        }
+        .lab-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        /* Logic Gates / Truth Table Visualizer */
+        .truth-toggle-btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-surface);
+            color: var(--text-main);
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .truth-toggle-btn.true-val {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: #10b981;
+            color: #34d399;
+        }
+        .truth-toggle-btn.false-val {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            color: #f87171;
+        }
+
+        .truth-result-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            margin-bottom: 8px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Bitwise Shift Interactive Box */
+        .bit-calc-box {
+            background: #030712;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: #e2e8f0;
         }
 
         /* Interactive Runner / Playground */
@@ -881,7 +824,7 @@
             .editor-body { grid-template-columns: 1fr; }
             .summary-grid { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr; }
-            .casting-grid { grid-template-columns: 1fr; }
+            .lab-grid-2 { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
@@ -925,22 +868,21 @@
             </a>
 
             <ul class="nav-links" id="nav-menu">
-                <li><a href="index.html"><i class="fa-solid fa-arrow-left"></i> Pertemuan 1</a></li>
-                <li><a href="#sintaks" class="active"><i class="fa-solid fa-code"></i> Sintaks & Komentar</a></li>
-                <li><a href="#variabel"><i class="fa-solid fa-box-archive"></i> Variabel</a></li>
-                <li><a href="#tipedata"><i class="fa-solid fa-cubes"></i> Tipe Data</a></li>
-                <li><a href="#casting"><i class="fa-solid fa-arrow-right-arrow-left"></i> Type Casting</a></li>
-                <li><a href="#operator"><i class="fa-solid fa-calculator"></i> Operator</a></li>
+                <li><a href="pertemuan_2.html"><i class="fa-solid fa-arrow-left"></i> Pertemuan 2</a></li>
+                <li><a href="#io" class="active"><i class="fa-solid fa-terminal"></i> Input & Output</a></li>
+                <li><a href="#penugasan"><i class="fa-solid fa-equals"></i> Penugasan</a></li>
+                <li><a href="#relasional"><i class="fa-solid fa-code-compare"></i> Perbandingan</a></li>
+                <li><a href="#logika"><i class="fa-solid fa-brain"></i> Logika</a></li>
+                <li><a href="#bitwise"><i class="fa-solid fa-microchip"></i> Bitwise</a></li>
                 <li><a href="#playground"><i class="fa-solid fa-play"></i> Live Code</a></li>
                 <li><a href="#kuis"><i class="fa-solid fa-circle-question"></i> Kuis</a></li>
-                <li><a href="pertemuan_3.html" style="color: var(--accent-emerald); font-weight: 700;"><i class="fa-solid fa-arrow-right"></i> Pertemuan 3</a></li>
             </ul>
 
             <div class="nav-actions">
                 <button class="btn-theme" id="theme-toggle" title="Ganti Tema (Dark/Light)" aria-label="Ganti Tema">
                     <i class="fa-solid fa-moon" id="theme-icon"></i>
                 </button>
-                <a href="https://github.com/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_2.ipynb" target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">
+                <a href="https://github.com/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_3.ipynb" target="_blank" rel="noopener" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">
                     <i class="fa-solid fa-book-bookmark"></i> <span>Notebook .ipynb</span>
                 </a>
                 <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Menu Navigasi">
@@ -954,26 +896,26 @@
         <!-- Hero Section -->
         <section class="hero container">
             <div class="badge-pill">
-                <i class="fa-solid fa-layer-group"></i> Modul Pembelajaran Interaktif • Pertemuan 2
+                <i class="fa-solid fa-microchip"></i> Modul Pembelajaran Interaktif • Pertemuan 3
             </div>
             <h1 class="hero-title">
-                Sintaks Dasar, <span class="gradient-text">Variabel & Tipe Data</span><br>dalam Python
+                Input, Output & <span class="gradient-text">Operator Logika Python</span><br>secara Interaktif
             </h1>
             <p class="hero-subtitle">
-                Masuki inti pemrograman! Pahami bagaimana Python mengeksekusi *statement*, menulis catatan kode (*comment*), mengelola wadah data (*variabel*), serta menguasai berbagai ragam *tipe data* dan operasinya.
+                Jadikan program Python Anda hidup dan responsif! Pelajari cara menerima masukan dinamis keyboard dengan fungsi <code>input()</code>, pemformatan output canggih, operator penugasan ringkas, logika kebenaran boolean, hingga operasi bitwise biner.
             </p>
 
             <div class="hero-cta-group">
-                <a href="#sintaks" class="btn btn-primary">
+                <a href="#io" class="btn btn-primary">
                     <i class="fa-solid fa-rocket"></i> Mulai Pembelajaran
                 </a>
-                <a href="#validator" class="btn btn-amber">
-                    <i class="fa-solid fa-check-double"></i> Cek Nama Variabel
+                <a href="#lab-io" class="btn btn-amber">
+                    <i class="fa-solid fa-keyboard"></i> Coba Lab Input & Output
                 </a>
-                <a href="#casting" class="btn btn-emerald">
-                    <i class="fa-solid fa-flask"></i> Type Casting Lab
+                <a href="#lab-logika" class="btn btn-purple">
+                    <i class="fa-solid fa-bolt"></i> Truth Table Visualizer
                 </a>
-                <a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_2.ipynb" target="_blank" rel="noopener" class="btn btn-secondary">
+                <a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_3.ipynb" target="_blank" rel="noopener" class="btn btn-secondary">
                     <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka di Google Colab
                 </a>
             </div>
@@ -981,239 +923,334 @@
             <!-- Stats & Highlights Bar -->
             <div class="stats-grid">
                 <div class="stat-card glass-card">
-                    <div class="stat-icon"><i class="fa-solid fa-terminal"></i></div>
+                    <div class="stat-icon"><i class="fa-solid fa-keyboard"></i></div>
                     <div class="stat-content">
-                        <h4>Statement & Output</h4>
-                        <p>Instruksi yang dieksekusi interpreter baris demi baris.</p>
+                        <h4>Fungsi input()</h4>
+                        <p>Menerima data masukan dinamis dari pengguna.</p>
                     </div>
                 </div>
                 <div class="stat-card glass-card">
-                    <div class="stat-icon"><i class="fa-solid fa-font"></i></div>
+                    <div class="stat-icon"><i class="fa-solid fa-equals"></i></div>
                     <div class="stat-content">
-                        <h4>Dynamic Typing</h4>
-                        <p>Tipe data otomatis terdeteksi tanpa deklarasi manual.</p>
+                        <h4>Assignment += -=</h4>
+                        <p>Singkatan penugasan dan kalkulasi nilai variabel.</p>
                     </div>
                 </div>
                 <div class="stat-card glass-card">
-                    <div class="stat-icon"><i class="fa-solid fa-sliders"></i></div>
+                    <div class="stat-icon"><i class="fa-solid fa-brain"></i></div>
                     <div class="stat-content">
-                        <h4>7+ Tipe Data Inti</h4>
-                        <p>String, int, float, complex, hex, bool, sequence.</p>
+                        <h4>Logika and, or, not</h4>
+                        <p>Evaluasi kondisi boolean untuk keputusan algoritma.</p>
                     </div>
                 </div>
                 <div class="stat-card glass-card">
-                    <div class="stat-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                    <div class="stat-icon"><i class="fa-solid fa-microchip"></i></div>
                     <div class="stat-content">
-                        <h4>Type Casting</h4>
-                        <p>Konversi antar tipe data dengan fungsi bawaan.</p>
+                        <h4>Bitwise & Shift</h4>
+                        <p>Operasi level bit biner (&, |, ^, ~, &lt;&lt;, &gt;&gt;).</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 1: Sintaks Dasar, Statement & Komentar -->
-        <section id="sintaks" class="section container">
+        <!-- SECTION 1: Input & Output di Python -->
+        <section id="io" class="section container">
             <div class="section-header">
-                <span class="section-tag">Fondasi Koding</span>
-                <h2 class="section-title">1. Sintaks Dasar, Statement & Komentar</h2>
+                <span class="section-tag">Komunikasi Program</span>
+                <h2 class="section-title">1. Input dan Output Dinamis</h2>
                 <p class="section-desc">
-                    Segala baris kode yang dapat dieksekusi oleh Python disebut sebagai <strong>Statement</strong>. Untuk memberi dokumentasi atau catatan pengingat tanpa dieksekusi, kita menggunakan <strong>Komentar</strong>.
+                    Program yang baik adalah program yang mampu berinteraksi dengan pengguna. Fungsi <code>input()</code> bertugas mengambil data masukan keyboard, sedangkan <code>print()</code> menampilkan hasil kalkulasi.
                 </p>
             </div>
 
             <div class="features-grid">
                 <div class="feature-box glass-card">
-                    <div class="box-icon icon-blue"><i class="fa-solid fa-code"></i></div>
-                    <h3>Statement Python</h3>
+                    <div class="box-icon icon-blue"><i class="fa-solid fa-keyboard"></i></div>
+                    <h3>Fungsi input()</h3>
                     <p>
-                        Setiap perintah tunggal yang diproses oleh interpreter. Di Python, kita tidak perlu mengakhiri statement dengan titik koma (<code>;</code>).
+                        Fungsi <code>input("Teks Prompt: ")</code> menjeda program sampai pengguna mengetik sesuatu dan menekan tombol <kbd class="code-badge">Enter</kbd>.
                     </p>
                     <div class="code-display">
-<pre><code class="language-python"># Contoh Statement:
-print("Ini merupakan statement dalam bahasa Python")
-total_nilai = 95</code></pre>
+<pre><code class="language-python"># Nilai dari input() SELALU bertipe String (str)!
+nama = input("Masukkan nama Anda: ")
+umur = int(input("Masukkan usia Anda: ")) # Wajib Type Casting</code></pre>
                     </div>
                 </div>
 
                 <div class="feature-box glass-card">
-                    <div class="box-icon icon-yellow"><i class="fa-solid fa-hashtag"></i></div>
-                    <h3>Komentar (#)</h3>
+                    <div class="box-icon icon-green"><i class="fa-solid fa-desktop"></i></div>
+                    <h3>Format Output Modern (f-string)</h3>
                     <p>
-                        Tanda pagar (<code>#</code>) digunakan untuk menulis catatan atau menonaktifkan kode sementara. Teks setelah tanda <code>#</code> diabaikan total oleh komputer.
+                        Gunakan awalan <code>f"..."</code> dan masukkan variabel ke dalam kurung kurawal <code>{variabel}</code> untuk output yang bersih dan rapi.
                     </p>
                     <div class="code-display">
-<pre><code class="language-python"># Ini adalah komentar 1 baris
-# Apapun yang ditulis disini tidak terbaca program
-x = 10  # Komentar inline di samping kode</code></pre>
+<pre><code class="language-python">harga = 25000
+jumlah = 3
+print(f"Total Bayar: Rp{harga * jumlah:,}")
+# Output: Total Bayar: Rp75,000</code></pre>
                     </div>
                 </div>
 
                 <div class="feature-box glass-card">
-                    <div class="box-icon icon-purple"><i class="fa-solid fa-quote-left"></i></div>
-                    <h3>Tanda Kutip di Python</h3>
+                    <div class="box-icon icon-purple"><i class="fa-solid fa-sliders"></i></div>
+                    <h3>Parameter sep & end</h3>
                     <p>
-                        Python mendukung tanda kutip tunggal (<code>'</code>), ganda (<code>"</code>), dan tiga (<code>"""</code>). Tanda kutip tiga berguna untuk teks multibaris atau dokumentasi.
+                        Parameter <code>sep</code> mengatur pemisah antar nilai, dan <code>end</code> mengatur karakter di akhir teks output (default-nya baris baru <code>\n</code>).
                     </p>
                     <div class="code-display">
-<pre><code class="language-python">huruf = 'U'
-kata = "kata"
-paragraf = """Ini adalah paragraf
-terdiri dari beberapa baris."""</code></pre>
+<pre><code class="language-python">print("Python", "Dasar", "Keren", sep=" - ")
+print("Baris satu...", end=" ")
+print("Lanjut di baris yang sama!")</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive IO Lab -->
+            <div id="lab-io" class="lab-card glass-card">
+                <h3 style="color: var(--text-bright); font-size: 1.3rem; font-weight: 700;">
+                    <i class="fa-solid fa-terminal" style="color: var(--python-yellow); margin-right: 8px;"></i>
+                    Interactive Input & Output Terminal Simulator
+                </h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 4px;">
+                    Ubah nilai input form di bawah ini dan perhatikan bagaimana Python menangkap, mengonversi (casting), dan mencetak outputnya:
+                </p>
+
+                <div class="lab-grid-2">
+                    <div>
+                        <div style="margin-bottom: 14px;">
+                            <label style="display: block; font-size: 0.88rem; font-weight: 600; color: var(--text-bright); margin-bottom: 6px;">
+                                Nama Pengguna <code>(String)</code>:
+                            </label>
+                            <input type="text" id="sim-input-nama" value="Ahmad Faruq" style="width: 100%; padding: 12px 14px; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: #fff; font-family: 'Fira Code', monospace;" oninput="updateIOSimulator()">
+                        </div>
+
+                        <div style="margin-bottom: 14px;">
+                            <label style="display: block; font-size: 0.88rem; font-weight: 600; color: var(--text-bright); margin-bottom: 6px;">
+                                Harga Satuan (Rp) <code>(int)</code>:
+                            </label>
+                            <input type="number" id="sim-input-harga" value="15000" style="width: 100%; padding: 12px 14px; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: #fff; font-family: 'Fira Code', monospace;" oninput="updateIOSimulator()">
+                        </div>
+
+                        <div>
+                            <label style="display: block; font-size: 0.88rem; font-weight: 600; color: var(--text-bright); margin-bottom: 6px;">
+                                Jumlah Item <code>(int)</code>:
+                            </label>
+                            <input type="number" id="sim-input-jumlah" value="4" style="width: 100%; padding: 12px 14px; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: #fff; font-family: 'Fira Code', monospace;" oninput="updateIOSimulator()">
+                        </div>
+                    </div>
+
+                    <div style="background: #030712; padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                        <span style="font-size: 0.75rem; text-transform: uppercase; color: #6b7280; font-weight: 700;">
+                            <i class="fa-solid fa-display"></i> Hasil Eksekusi Output Console:
+                        </span>
+                        <div id="sim-io-console" style="font-family: 'Fira Code', monospace; font-size: 0.92rem; color: #a7f3d0; margin-top: 14px; white-space: pre-wrap; line-height: 1.6;">
+                            <!-- JS Output -->
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 2: Variabel & Aturan Penamaan -->
-        <section id="variabel" class="section container">
+        <!-- SECTION 2: Operator Penugasan (Assignment) -->
+        <section id="penugasan" class="section container">
             <div class="section-header">
-                <span class="section-tag">Penyimpanan Memori</span>
-                <h2 class="section-title">2. Variabel dalam Python</h2>
+                <span class="section-tag">Singkatan Kode</span>
+                <h2 class="section-title">2. Operator Penugasan (Assignment)</h2>
                 <p class="section-desc">
-                    <strong>Variabel</strong> adalah wadah di dalam memori komputer yang digunakan untuk menampung data atau nilai yang sifatnya dapat berubah-ubah (*mutable*) selama program berjalan.
+                    Operator penugasan digunakan untuk mengisi nilai ke dalam variabel sekaligus melakukan operasi aritmatika secara ringkas dan efisien.
+                </p>
+            </div>
+
+            <div class="glass-card" style="padding: 30px;">
+                <div style="overflow-x: auto;">
+                    <table class="op-table">
+                        <thead>
+                            <tr>
+                                <th>Operator</th>
+                                <th>Contoh Kode</th>
+                                <th>Ekuivalen Dengan</th>
+                                <th>Nilai Awal (a=10) &rarr; Hasil</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="code-badge">=</span></td>
+                                <td><code>a = 5</code></td>
+                                <td><code>a = 5</code></td>
+                                <td><span style="color: #38bdf8; font-weight: 700;">a = 5</span></td>
+                                <td>Memberi nilai langsung ke variabel.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code-badge">+=</span></td>
+                                <td><code>a += 5</code></td>
+                                <td><code>a = a + 5</code></td>
+                                <td><span style="color: #4ade80; font-weight: 700;">a = 15</span></td>
+                                <td>Tambah nilai variabel saat ini.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code-badge">-=</span></td>
+                                <td><code>a -= 3</code></td>
+                                <td><code>a = a - 3</code></td>
+                                <td><span style="color: #4ade80; font-weight: 700;">a = 7</span></td>
+                                <td>Kurang nilai variabel saat ini.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code-badge">*=</span></td>
+                                <td><code>a *= 4</code></td>
+                                <td><code>a = a * 4</code></td>
+                                <td><span style="color: #4ade80; font-weight: 700;">a = 40</span></td>
+                                <td>Kalikan nilai variabel saat ini.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code-badge">/=</span></td>
+                                <td><code>a /= 2</code></td>
+                                <td><code>a = a / 2</code></td>
+                                <td><span style="color: #fbbf24; font-weight: 700;">a = 5.0 (float)</span></td>
+                                <td>Bagi desimal nilai variabel saat ini.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code-badge">%=</span></td>
+                                <td><code>a %= 3</code></td>
+                                <td><code>a = a % 3</code></td>
+                                <td><span style="color: #4ade80; font-weight: 700;">a = 1</span></td>
+                                <td>Sisa bagi (modulus) nilai variabel.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="code-badge">**=</span></td>
+                                <td><code>a **= 2</code></td>
+                                <td><code>a = a ** 2</code></td>
+                                <td><span style="color: #4ade80; font-weight: 700;">a = 100</span></td>
+                                <td>Pangkatkan nilai variabel saat ini.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Operator Perbandingan (Relasional) -->
+        <section id="relasional" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Evaluasi Kondisi</span>
+                <h2 class="section-title">3. Operator Perbandingan (Relasional)</h2>
+                <p class="section-desc">
+                    Operator perbandingan membandingkan dua nilai dan selalu menghasilkan nilai boolean (<code>True</code> atau <code>False</code>).
                 </p>
             </div>
 
             <div class="features-grid">
                 <div class="feature-box glass-card">
-                    <div class="box-icon icon-green"><i class="fa-solid fa-box"></i></div>
-                    <h3>Deklarasi Variabel</h3>
+                    <div class="box-icon icon-yellow"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <h3>Sama Dengan (==) vs Tidak Sama (!=)</h3>
                     <p>
-                        Cukup tuliskan nama variabel diikuti operator penugasan sama dengan (<code>=</code>) dan nilainya. Tidak perlu menentukan tipe data secara manual.
+                        <code>==</code> memeriksa kesamaan nilai (beda dengan <code>=</code> penugasan), sedangkan <code>!=</code> memeriksa ketidaksamaan.
                     </p>
                     <div class="code-display">
-<pre><code class="language-python">nama_variabel = 1000
-nama_mahasiswa = "Faruq"
-status_aktif = True</code></pre>
+<pre><code class="language-python">print(10 == 10)  # True
+print(10 == "10") # False (beda tipe data!)
+print(10 != 5)   # True</code></pre>
                     </div>
                 </div>
 
                 <div class="feature-box glass-card">
-                    <div class="box-icon icon-indigo"><i class="fa-solid fa-list-check"></i></div>
-                    <h3>Aturan Penamaan Variabel</h3>
-                    <p style="margin-bottom: 10px;">Pedoman penting membuat nama variabel yang benar:</p>
-                    <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 20px; line-height: 1.6;">
-                        <li>Hanya boleh huruf (a-z, A-Z), angka (0-9), dan garis bawah (<code>_</code>).</li>
-                        <li><strong>TIDAK boleh</strong> diawali oleh angka (misal: <code>1nilai</code> ❌).</li>
-                        <li><strong>TIDAK boleh</strong> mengandung spasi atau simbol khusus (<code>@, -, $, %</code>).</li>
-                        <li>Bersifat <em>Case-Sensitive</em> (<code>nama</code> berbeda dengan <code>Nama</code>).</li>
-                        <li>Tidak boleh menggunakan <em>Reserved Keywords</em> Python (<code>if, for, class, def, import</code>).</li>
-                    </ul>
+                    <div class="box-icon icon-blue"><i class="fa-solid fa-greater-than-equal"></i></div>
+                    <h3>Lebih Besar / Kecil (&gt;, &lt;, &gt;=, &lt;=)</h3>
+                    <p>
+                        Memeriksa besaran nilai numerik untuk menentukan ambang batas (misal: nilai ujian kelulusan).
+                    </p>
+                    <div class="code-display">
+<pre><code class="language-python">nilai_mhs = 78
+kriteria_lulus = 75
+
+is_lulus = nilai_mhs >= kriteria_lulus
+print("Status Lulus:", is_lulus) # True</code></pre>
+                    </div>
+                </div>
+
+                <div class="feature-box glass-card">
+                    <div class="box-icon icon-rose"><i class="fa-solid fa-fingerprint"></i></div>
+                    <h3>Identitas (is) & Keanggotaan (in)</h3>
+                    <p>
+                        <code>is</code> memeriksa alamat memori yang sama. <code>in</code> memeriksa apakah suatu elemen terdapat dalam sequence (string/list).
+                    </p>
+                    <div class="code-display">
+<pre><code class="language-python">teks = "Belajar Dasar Pemrograman"
+print("Dasar" in teks)      # True
+print("Java" not in teks)   # True</code></pre>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Interactive Variable Name Validator Tool -->
-            <div id="validator" class="validator-card glass-card">
+        <!-- SECTION 4: Operator Logika & Truth Table Visualizer -->
+        <section id="logika" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Logika Boolean</span>
+                <h2 class="section-title">4. Operator Logika (and, or, not)</h2>
+                <p class="section-desc">
+                    Operator logika menggabungkan beberapa kondisi perbandingan menjadi satu keputusan logika akhir.
+                </p>
+            </div>
+
+            <div id="lab-logika" class="lab-card glass-card">
                 <h3 style="color: var(--text-bright); font-size: 1.3rem; font-weight: 700;">
-                    <i class="fa-solid fa-spell-check" style="color: var(--python-yellow); margin-right: 8px;"></i>
-                    Interactive Variable Name Validator
+                    <i class="fa-solid fa-bolt" style="color: var(--accent); margin-right: 8px;"></i>
+                    Interactive Truth Table Visualizer (Tabel Kebenaran)
                 </h3>
                 <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 4px;">
-                    Ketik calon nama variabel di bawah ini untuk memeriksa apakah nama tersebut <strong>VALID</strong> atau <strong>INVALID</strong> menurut aturan Python:
+                    Klik tombol status variabel <strong>A</strong> dan <strong>B</strong> di bawah ini untuk melihat hasil evaluasi logika secara real-time:
                 </p>
 
-                <div class="validator-input-box">
-                    <input type="text" id="var-input" value="nama_mahasiswa_2025" placeholder="Contoh: total_nilai, 1angka, nama user..." oninput="validateVariableName(this.value)">
-                </div>
-
-                <div class="validator-result valid" id="var-result-box">
-                    <i class="fa-solid fa-circle-check" id="var-icon" style="font-size: 1.5rem;"></i>
+                <div class="lab-grid-2">
                     <div>
-                        <strong id="var-status">Nama Variabel VALID!</strong>
-                        <p id="var-desc" style="font-size: 0.88rem; margin-top: 2px;">Nama variabel ini memenuhi semua kaidah sintaks Python.</p>
+                        <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+                            <div>
+                                <span style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">Kondisi A:</span>
+                                <button class="truth-toggle-btn true-val" id="btn-bool-a" onclick="toggleBool('a')">A = True</button>
+                            </div>
+                            <div>
+                                <span style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">Kondisi B:</span>
+                                <button class="truth-toggle-btn false-val" id="btn-bool-b" onclick="toggleBool('b')">B = False</button>
+                            </div>
+                        </div>
+
+                        <div style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
+                            <p><strong style="color: #38bdf8;">• and:</strong> Bernilai <code>True</code> HANYA JIKA kedua kondisi bernilai <code>True</code>.</p>
+                            <p><strong style="color: #fbbf24;">• or:</strong> Bernilai <code>True</code> JIKA SALAH SATU atau kedua kondisi bernilai <code>True</code>.</p>
+                            <p><strong style="color: #f43f5e;">• not:</strong> Membalikkan nilai logika (True &harr; False).</p>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- SECTION 3: Macam-Macam Tipe Data -->
-        <section id="tipedata" class="section container">
-            <div class="section-header">
-                <span class="section-tag">Ragam Nilai</span>
-                <h2 class="section-title">3. Macam - Macam Tipe Data</h2>
-                <p class="section-desc">
-                    Tipe data menentukan jenis nilai yang disimpan di dalam variabel dan operasi apa saja yang dapat dilakukan terhadapnya. Gunakan fungsi <code>type()</code> untuk memeriksa tipe data suatu nilai.
-                </p>
-            </div>
-
-            <!-- Type Selector Tabs -->
-            <div class="type-tabs">
-                <button class="type-tab-btn active" onclick="switchTypeTab('str')"><i class="fa-solid fa-font"></i> String (str)</button>
-                <button class="type-tab-btn" onclick="switchTypeTab('int')"><i class="fa-solid fa-hashtag"></i> Integer (int)</button>
-                <button class="type-tab-btn" onclick="switchTypeTab('float')"><i class="fa-solid fa-percent"></i> Float (float)</button>
-                <button class="type-tab-btn" onclick="switchTypeTab('hex')"><i class="fa-solid fa-microchip"></i> Hexadecimal & Complex</button>
-                <button class="type-tab-btn" onclick="switchTypeTab('bool')"><i class="fa-solid fa-toggle-on"></i> Boolean (bool)</button>
-                <button class="type-tab-btn" onclick="switchTypeTab('seq')"><i class="fa-solid fa-layer-group"></i> List & Tuple</button>
-            </div>
-
-            <!-- Type Details View -->
-            <div class="type-detail-card glass-card" id="type-detail-content">
-                <!-- Javascript will load detailed cards -->
-            </div>
-        </section>
-
-        <!-- SECTION 4: Type Casting (Konversi Tipe Data) -->
-        <section id="casting" class="section container">
-            <div class="section-header">
-                <span class="section-tag">Transformasi Nilai</span>
-                <h2 class="section-title">4. Konversi Tipe Data (Type Casting)</h2>
-                <p class="section-desc">
-                    Type casting adalah proses mengubah nilai dari satu tipe data ke tipe data lainnya menggunakan fungsi konversi bawaan seperti <code>int()</code>, <code>float()</code>, <code>str()</code>, <code>hex()</code>, atau <code>bool()</code>.
-                </p>
-            </div>
-
-            <div class="casting-lab glass-card">
-                <h3 style="color: var(--text-bright); font-size: 1.3rem; font-weight: 700;">
-                    <i class="fa-solid fa-flask" style="color: var(--accent-emerald); margin-right: 8px;"></i>
-                    Type Casting Interactive Lab
-                </h3>
-                <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 4px;">
-                    Masukkan nilai awal, pilih target tipe data tujuan, lalu lihat bagaimana Python melakukan konversi secara instan!
-                </p>
-
-                <div class="casting-grid">
                     <div>
-                        <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-bright);">
-                            1. Masukkan Nilai Awal:
-                        </label>
-                        <input type="text" id="cast-input-val" value="23092022" style="width: 100%; padding: 12px 16px; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: #fff; font-family: 'Fira Code', monospace; font-size: 1rem;" oninput="runTypeCasting()">
-
-                        <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-top: 16px; margin-bottom: 8px; color: var(--text-bright);">
-                            2. Pilih Target Konversi:
-                        </label>
-                        <div class="cast-target-buttons">
-                            <button class="cast-btn" onclick="selectCastingTarget('str')">str()</button>
-                            <button class="cast-btn active" onclick="selectCastingTarget('int')">int()</button>
-                            <button class="cast-btn" onclick="selectCastingTarget('float')">float()</button>
-                            <button class="cast-btn" onclick="selectCastingTarget('hex')">hex()</button>
-                            <button class="cast-btn" onclick="selectCastingTarget('bin')">bin()</button>
-                            <button class="cast-btn" onclick="selectCastingTarget('bool')">bool()</button>
+                        <div class="truth-result-row">
+                            <span>A and B</span>
+                            <span id="res-and" style="color: #f87171; font-weight: 700;">False</span>
                         </div>
-                    </div>
-
-                    <div style="background: var(--bg-surface); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-                        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Hasil Konversi:</span>
-                        <div id="cast-result-text" style="font-family: 'Fira Code', monospace; font-size: 1.3rem; font-weight: 700; color: var(--python-yellow); margin: 12px 0;">
-                            23092022
+                        <div class="truth-result-row">
+                            <span>A or B</span>
+                            <span id="res-or" style="color: #4ade80; font-weight: 700;">True</span>
                         </div>
-                        <div id="cast-result-type" style="font-size: 0.88rem; color: #38bdf8;">
-                            Tipe Data: <code>&lt;class 'int'&gt;</code>
+                        <div class="truth-result-row">
+                            <span>not A</span>
+                            <span id="res-not-a" style="color: #f87171; font-weight: 700;">False</span>
                         </div>
-                        <p id="cast-result-note" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 12px; border-top: 1px solid var(--border-color); padding-top: 10px;">
-                            Nilai berhasil diubah menjadi bilangan bulat integer.
-                        </p>
+                        <div class="truth-result-row">
+                            <span>not B</span>
+                            <span id="res-not-b" style="color: #4ade80; font-weight: 700;">True</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 5: Operasi Matematika & Aritmatika Dasar -->
-        <section id="operator" class="section container">
+        <!-- SECTION 5: Operator Bitwise (Logika Biner) -->
+        <section id="bitwise" class="section container">
             <div class="section-header">
-                <span class="section-tag">Kalkulasi Cepat</span>
-                <h2 class="section-title">5. Operator Aritmatika Dasar</h2>
+                <span class="section-tag">Level Biner CPU</span>
+                <h2 class="section-title">5. Operator Bitwise (Biner 0 & 1)</h2>
                 <p class="section-desc">
-                    Python menyediakan operator aritmatika lengkap untuk melakukan kalkulasi matematis terhadap tipe data numerik.
+                    Operator bitwise melakukan operasi logika langsung pada setiap bit representasi bilangan biner angka tersebut (mengingatkan kita pada konsep Biner Pertemuan 1).
                 </p>
             </div>
 
@@ -1225,59 +1262,52 @@ status_aktif = True</code></pre>
                                 <th>Operator</th>
                                 <th>Nama Operasi</th>
                                 <th>Contoh Kode</th>
+                                <th>Biner Operasi</th>
                                 <th>Hasil</th>
-                                <th>Penjelasan</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><span class="code-badge">+</span></td>
-                                <td><strong>Penjumlahan</strong></td>
-                                <td><code>10 + 5</code></td>
-                                <td><span style="color: #4ade80; font-weight: 700;">15</span></td>
-                                <td>Menjumlahkan dua buah bilangan atau menggabungkan string.</td>
+                                <td><span class="code-badge">&amp;</span></td>
+                                <td><strong>Bitwise AND</strong></td>
+                                <td><code>1 &amp; 64</code></td>
+                                <td><code>00000001 &amp; 01000000</code></td>
+                                <td><span style="color: #38bdf8; font-weight: 700;">0 (00000000)</span></td>
                             </tr>
                             <tr>
-                                <td><span class="code-badge">-</span></td>
-                                <td><strong>Pengurangan</strong></td>
-                                <td><code>10 - 4</code></td>
-                                <td><span style="color: #4ade80; font-weight: 700;">6</span></td>
-                                <td>Mengurangkan bilangan kanan dari bilangan kiri.</td>
+                                <td><span class="code-badge">|</span></td>
+                                <td><strong>Bitwise OR</strong></td>
+                                <td><code>1 | 64</code></td>
+                                <td><code>00000001 | 01000000</code></td>
+                                <td><span style="color: #4ade80; font-weight: 700;">65 (01000001)</span></td>
                             </tr>
                             <tr>
-                                <td><span class="code-badge">*</span></td>
-                                <td><strong>Perkalian</strong></td>
-                                <td><code>7 * 6</code></td>
-                                <td><span style="color: #4ade80; font-weight: 700;">42</span></td>
-                                <td>Mengalikan dua bilangan atau menduplikasi string.</td>
+                                <td><span class="code-badge">^</span></td>
+                                <td><strong>Bitwise XOR</strong></td>
+                                <td><code>1 ^ 64</code></td>
+                                <td><code>00000001 ^ 01000000</code></td>
+                                <td><span style="color: #fbbf24; font-weight: 700;">65 (01000001)</span></td>
                             </tr>
                             <tr>
-                                <td><span class="code-badge">/</span></td>
-                                <td><strong>Pembagian (Float)</strong></td>
-                                <td><code>10 / 4</code></td>
-                                <td><span style="color: #4ade80; font-weight: 700;">2.5</span></td>
-                                <td>Menghasilkan pembagian riil desimal (selalu bertipe <code>float</code>).</td>
+                                <td><span class="code-badge">~</span></td>
+                                <td><strong>Bitwise NOT (Invert)</strong></td>
+                                <td><code>~1</code></td>
+                                <td><code>-(x + 1)</code></td>
+                                <td><span style="color: #f87171; font-weight: 700;">-2</span></td>
                             </tr>
                             <tr>
-                                <td><span class="code-badge">//</span></td>
-                                <td><strong>Floor Division</strong></td>
-                                <td><code>10 // 4</code></td>
-                                <td><span style="color: #4ade80; font-weight: 700;">2</span></td>
-                                <td>Pembagian bulat ke bawah dengan membuang angka desimalnya.</td>
+                                <td><span class="code-badge">&lt;&lt;</span></td>
+                                <td><strong>Shift Left (Geser Kiri)</strong></td>
+                                <td><code>64 &lt;&lt; 1</code></td>
+                                <td><code>01000000 &lt;&lt; 1 = 10000000</code></td>
+                                <td><span style="color: #a7f3d0; font-weight: 700;">128 (dikali 2^n)</span></td>
                             </tr>
                             <tr>
-                                <td><span class="code-badge">%</span></td>
-                                <td><strong>Modulus</strong></td>
-                                <td><code>10 % 3</code></td>
-                                <td><span style="color: #4ade80; font-weight: 700;">1</span></td>
-                                <td>Sisa hasil bagi (10 dibagi 3 bernilai 3 sisa <strong>1</strong>).</td>
-                            </tr>
-                            <tr>
-                                <td><span class="code-badge">**</span></td>
-                                <td><strong>Perpangkatan</strong></td>
-                                <td><code>2 ** 3</code></td>
-                                <td><span style="color: #4ade80; font-weight: 700;">8</span></td>
-                                <td>Menghitung 2 pangkat 3 (2 × 2 × 2 = 8).</td>
+                                <td><span class="code-badge">&gt;&gt;</span></td>
+                                <td><strong>Shift Right (Geser Kanan)</strong></td>
+                                <td><code>64 &gt;&gt; 1</code></td>
+                                <td><code>01000000 &gt;&gt; 1 = 00100000</code></td>
+                                <td><span style="color: #a7f3d0; font-weight: 700;">32 (dibagi 2^n)</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -1285,21 +1315,21 @@ status_aktif = True</code></pre>
             </div>
         </section>
 
-        <!-- SECTION 6: Live Code Playground (Pertemuan 2 Edition) -->
+        <!-- SECTION 6: Live Code Playground (Pertemuan 3 Edition) -->
         <section id="playground" class="section container">
             <div class="section-header">
                 <span class="section-tag">Eksperimen Interaktif</span>
                 <h2 class="section-title">6. Live Code Playground</h2>
                 <p class="section-desc">
-                    Uji coba berbagai variasi kode variabel, tipe data, dan operasi aritmatika secara langsung di browser Anda!
+                    Uji coba berbagai skenario program interaktif: kalkulasi diskon kasir, pengecekan kelulusan logika, dan manipulasi operator!
                 </p>
             </div>
 
             <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
-                <button class="type-tab-btn active" onclick="loadPlaygroundSnippet('vars')">1. Deklarasi & Cek type()</button>
-                <button class="type-tab-btn" onclick="loadPlaygroundSnippet('quotes')">2. Ragam Tanda Kutip</button>
-                <button class="type-tab-btn" onclick="loadPlaygroundSnippet('casting_demo')">3. Praktek Type Casting</button>
-                <button class="type-tab-btn" onclick="loadPlaygroundSnippet('calc')">4. Aritmatika & Modulus</button>
+                <button class="truth-toggle-btn true-val" onclick="loadPlaygroundSnippet('kasir')">1. Simulasi Kasir & Diskon</button>
+                <button class="truth-toggle-btn" onclick="loadPlaygroundSnippet('logika_mhs')">2. Logika Kelulusan Siswa</button>
+                <button class="truth-toggle-btn" onclick="loadPlaygroundSnippet('penugasan_demo')">3. Rangkaian Operator +=</button>
+                <button class="truth-toggle-btn" onclick="loadPlaygroundSnippet('bitwise_demo')">4. Operasi Biner & Shift</button>
             </div>
 
             <div class="code-playground-box">
@@ -1310,7 +1340,7 @@ status_aktif = True</code></pre>
                         <div class="dot dot-green"></div>
                     </div>
                     <div class="editor-title">
-                        <i class="fa-brands fa-python" style="color: #38bdf8;"></i> pertemuan_2_demo.py
+                        <i class="fa-brands fa-python" style="color: #38bdf8;"></i> program_kasir.py — Simulasi Pertemuan 3
                     </div>
                     <div class="editor-actions">
                         <button class="btn btn-secondary" onclick="resetPlaygroundCode()" style="padding: 6px 12px; font-size: 0.8rem;">
@@ -1324,17 +1354,21 @@ status_aktif = True</code></pre>
 
                 <div class="editor-body">
                     <div class="editor-input">
-                        <textarea id="playground-code" spellcheck="false"># Deklarasi Variabel & Pengecekan Tipe Data
-nama = "Faruq"
-umur = 26
-ipk = 3.92
-aktif = True
+                        <textarea id="playground-code" spellcheck="false"># Program Simulasi Kasir Sederhana
+nama_kasir = "Faruq"
+nama_pembeli = "Budi Santoso"
+harga_barang = 25000
+jumlah_beli = 4
 
-print("--- Data Mahasiswa ---")
-print(f"Nama   : {nama} (Tipe: {type(nama)})")
-print(f"Umur   : {umur} tahun (Tipe: {type(umur)})")
-print(f"IPK    : {ipk} (Tipe: {type(ipk)})")
-print(f"Aktif  : {aktif} (Tipe: {type(aktif)})")</textarea>
+total = harga_barang * jumlah_beli
+dapat_diskon = total >= 100000
+
+print("=" * 40)
+print(f"Kasir   : {nama_kasir}")
+print(f"Customer: {nama_pembeli}")
+print(f"Total   : Rp{total}")
+print(f"Dapat Diskon Khusus? {dapat_diskon}")
+print("=" * 40)</textarea>
                     </div>
 
                     <div class="editor-output" id="playground-output">
@@ -1345,20 +1379,20 @@ print(f"Aktif  : {aktif} (Tipe: {type(aktif)})")</textarea>
             </div>
         </section>
 
-        <!-- SECTION 7: Kuis Interaktif Pemahaman Pertemuan 2 -->
+        <!-- SECTION 7: Kuis Interaktif Pemahaman Pertemuan 3 -->
         <section id="kuis" class="section container">
             <div class="section-header">
                 <span class="section-tag">Evaluasi Mandiri</span>
-                <h2 class="section-title">Kuis Cepat Pertemuan 2</h2>
+                <h2 class="section-title">Kuis Cepat Pertemuan 3</h2>
                 <p class="section-desc">
-                    Uji ketajaman pemahaman Anda seputar aturan penamaan variabel, penentuan tipe data, fungsi type casting, dan operator matematika.
+                    Uji pemahaman Anda terhadap fungsi <code>input()</code>, operator perbandingan, tabel kebenaran logika, dan operator penugasan.
                 </p>
             </div>
 
             <div class="quiz-wrapper">
                 <div class="quiz-card glass-card" id="quiz-box">
                     <span class="quiz-question-num" id="quiz-num">Pertanyaan 1 dari 5</span>
-                    <h3 class="quiz-question-text" id="quiz-text">Manakah di antara pilihan berikut yang merupakan nama variabel VALID di Python?</h3>
+                    <h3 class="quiz-question-text" id="quiz-text">Apakah tipe data default yang dikembalikan oleh fungsi input() di Python?</h3>
 
                     <div class="quiz-options" id="quiz-options">
                         <!-- Rendered by JS -->
@@ -1378,42 +1412,41 @@ print(f"Aktif  : {aktif} (Tipe: {type(aktif)})")</textarea>
             </div>
         </section>
 
-        <!-- SECTION 8: Rangkuman & Roadmap Pertemuan 3 -->
+        <!-- SECTION 8: Rangkuman & Roadmap Pertemuan 4 -->
         <section class="section container">
             <div class="section-header">
                 <span class="section-tag">Langkah Selanjutnya</span>
-                <h2 class="section-title">Rangkuman & Roadmap Pertemuan 3</h2>
+                <h2 class="section-title">Rangkuman & Roadmap Pertemuan 4</h2>
             </div>
 
             <div class="summary-grid">
                 <div class="summary-card glass-card">
                     <h3 style="color: var(--text-bright); font-size: 1.25rem; font-weight: 700;">
                         <i class="fa-solid fa-circle-check" style="color: #22c55e; margin-right: 8px;"></i>
-                        Poin Penting Pertemuan 2
+                        Poin Penting Pertemuan 3
                     </h3>
                     <ul class="summary-list">
-                        <li>Statement adalah setiap baris instruksi yang dieksekusi interpreter.</li>
-                        <li>Tanda <code>#</code> menandai komentar yang tidak diproses oleh program.</li>
-                        <li>Variabel menyimpan nilai yang dapat berubah-ubah dengan sistem *dynamic typing*.</li>
-                        <li>Tipe data angka: <code>int</code> (bulat), <code>float</code> (desimal), <code>complex</code> (imajiner), <code>hex()</code> (heksa).</li>
-                        <li>Fungsi <code>type()</code> untuk cek tipe data, dan <code>int() / float() / str()</code> untuk konversi.</li>
-                        <li>Operator aritmatika: <code>+ - * / // % **</code>.</li>
+                        <li>Fungsi <code>input()</code> menerima input teks string dari user (gunakan <code>int()</code> untuk angka).</li>
+                        <li>Format f-string <code>f"Total: {total}"</code> membuat penulisan teks output sangat bersih.</li>
+                        <li>Operator penugasan seperti <code>a += 5</code> mempersingkat operasi <code>a = a + 5</code>.</li>
+                        <li>Operator logika <code>and, or, not</code> mengevaluasi gabungan kondisi boolean.</li>
+                        <li>Operator bitwise (<code>&, |, ^, <<, >></code>) memanipulasi data pada level bit biner.</li>
                     </ul>
                 </div>
 
-                <div class="summary-card glass-card" style="border-left: 4px solid var(--python-blue);">
+                <div class="summary-card glass-card" style="border-left: 4px solid var(--accent);">
                     <h3 style="color: var(--text-bright); font-size: 1.25rem; font-weight: 700;">
-                        <i class="fa-solid fa-arrow-trend-up" style="color: var(--python-blue); margin-right: 8px;"></i>
-                        Materi Pertemuan 3 (Next Step)
+                        <i class="fa-solid fa-code-branch" style="color: var(--accent); margin-right: 8px;"></i>
+                        Materi Pertemuan 4 (Next Step)
                     </h3>
                     <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 10px;">
-                        Pada pertemuan berikutnya, kita akan membuat program menjadi interaktif menerima respon dari pengguna:
+                        Pada pertemuan berikutnya, kita akan mempelajari pengambilan keputusan program:
                     </p>
                     <ul class="summary-list">
-                        <li><strong>Fungsi input():</strong> Menerima masukan teks dari pengguna via keyboard.</li>
-                        <li><strong>Pemformatan Output Tingkat Lanjut:</strong> String formatting, escape characters.</li>
-                        <li><strong>Operator Logika & Relasional:</strong> Perbandingan (<code>==, !=, &gt;, &lt;</code>) dan logika (<code>and, or, not</code>).</li>
-                        <li><strong>Modul Interaktif:</strong> <a href="pertemuan_3.html" style="color: var(--accent-emerald); font-weight: 700;">Buka Modul Web Pertemuan 3 &rarr;</a></li>
+                        <li><strong>Struktur Percabangan If:</strong> Menjalankan blok kode saat kondisi terpenuhi.</li>
+                        <li><strong>Percabangan If-Else:</strong> Menangani kondisi alternatif jika bernilai False.</li>
+                        <li><strong>Percabangan Bersarang If-Elif-Else:</strong> Menangani multi-kondisi kompleks.</li>
+                        <li><strong>Latihan & Kasus:</strong> [Pertemuan 4_Percabangan.ipynb](Pertemuan%204_Percabangan.ipynb) di Google Colab.</li>
                     </ul>
                 </div>
             </div>
@@ -1436,7 +1469,7 @@ print(f"Aktif  : {aktif} (Tipe: {type(aktif)})")</textarea>
                     <ul>
                         <li><a href="index.html">Pertemuan 1: Pengenalan & Biner</a></li>
                         <li><a href="pertemuan_2.html">Pertemuan 2: Variabel & Tipe Data</a></li>
-                        <li><a href="pertemuan_3.html">Pertemuan 3: Input & Output</a></li>
+                        <li><a href="pertemuan_3.html">Pertemuan 3: Input, Output & Operator</a></li>
                         <li><a href="Pertemuan%204_Percabangan.ipynb">Pertemuan 4: Percabangan</a></li>
                         <li><a href="Kuis_UTS.ipynb">Evaluasi: Kuis UTS</a></li>
                     </ul>
@@ -1447,8 +1480,8 @@ print(f"Aktif  : {aktif} (Tipe: {type(aktif)})")</textarea>
                     <ul>
                         <li><a href="https://github.com/faruq1997/Dasar-Pemrograman-Python" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub Repository</a></li>
                         <li><a href="https://faruq1997.github.io/Dasar-Pemrograman-Python/" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Website Utama</a></li>
-                        <li><a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_2.ipynb" target="_blank" rel="noopener"><i class="fa-solid fa-cloud"></i> Colab Pertemuan 2</a></li>
-                        <li><a href="https://docs.python.org/3/library/stdtypes.html" target="_blank" rel="noopener"><i class="fa-solid fa-book"></i> Dokumentasi Python Types</a></li>
+                        <li><a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_3.ipynb" target="_blank" rel="noopener"><i class="fa-solid fa-cloud"></i> Colab Pertemuan 3</a></li>
+                        <li><a href="https://docs.python.org/3/library/functions.html#input" target="_blank" rel="noopener"><i class="fa-solid fa-book"></i> Dokumentasi input()</a></li>
                     </ul>
                 </div>
             </div>
@@ -1514,286 +1547,132 @@ print(f"Aktif  : {aktif} (Tipe: {type(aktif)})")</textarea>
             navMenu.classList.toggle('show');
         });
 
-        // --- 4. Variable Name Validator Logic ---
-        const pythonKeywords = [
-            'False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 
-            'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 
-            'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is', 
-            'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 
-            'while', 'with', 'yield'
-        ];
+        // --- 4. Interactive Input & Output Terminal Simulator ---
+        function updateIOSimulator() {
+            const nama = document.getElementById('sim-input-nama').value || 'Tamu';
+            const harga = parseInt(document.getElementById('sim-input-harga').value, 10) || 0;
+            const jumlah = parseInt(document.getElementById('sim-input-jumlah').value, 10) || 0;
+            const total = harga * jumlah;
 
-        function validateVariableName(val) {
-            const resultBox = document.getElementById('var-result-box');
-            const icon = document.getElementById('var-icon');
-            const status = document.getElementById('var-status');
-            const desc = document.getElementById('var-desc');
-            const trimmed = val.trim();
-
-            if (!trimmed) {
-                resultBox.className = 'validator-result invalid';
-                icon.className = 'fa-solid fa-circle-xmark';
-                status.textContent = 'Nama Variabel Kosong!';
-                desc.textContent = 'Silakan ketikkan nama variabel untuk dicek.';
-                return;
-            }
-
-            if (pythonKeywords.includes(trimmed)) {
-                resultBox.className = 'validator-result invalid';
-                icon.className = 'fa-solid fa-circle-xmark';
-                status.textContent = 'INVALID: Reserved Keyword!';
-                desc.textContent = `"${trimmed}" adalah kata kunci khusus (keyword) terlarang di Python yang sudah memiliki fungsi sistem.`;
-                return;
-            }
-
-            if (/^[0-9]/.test(trimmed)) {
-                resultBox.className = 'validator-result invalid';
-                icon.className = 'fa-solid fa-circle-xmark';
-                status.textContent = 'INVALID: Diawali Angka!';
-                desc.textContent = 'Nama variabel tidak boleh diawali dengan karakter angka.';
-                return;
-            }
-
-            if (/\s/.test(trimmed)) {
-                resultBox.className = 'validator-result invalid';
-                icon.className = 'fa-solid fa-circle-xmark';
-                status.textContent = 'INVALID: Mengandung Spasi!';
-                desc.textContent = 'Nama variabel tidak boleh mengandung spasi. Gunakan garis bawah (underscore `_`) sebagai pemisah kata.';
-                return;
-            }
-
-            if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(trimmed)) {
-                resultBox.className = 'validator-result invalid';
-                icon.className = 'fa-solid fa-circle-xmark';
-                status.textContent = 'INVALID: Mengandung Simbol Khusus!';
-                desc.textContent = 'Hanya karakter alfabet (a-z, A-Z), angka (0-9), dan garis bawah (_) yang diperbolehkan.';
-                return;
-            }
-
-            // Valid
-            resultBox.className = 'validator-result valid';
-            icon.className = 'fa-solid fa-circle-check';
-            status.textContent = `VALID: "${trimmed}"`;
-            desc.textContent = 'Bagus! Nama variabel ini memenuhi kaidah penamaan sintaks Python yang benar.';
+            const consoleBox = document.getElementById('sim-io-console');
+            consoleBox.textContent = 
+`--- STRUK PEMBELIAN TOKO DIGITAL ---
+Pelanggan    : ${nama}
+Harga Satuan : Rp ${harga.toLocaleString('id-ID')}
+Jumlah Beli  : ${jumlah} pcs
+------------------------------------
+TOTAL BAYAR  : Rp ${total.toLocaleString('id-ID')}
+Status Lunas : True
+Terima kasih telah berbelanja di sini!`;
         }
 
-        // --- 5. Data Type Details Switcher ---
-        const typeDataMap = {
-            str: {
-                title: "String (str) — Teks & Karakter",
-                desc: "Tipe data untuk menyimpan teks, kalimat, maupun karakter tunggal yang diapit oleh tanda kutip tunggal ('') atau ganda (\"\").",
-                code: `# String = Teks diapit tanda kutip
-huruf = 'U'
-kata = "kata"
-kalimat = "Ini adalah kalimat lengkap"
-paragraf = """Ini adalah paragraf
-terdiri dari beberapa baris."""
+        updateIOSimulator();
 
-print(type(kalimat)) # <class 'str'>`
-            },
-            int: {
-                title: "Integer (int) — Bilangan Bulat",
-                desc: "Tipe data untuk menyimpan angka bulat positif maupun negatif tanpa koma (desimal), seperti 10, -5, 23092022.",
-                code: `# Integer = Bilangan Bulat
-nim = 23092022
-tahun = 2025
-suhu_beku = -10
+        // --- 5. Interactive Truth Table Visualizer ---
+        let boolA = true;
+        let boolB = false;
 
-print(nim)
-print(type(nim)) # <class 'int'>`
-            },
-            float: {
-                title: "Float (float) — Bilangan Desimal / Berkoma",
-                desc: "Tipe data untuk menyimpan bilangan pecahan / desimal yang menggunakan tanda titik (.) sebagai pemisah pecahan.",
-                code: `# Float = Bilangan Pecahan
-pi = 3.14
-ipk = 3.85
-berat_badan = 65.5
-
-print(pi)
-print(type(pi)) # <class 'float'>`
-            },
-            hex: {
-                title: "Hexadecimal & Complex — Bilangan Khusus",
-                desc: "Python mendukung notasi Heksadesimal (diawali 0x) dan bilangan Kompleks (riil + imajiner menggunakan huruf j atau fungsi complex()).",
-                code: `# Hexadecimal & Complex
-nilai_heksa = 0x63       # Nilai desimalnya = 99
-konversi_heksa = hex(99) # Menghasilkan '0x63'
-
-bil_kompleks = complex(90) # (90+0j)
-z = 3 + 4j
-
-print(nilai_heksa)       # 99
-print(konversi_heksa)    # '0x63'
-print(bil_kompleks)      # (90+0j)`
-            },
-            bool: {
-                title: "Boolean (bool) — Logika Kebenaran",
-                desc: "Hanya memiliki dua kemungkinan nilai: True (Benar) dan False (Salah). Sangat penting untuk logika percabangan dan perulangan.",
-                code: `# Boolean = True atau False
-is_active = True
-is_graduated = False
-
-# Hasil perbandingan menghasilkan Boolean
-cek_lulus = 85 >= 75 # True
-
-print(is_active)
-print(type(is_active)) # <class 'bool'>`
-            },
-            seq: {
-                title: "List & Tuple — Koleksi Urutan",
-                desc: "List [ ] bersifat dinamis dan dapat diubah (mutable), sedangkan Tuple ( ) bersifat tetap dan tidak dapat diubah (immutable).",
-                code: `# List & Tuple
-daftar_angka = [1, 2, 3, 4, 5]     # List (mutable)
-koordinat = (106.8456, -6.2088)    # Tuple (immutable)
-
-daftar_angka.append(6)
-print(daftar_angka)
-print(type(daftar_angka)) # <class 'list'>
-print(type(koordinat))    # <class 'tuple'>`
+        function toggleBool(target) {
+            if (target === 'a') {
+                boolA = !boolA;
+                const btnA = document.getElementById('btn-bool-a');
+                btnA.textContent = `A = ${boolA ? 'True' : 'False'}`;
+                btnA.className = boolA ? 'truth-toggle-btn true-val' : 'truth-toggle-btn false-val';
+            } else {
+                boolB = !boolB;
+                const btnB = document.getElementById('btn-bool-b');
+                btnB.textContent = `B = ${boolB ? 'True' : 'False'}`;
+                btnB.className = boolB ? 'truth-toggle-btn true-val' : 'truth-toggle-btn false-val';
             }
-        };
 
-        function switchTypeTab(typeKey) {
-            document.querySelectorAll('.type-tabs .type-tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            const resAnd = boolA && boolB;
+            const resOr = boolA || boolB;
+            const resNotA = !boolA;
+            const resNotB = !boolB;
 
-            const data = typeDataMap[typeKey];
-            const content = document.getElementById('type-detail-content');
-            content.innerHTML = `
-                <h3 style="font-size: 1.3rem; color: var(--text-bright); font-weight: 700; margin-bottom: 8px;">
-                    ${data.title}
-                </h3>
-                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 14px;">
-                    ${data.desc}
-                </p>
-                <div class="code-display">
-                    <pre><code class="language-python">${escapeHtml(data.code)}</code></pre>
-                </div>
-            `;
+            const elAnd = document.getElementById('res-and');
+            elAnd.textContent = resAnd ? 'True' : 'False';
+            elAnd.style.color = resAnd ? '#4ade80' : '#f87171';
+
+            const elOr = document.getElementById('res-or');
+            elOr.textContent = resOr ? 'True' : 'False';
+            elOr.style.color = resOr ? '#4ade80' : '#f87171';
+
+            const elNotA = document.getElementById('res-not-a');
+            elNotA.textContent = resNotA ? 'True' : 'False';
+            elNotA.style.color = resNotA ? '#4ade80' : '#f87171';
+
+            const elNotB = document.getElementById('res-not-b');
+            elNotB.textContent = resNotB ? 'True' : 'False';
+            elNotB.style.color = resNotB ? '#4ade80' : '#f87171';
         }
 
-        switchTypeTab('str');
-
-        function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-
-        // --- 6. Interactive Type Casting Lab ---
-        let currentCastTarget = 'int';
-
-        function selectCastingTarget(target) {
-            currentCastTarget = target;
-            document.querySelectorAll('.cast-target-buttons .cast-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            runTypeCasting();
-        }
-
-        function runTypeCasting() {
-            const raw = document.getElementById('cast-input-val').value;
-            const resText = document.getElementById('cast-result-text');
-            const resType = document.getElementById('cast-result-type');
-            const resNote = document.getElementById('cast-result-note');
-
-            try {
-                if (currentCastTarget === 'str') {
-                    resText.textContent = `"${raw}"`;
-                    resType.innerHTML = `Tipe Data: <code>&lt;class 'str'&gt;</code>`;
-                    resNote.textContent = 'Nilai diubah menjadi karakter teks (String).';
-                } else if (currentCastTarget === 'int') {
-                    if (isNaN(raw) || raw.trim() === '') throw new Error(`ValueError: invalid literal for int() with base 10: '${raw}'`);
-                    const val = parseInt(Number(raw), 10);
-                    resText.textContent = val;
-                    resType.innerHTML = `Tipe Data: <code>&lt;class 'int'&gt;</code>`;
-                    resNote.textContent = 'Nilai berhasil diubah menjadi bilangan bulat integer.';
-                } else if (currentCastTarget === 'float') {
-                    if (isNaN(raw) || raw.trim() === '') throw new Error(`ValueError: could not convert string to float: '${raw}'`);
-                    const val = parseFloat(raw);
-                    resText.textContent = val % 1 === 0 ? val.toFixed(1) : val;
-                    resType.innerHTML = `Tipe Data: <code>&lt;class 'float'&gt;</code>`;
-                    resNote.textContent = 'Nilai berhasil diubah menjadi bilangan desimal float.';
-                } else if (currentCastTarget === 'hex') {
-                    if (isNaN(raw) || raw.trim() === '') throw new Error(`TypeError: 'hex' object cannot be interpreted as an integer`);
-                    const num = parseInt(Number(raw), 10);
-                    const hexStr = '0x' + num.toString(16);
-                    resText.textContent = `'${hexStr}'`;
-                    resType.innerHTML = `Tipe Data: <code>&lt;class 'str'&gt; (Hexadecimal)</code>`;
-                    resNote.textContent = `Fungsi hex(${num}) mengubah bilangan integer ke notasi heksadesimal.`;
-                } else if (currentCastTarget === 'bin') {
-                    if (isNaN(raw) || raw.trim() === '') throw new Error(`TypeError: 'bin' object cannot be interpreted as an integer`);
-                    const num = parseInt(Number(raw), 10);
-                    const binStr = '0b' + num.toString(2);
-                    resText.textContent = `'${binStr}'`;
-                    resType.innerHTML = `Tipe Data: <code>&lt;class 'str'&gt; (Binary)</code>`;
-                    resNote.textContent = `Fungsi bin(${num}) mengubah bilangan integer ke notasi biner.`;
-                } else if (currentCastTarget === 'bool') {
-                    const isTrue = raw.trim() !== '' && raw.trim() !== '0' && raw.trim().toLowerCase() !== 'false';
-                    resText.textContent = isTrue ? 'True' : 'False';
-                    resType.innerHTML = `Tipe Data: <code>&lt;class 'bool'&gt;</code>`;
-                    resNote.textContent = isTrue ? 'Nilai non-kosong / non-nol bernilai True.' : 'Nilai kosong / nol bernilai False.';
-                }
-            } catch (err) {
-                resText.textContent = 'Error: ' + err.message;
-                resType.innerHTML = `<span style="color: #ef4444;">Eksekusi Gagal</span>`;
-                resNote.textContent = 'Periksa kembali kesesuaian nilai input dengan target tipe data yang dipilih.';
-            }
-        }
-
-        // --- 7. Live Code Playground ---
+        // --- 6. Live Code Playground Snippets ---
         const playgroundSnippets = {
-            vars: `# Deklarasi Variabel & Pengecekan Tipe Data
-nama = "Faruq"
-umur = 26
-ipk = 3.92
-aktif = True
+            kasir: `# Program Simulasi Kasir Sederhana
+nama_kasir = "Faruq"
+nama_pembeli = "Budi Santoso"
+harga_barang = 25000
+jumlah_beli = 4
 
-print("--- Data Mahasiswa ---")
-print(f"Nama   : {nama} (Tipe: {type(nama)})")
-print(f"Umur   : {umur} tahun (Tipe: {type(umur)})")
-print(f"IPK    : {ipk} (Tipe: {type(ipk)})")
-print(f"Aktif  : {aktif} (Tipe: {type(aktif)})")`,
-            quotes: `# Ragam Tanda Kutip di Python
-huruf = 'U'
-kata = "kata"
-kalimat = "Ini adalah kalimat"
-paragraf = """Ini adalah paragraf
-terdiri dari beberapa baris."""
+total = harga_barang * jumlah_beli
+dapat_diskon = total >= 100000
 
-print("Huruf    :", huruf)
-print("Kata     :", kata)
-print("Kalimat  :", kalimat)
-print("Paragraf :", paragraf)`,
-            casting_demo: `# Praktek Konversi Tipe Data
-angka_str = "100"
-angka_int = int(angka_str)
-angka_float = float(angka_int)
+print("=" * 40)
+print(f"Kasir   : {nama_kasir}")
+print(f"Customer: {nama_pembeli}")
+print(f"Total   : Rp{total}")
+print(f"Dapat Diskon Khusus? {dapat_diskon}")
+print("=" * 40)`,
+            logika_mhs: `# Evaluasi Logika Kelulusan Siswa
+nilai_teori = 82
+nilai_praktek = 78
+kehadiran = 90
 
-print(f"Nilai string  : {angka_str} ({type(angka_str)})")
-print(f"Hasil int()   : {angka_int} ({type(angka_int)})")
-print(f"Hasil float() : {angka_float} ({type(angka_float)})")
-print(f"Hasil hex(99) : {hex(99)}")`,
-            calc: `# Operasi Aritmatika Lengkap
+# Syarat: Nilai teori >= 75 DAN praktek >= 75 DAN kehadiran >= 80
+lulus_akademik = (nilai_teori >= 75) and (nilai_praktek >= 75)
+lulus_total = lulus_akademik and (kehadiran >= 80)
+
+print(f"Nilai Teori   : {nilai_teori}")
+print(f"Nilai Praktek : {nilai_praktek}")
+print(f"Kehadiran     : {kehadiran}%")
+print(f"Status Lulus  : {lulus_total}")`,
+            penugasan_demo: `# Rangkaian Operator Penugasan (Assignment)
 a = 10
-b = 3
+print(f"Nilai Awal : {a}")
 
-print(f"{a} + {b}  = {a + b}  (Penjumlahan)")
-print(f"{a} - {b}  = {a - b}  (Pengurangan)")
-print(f"{a} * {b}  = {a * b}  (Perkalian)")
-print(f"{a} / {b}  = {a / b} (Pembagian Desimal)")
-print(f"{a} // {b} = {a // b}  (Floor Division / Bagi Bulat)")
-print(f"{a} % {b}  = {a % b}  (Modulus / Sisa Bagi)")
-print(f"{a} ** {b} = {a ** b} (Perpangkatan 10^3)")`
+a += 5
+print(f"a += 5  -> {a}")
+
+a -= 3
+print(f"a -= 3  -> {a}")
+
+a *= 6
+print(f"a *= 6  -> {a}")
+
+a /= 8
+print(f"a /= 8  -> {a}")`,
+            bitwise_demo: `# Operasi Bitwise Biner
+a = 1   # Biner: 00000001
+b = 64  # Biner: 01000000
+
+print(f"a = {a} (00000001)")
+print(f"b = {b} (01000000)")
+print("------------------------")
+print(f"a & b   = {a & b}   (AND)")
+print(f"a | b   = {a | b}  (OR)")
+print(f"a ^ b   = {a ^ b}  (XOR)")
+print(f"b << 1  = {b << 1} (Shift Left x2)")
+print(f"b >> 1  = {b >> 1}  (Shift Right /2)")`
         };
 
         function loadPlaygroundSnippet(key) {
-            document.querySelectorAll('#playground .type-tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
             document.getElementById('playground-code').value = playgroundSnippets[key];
             runPlaygroundCode();
         }
 
         function resetPlaygroundCode() {
-            document.getElementById('playground-code').value = playgroundSnippets.vars;
+            document.getElementById('playground-code').value = playgroundSnippets.kasir;
             document.getElementById('console-result').textContent = 'Klik tombol "Jalankan Kode" di atas untuk melihat hasil eksekusi program...';
         }
 
@@ -1806,89 +1685,56 @@ print(f"{a} ** {b} = {a ** b} (Perpangkatan 10^3)")`
                 const lines = rawCode.split('\n');
 
                 let scope = {
-                    nama: "Faruq",
-                    umur: 26,
-                    ipk: 3.92,
-                    aktif: true,
-                    huruf: "U",
-                    kata: "kata",
-                    kalimat: "Ini adalah kalimat",
-                    paragraf: "Ini adalah paragraf\nterdiri dari beberapa baris.",
-                    angka_str: "100",
-                    angka_int: 100,
-                    angka_float: 100.0,
+                    nama_kasir: "Faruq",
+                    nama_pembeli: "Budi Santoso",
+                    harga_barang: 25000,
+                    jumlah_beli: 4,
+                    total: 100000,
+                    dapat_diskon: true,
+                    nilai_teori: 82,
+                    nilai_praktek: 78,
+                    kehadiran: 90,
+                    lulus_akademik: true,
+                    lulus_total: true,
                     a: 10,
-                    b: 3
+                    b: 64
                 };
-
-                function getTypeStr(val) {
-                    if (typeof val === 'string') return "<class 'str'>";
-                    if (typeof val === 'boolean') return "<class 'bool'>";
-                    if (typeof val === 'number') {
-                        return Number.isInteger(val) ? "<class 'int'>" : "<class 'float'>";
-                    }
-                    return "<class 'object'>";
-                }
 
                 lines.forEach(line => {
                     const trimmed = line.trim();
                     if (!trimmed || trimmed.startsWith('#')) return;
 
-                    // Parse simple assignments
-                    if (trimmed.includes('=') && !trimmed.startsWith('print')) {
-                        const parts = trimmed.split('=');
-                        const varName = parts[0].trim();
-                        const varVal = parts[1].trim();
+                    // Assignment math
+                    if (trimmed.startsWith('a += ')) scope.a += Number(trimmed.replace('a += ', ''));
+                    if (trimmed.startsWith('a -= ')) scope.a -= Number(trimmed.replace('a -= ', ''));
+                    if (trimmed.startsWith('a *= ')) scope.a *= Number(trimmed.replace('a *= ', ''));
+                    if (trimmed.startsWith('a /= ')) scope.a /= Number(trimmed.replace('a /= ', ''));
 
-                        if (varVal.startsWith('"') || varVal.startsWith("'")) {
-                            scope[varName] = varVal.slice(1, -1);
-                        } else if (varVal === 'True') {
-                            scope[varName] = true;
-                        } else if (varVal === 'False') {
-                            scope[varName] = false;
-                        } else if (!isNaN(varVal)) {
-                            scope[varName] = Number(varVal);
-                        } else if (varVal.startsWith('int(')) {
-                            const inner = varVal.slice(4, -1).trim();
-                            scope[varName] = parseInt(scope[inner] !== undefined ? scope[inner] : inner.replace(/['"]/g, ''), 10);
-                        } else if (varVal.startsWith('float(')) {
-                            const inner = varVal.slice(6, -1).trim();
-                            scope[varName] = parseFloat(scope[inner] !== undefined ? scope[inner] : inner);
-                        }
-                    }
-
-                    // Parse Print
+                    // Print parser
                     if (trimmed.startsWith('print(') && trimmed.endsWith(')')) {
                         let inside = trimmed.slice(6, -1).trim();
-                        
+
                         if (inside.startsWith('f"') || inside.startsWith("f'")) {
                             let str = inside.slice(2, -1);
-                            str = str.replace(/\{type\((\w+)\)\}/g, (m, p1) => {
-                                return scope[p1] !== undefined ? getTypeStr(scope[p1]) : "<class 'unknown'>";
-                            });
-                            str = str.replace(/\{hex\((\d+)\)\}/g, (m, p1) => {
-                                return '0x' + Number(p1).toString(16);
-                            });
-                            str = str.replace(/\{(\w+)\s*([\+\-\*\/\%]|[\/]{2}|[\*]{2})\s*(\w+)\}/g, (m, v1, op, v2) => {
+                            str = str.replace(/\{(\w+)\s*(&|\||\^|<<|>>)\s*(\w+)\}/g, (m, v1, op, v2) => {
                                 let n1 = scope[v1] !== undefined ? scope[v1] : Number(v1);
                                 let n2 = scope[v2] !== undefined ? scope[v2] : Number(v2);
-                                if (op === '+') return n1 + n2;
-                                if (op === '-') return n1 - n2;
-                                if (op === '*') return n1 * n2;
-                                if (op === '/') return (n1 / n2).toFixed(4);
-                                if (op === '//') return Math.floor(n1 / n2);
-                                if (op === '%') return n1 % n2;
-                                if (op === '**') return Math.pow(n1, n2);
+                                if (op === '&') return n1 & n2;
+                                if (op === '|') return n1 | n2;
+                                if (op === '^') return n1 ^ n2;
+                                if (op === '<<') return n1 << n2;
+                                if (op === '>>') return n1 >> n2;
                                 return m;
                             });
                             str = str.replace(/\{(\w+)\}/g, (match, p1) => {
                                 return scope[p1] !== undefined ? scope[p1] : match;
                             });
                             simulatedOutput.push(str);
-                        } else if (inside.includes(',')) {
-                            let parts = inside.split(',').map(s => s.trim().replace(/^['"]|['"]$/g, ''));
-                            let resolved = parts.map(p => scope[p] !== undefined ? scope[p] : p);
-                            simulatedOutput.push(resolved.join(' '));
+                        } else if (inside.includes('*') && (inside.includes('"') || inside.includes("'"))) {
+                            const parts = inside.split('*').map(s => s.trim());
+                            let charStr = parts[0].replace(/['"]/g, '');
+                            let count = Number(parts[1]) || 20;
+                            simulatedOutput.push(charStr.repeat(count));
                         } else {
                             let clean = inside.replace(/^['"]|['"]$/g, '');
                             simulatedOutput.push(scope[clean] !== undefined ? scope[clean] : clean);
@@ -1906,62 +1752,62 @@ print(f"{a} ** {b} = {a ** b} (Perpangkatan 10^3)")`
             }
         }
 
-        // --- 8. Interactive Quiz Engine Pertemuan 2 ---
+        // --- 7. Quiz Engine Pertemuan 3 ---
         const quizQuestions = [
             {
-                q: "Manakah di antara pilihan berikut yang merupakan nama variabel yang VALID di Python?",
+                q: "Secara default, fungsi input() di Python akan selalu mengembalikan data dalam bentuk tipe data apa?",
                 options: [
-                    "2025_mahasiswa",
-                    "nama-pengguna",
-                    "total_nilai_akhir",
-                    "class"
+                    "Integer (int)",
+                    "String (str)",
+                    "Float (float)",
+                    "Boolean (bool)"
+                ],
+                correct: 1,
+                explanation: "Fungsi input() selalu membaca inputan keyboard sebagai String (teks), sehingga kita perlu mengonversinya dengan int() atau float() jika ingin melakukan perhitungan."
+            },
+            {
+                q: "Jika variabel x = 10, berapakah nilai x setelah dieksekusi perintah x += 7?",
+                options: [
+                    "7",
+                    "10",
+                    "17",
+                    "70"
                 ],
                 correct: 2,
-                explanation: "Nama variabel hanya boleh terdiri dari huruf, angka, dan garis bawah (_), tidak diawali angka, dan bukan reserved keyword."
+                explanation: "Perintah x += 7 merupakan singkatan dari x = x + 7, sehingga 10 + 7 = 17."
             },
             {
-                q: "Berapakah tipe data dan hasil dari operasi pembagian: 10 / 2 di Python?",
+                q: "Apakah hasil dari ekspresi logika: (10 > 5) and (3 == 8)?",
                 options: [
-                    "5 (Integer)",
-                    "5.0 (Float)",
-                    "'5' (String)",
-                    "True (Boolean)"
+                    "True",
+                    "False",
+                    "None",
+                    "Error"
                 ],
                 correct: 1,
-                explanation: "Di Python 3, operator garis miring tunggal (/) selalu menghasilkan tipe data float (berkoma), yaitu 5.0."
+                explanation: "(10 > 5) bernilai True, tetapi (3 == 8) bernilai False. Karena menggunakan operator 'and', jika salah satu False maka hasil akhirnya adalah False."
             },
             {
-                q: "Fungsi apakah yang digunakan untuk mengubah string teks \"100\" menjadi bilangan bulat integer?",
+                q: "Manakah operator perbandingan yang digunakan untuk memeriksa apakah dua variabel TIDAK bernilai sama?",
                 options: [
-                    "str(\"100\")",
-                    "int(\"100\")",
-                    "float(\"100\")",
-                    "bool(\"100\")"
+                    "<>",
+                    "!= ",
+                    "not ==",
+                    "=="
                 ],
                 correct: 1,
-                explanation: "Fungsi int() digunakan untuk mengonversi nilai string angka atau float menjadi integer bulat."
+                explanation: "Di Python, operator tidak sama dengan ditulis menggunakan simbol !=."
             },
             {
-                q: "Berapakah hasil dari operasi modulus: 17 % 5 dalam Python?",
+                q: "Berapakah hasil dari operasi bitwise shift left: 64 << 1?",
                 options: [
-                    "3",
-                    "2",
-                    "3.4",
-                    "1"
-                ],
-                correct: 1,
-                explanation: "17 dibagi 5 adalah 3 dengan sisa bagi 2 (karena 5 × 3 = 15, lalu 17 - 15 = 2)."
-            },
-            {
-                q: "Simbol apakah yang digunakan untuk menuliskan komentar satu baris di Python?",
-                options: [
-                    "// Komentar",
-                    "/* Komentar */",
-                    "# Komentar",
-                    "-- Komentar"
+                    "32",
+                    "64",
+                    "128",
+                    "256"
                 ],
                 correct: 2,
-                explanation: "Python menggunakan tanda pagar (#) untuk menandai komentar satu baris."
+                explanation: "Shift left (<< 1) menggeser bit ke kiri sebanyak 1 posisi, yang setara dengan mengalikan bilangan tersebut dengan 2 (64 × 2 = 128)."
             }
         ];
 
@@ -2038,22 +1884,22 @@ print(f"{a} ** {b} = {a ** b} (Perpangkatan 10^3)")`
             const quizBox = document.getElementById('quiz-box');
             let message = '';
             if (quizScore === 5) {
-                message = "🏆 Sempurna! Anda telah menguasai konsep sintaks, variabel, dan tipe data Pertemuan 2.";
+                message = "🏆 Sempurna! Anda sudah sangat menguasai input, output, dan semua jenis operator di Python.";
                 confetti({
                     particleCount: 150,
                     spread: 100,
                     origin: { y: 0.6 }
                 });
             } else if (quizScore >= 3) {
-                message = "👍 Hebat! Pemahaman dasar Anda sudah sangat solid. Siap lanjut ke Pertemuan 3!";
+                message = "👍 Hebat! Pemahaman operator dan logika Anda sudah sangat bagus. Siap lanjut ke Percabangan (If-Else) di Pertemuan 4!";
             } else {
-                message = "📚 Coba ulangi dan eksplorasi modul di atas untuk memperkuat pemahaman Anda.";
+                message = "📚 Coba pelajari kembali materi di atas agar logika pemrograman Anda semakin terasah.";
             }
 
             quizBox.innerHTML = `
                 <div style="text-align: center; padding: 20px 0;">
                     <i class="fa-solid fa-trophy" style="font-size: 3.5rem; color: #fbbf24; margin-bottom: 16px;"></i>
-                    <h3 style="font-size: 1.8rem; color: var(--text-bright); margin-bottom: 8px;">Kuis Pertemuan 2 Selesai!</h3>
+                    <h3 style="font-size: 1.8rem; color: var(--text-bright); margin-bottom: 8px;">Kuis Pertemuan 3 Selesai!</h3>
                     <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 20px;">
                         Skor Akhir Anda: <span style="color: var(--python-yellow); font-weight: 800; font-size: 1.4rem;">${quizScore} / ${quizQuestions.length}</span>
                     </p>
@@ -2062,8 +1908,8 @@ print(f"{a} ** {b} = {a ** b} (Perpangkatan 10^3)")`
                         <button class="btn btn-secondary" onclick="restartQuiz()">
                             <i class="fa-solid fa-rotate-left"></i> Ulangi Kuis
                         </button>
-                        <a href="index.html" class="btn btn-primary">
-                            <i class="fa-solid fa-arrow-left"></i> Kembali ke Pertemuan 1
+                        <a href="pertemuan_2.html" class="btn btn-primary">
+                            <i class="fa-solid fa-arrow-left"></i> Kembali ke Pertemuan 2
                         </a>
                     </div>
                 </div>
