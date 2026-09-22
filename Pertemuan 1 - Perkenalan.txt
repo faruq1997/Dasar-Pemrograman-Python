@@ -1,2 +1,4 @@
 Pertemuan 1 - Perkenalan + Setting Code Editor
 Tools yang digunakan : Google Colaboratory
+
+Kenalan sama biner: https://faruq1997.github.io/struktur-diskrit/simulasi_biner.html
