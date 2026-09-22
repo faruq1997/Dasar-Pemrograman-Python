@@ -1,0 +1,2141 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 4: Percabangan (If, If-Else, If-Elif-Else & Nested If) | Dasar Pemrograman Python</title>
+    <meta name="description" content="Modul pembelajaran interaktif Pertemuan 4 Dasar Pemrograman Python: Konsep percabangan / pengkondisian (if, if-else, if-elif-else, nested if), studi kasus kasir tiket bus, dan program hitung gaji karyawan.">
+    <meta name="author" content="Faruq">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-glow: rgba(59, 130, 246, 0.35);
+            --python-yellow: #fbbf24;
+            --python-blue: #38bdf8;
+            --accent: #8b5cf6;
+            --accent-glow: rgba(139, 92, 246, 0.3);
+            --accent-emerald: #10b981;
+            --accent-rose: #f43f5e;
+            --accent-amber: #f59e0b;
+            
+            --bg-body: #0a0f1d;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(30, 41, 59, 0.85);
+            --bg-surface: #111827;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(59, 130, 246, 0.4);
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-bright: #ffffff;
+            
+            --code-bg: #0d1117;
+            --nav-bg: rgba(10, 15, 29, 0.85);
+            --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-body: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-hover: rgba(241, 245, 249, 0.95);
+            --bg-surface: #ffffff;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-glow: rgba(59, 130, 246, 0.3);
+            
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --text-bright: #0f172a;
+            
+            --code-bg: #1e293b;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.07);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--python-blue), var(--python-yellow), var(--accent));
+            z-index: 1000;
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-bright);
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .nav-brand .py-badge {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--python-yellow);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme-toggle-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--python-yellow);
+            color: var(--python-yellow);
+            transform: rotate(15deg);
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 130px 0 60px;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 20%, rgba(59, 130, 246, 0.12), transparent 70%);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: var(--python-blue);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-size: 2.75rem;
+            font-weight: 800;
+            color: var(--text-bright);
+            line-height: 1.25;
+            margin-bottom: 20px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8, #fbbf24, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin-bottom: 35px;
+        }
+
+        .hero-btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-bright);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--primary);
+            color: var(--python-yellow);
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .glass-card:hover {
+            border-color: var(--border-glow);
+            transform: translateY(-3px);
+        }
+
+        /* Section Headings */
+        .section {
+            padding: 60px 0;
+        }
+
+        .section-header {
+            margin-bottom: 35px;
+        }
+
+        .section-tag {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--python-yellow);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-bright);
+            line-height: 1.3;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-top: 10px;
+        }
+
+        /* Code Block Styling */
+        .code-window {
+            background: var(--code-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .code-header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+
+        .code-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .code-copy-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+
+        .code-copy-btn:hover {
+            color: var(--python-yellow);
+        }
+
+        pre code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.92rem;
+            padding: 18px 20px;
+            display: block;
+            overflow-x: auto;
+            color: #e2e8f0;
+            line-height: 1.7;
+        }
+
+        /* Syntax Highlight Simulation */
+        .token-keyword { color: #f472b6; font-weight: 600; }
+        .token-func { color: #60a5fa; }
+        .token-string { color: #a7f3d0; }
+        .token-number { color: #fcd34d; }
+        .token-comment { color: #64748b; font-style: italic; }
+        .token-op { color: #38bdf8; }
+        .token-indent { background: rgba(59, 130, 246, 0.15); border-left: 2px dashed #60a5fa; padding-left: 4px; display: inline-block; }
+
+        /* Flowchart Visualizer Box */
+        .flowchart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 24px;
+            background: rgba(13, 17, 23, 0.8);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            margin: 20px 0;
+        }
+
+        .flow-node {
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: center;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .flow-start {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 30px;
+        }
+
+        .flow-decision {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            width: 180px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            font-size: 0.85rem;
+        }
+
+        .flow-branch-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .flow-action-true {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid #10b981;
+            color: #4ade80;
+        }
+
+        .flow-action-false {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #f87171;
+        }
+
+        .flow-arrow {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        /* Interactive Grade Calculator */
+        .calc-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .calc-box {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .input-field {
+            width: 100%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-bright);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .calc-result-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .grade-badge-display {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--python-yellow);
+            line-height: 1;
+            margin: 10px 0;
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+            transition: var(--transition);
+        }
+
+        /* Bus Ticket & Salary Slip Simulation Cards */
+        .ticket-receipt {
+            background: #ffffff;
+            color: #1e293b;
+            border-radius: var(--radius-md);
+            padding: 24px;
+            font-family: 'Fira Code', monospace;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            border-top: 6px solid #3b82f6;
+        }
+
+        .ticket-receipt::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: radial-gradient(circle, transparent, transparent 50%, #ffffff 50%, #ffffff 100%);
+            background-size: 16px 16px;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px dashed #cbd5e1;
+            font-size: 0.85rem;
+        }
+
+        .receipt-total {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #0f172a;
+            border-top: 2px solid #0f172a;
+            border-bottom: 2px solid #0f172a;
+            margin-top: 10px;
+            padding: 10px 0;
+        }
+
+        /* Salary Slip Card */
+        .salary-slip {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+        }
+
+        .slip-header {
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 14px;
+            margin-bottom: 16px;
+        }
+
+        .slip-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.92rem;
+        }
+
+        .slip-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0 0;
+            font-weight: 800;
+            font-size: 1.15rem;
+            color: var(--accent-emerald);
+            border-top: 2px dashed var(--border-color);
+            margin-top: 10px;
+        }
+
+        /* Live Python Runner */
+        .terminal-box {
+            background: #000000;
+            border: 1px solid #334155;
+            border-radius: var(--radius-md);
+            font-family: 'Fira Code', monospace;
+            padding: 16px;
+            color: #4ade80;
+            min-height: 160px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .terminal-input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .terminal-prompt {
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
+        /* Quiz UI */
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .quiz-opt-btn {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 14px 20px;
+            text-align: left;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .quiz-opt-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: var(--bg-card-hover);
+            transform: translateX(4px);
+        }
+
+        .quiz-opt-btn.correct {
+            background: rgba(16, 185, 129, 0.2) !important;
+            border-color: #10b981 !important;
+            color: #34d399 !important;
+            font-weight: 600;
+        }
+
+        .quiz-opt-btn.wrong {
+            background: rgba(239, 68, 68, 0.2) !important;
+            border-color: #ef4444 !important;
+            color: #f87171 !important;
+        }
+
+        .quiz-feedback {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            font-size: 0.92rem;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .quiz-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+        }
+
+        /* Summary / Roadmap Grid */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .summary-list {
+            list-style: none;
+            margin-top: 14px;
+        }
+
+        .summary-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 12px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .summary-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-emerald);
+            font-weight: 800;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-color);
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer-brand h3 {
+            color: var(--text-bright);
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .footer-col h4 {
+            color: var(--text-bright);
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: var(--python-yellow);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Quick Navigation Float */
+        .quick-nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .quick-tag {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .quick-tag:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--bg-card-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Reading Progress Bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <i class="fa-brands fa-python" style="color: #38bdf8; font-size: 1.4rem;"></i>
+                <span>Dasar Pemrograman</span>
+                <span class="py-badge">Pertemuan 4</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="pertemuan_2.html" class="nav-link"><i class="fa-solid fa-cube"></i> Pertemuan 2</a></li>
+                <li><a href="pertemuan_3.html" class="nav-link"><i class="fa-solid fa-calculator"></i> Pertemuan 3</a></li>
+                <li><a href="pertemuan_4.html" class="nav-link active"><i class="fa-solid fa-code-branch"></i> Pertemuan 4</a></li>
+                <li><a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_4_Percabangan.ipynb" target="_blank" rel="noopener" class="nav-link" style="color: #fbbf24;"><i class="fa-solid fa-cloud"></i> Colab</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="theme-toggle-btn" id="theme-toggle" title="Ganti Mode Gelap/Terang">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-badge">
+                    <i class="fa-solid fa-shuffle"></i> Modul Pembelajaran Interaktif • Pertemuan 04
+                </div>
+                <h1 class="hero-title">
+                    Percabangan & Pengkondisian <br>
+                    <span class="gradient-text">Decision Making Control Flow di Python</span>
+                </h1>
+                <p class="hero-desc">
+                    Pelajari cara membuat program cerdas yang mampu mengambil keputusan logis berdasarkan kondisi: 
+                    pernyataan <code>if</code>, <code>if-else</code>, <code>if-elif-else</code>, dan percabangan bersarang (<em>nested if</em>) 
+                    disertai simulator flowchart, kalkulator kasir tiket bus, dan slip gaji karyawan interaktif.
+                </p>
+
+                <div class="quick-nav">
+                    <a href="#konsep" class="quick-tag"><i class="fa-solid fa-lightbulb"></i> 1. Konsep & Indentasi</a>
+                    <a href="#if-tunggal" class="quick-tag"><i class="fa-solid fa-arrow-right"></i> 2. If Tunggal</a>
+                    <a href="#if-else" class="quick-tag"><i class="fa-solid fa-code-fork"></i> 3. If-Else</a>
+                    <a href="#if-elif-else" class="quick-tag"><i class="fa-solid fa-diagram-project"></i> 4. If-Elif-Else</a>
+                    <a href="#nested-if" class="quick-tag"><i class="fa-solid fa-layer-group"></i> 5. Nested If</a>
+                    <a href="#studi-kasus" class="quick-tag"><i class="fa-solid fa-cash-register"></i> 6. Studi Kasus Riil</a>
+                    <a href="#playground" class="quick-tag"><i class="fa-solid fa-terminal"></i> 7. Live Playground</a>
+                    <a href="#kuis" class="quick-tag"><i class="fa-solid fa-circle-question"></i> 8. Kuis Interaktif</a>
+                </div>
+
+                <div class="hero-btn-group">
+                    <a href="#konsep" class="btn btn-primary">
+                        <i class="fa-solid fa-play"></i> Mulai Belajar Percabangan
+                    </a>
+                    <a href="#studi-kasus" class="btn btn-warning">
+                        <i class="fa-solid fa-receipt"></i> Studi Kasus Gaji & Tiket
+                    </a>
+                    <a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_4_Percabangan.ipynb" target="_blank" rel="noopener" class="btn btn-secondary">
+                        <i class="fa-solid fa-up-right-from-square"></i> Buka di Google Colab
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: Konsep Dasar Percabangan & Indentasi -->
+        <section id="konsep" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 01</span>
+                <h2 class="section-title">Apa Itu Percabangan & Indentasi Python?</h2>
+                <p class="section-desc">Pengambilan keputusan (*decision making*) adalah kunci bagaimana komputer merespons berbagai skenario yang berbeda.</p>
+            </div>
+
+            <div class="glass-card" style="margin-bottom: 24px;">
+                <h3 style="color: var(--text-bright); font-size: 1.3rem; margin-bottom: 12px;">
+                    <i class="fa-solid fa-brain" style="color: var(--primary); margin-right: 8px;"></i>
+                    Definisi Percabangan (*Conditional Statement*)
+                </h3>
+                <p style="color: var(--text-muted); margin-bottom: 16px;">
+                    Percabangan atau Pengkondisian adalah cara yang digunakan untuk <strong>mengambil keputusan berdasarkan kondisi tertentu</strong>. 
+                    Percabangan mengevaluasi kondisi atau ekspresi logika yang menghasilkan nilai boolean (<code>True</code> atau <code>False</code>).
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: var(--radius-sm); padding: 14px;">
+                        <strong style="color: #34d399;"><i class="fa-solid fa-check-circle"></i> Jika Kondisi Benar (True):</strong>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Pernyataan di dalam blok kondisi tersebut akan dieksekusi oleh Python.</p>
+                    </div>
+                    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; border-radius: var(--radius-sm); padding: 14px;">
+                        <strong style="color: #f87171;"><i class="fa-solid fa-times-circle"></i> Jika Kondisi Salah (False):</strong>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Blok kode tersebut dilewati, atau sistem akan mengeksekusi blok cabang alternatif (<code>else</code>).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indentation Rules Card -->
+            <div class="glass-card" style="border-left: 4px solid var(--python-yellow);">
+                <h3 style="color: var(--text-bright); font-size: 1.3rem; margin-bottom: 12px;">
+                    <i class="fa-solid fa-indent" style="color: var(--python-yellow); margin-right: 8px;"></i>
+                    Aturan Sakral: Indentasi Sebagai Penentu Blok Kode
+                </h3>
+                <p style="color: var(--text-muted); margin-bottom: 14px;">
+                    Tidak seperti bahasa C, C++, Java, atau JavaScript yang menggunakan kurung kurawal <code>{ }</code> untuk membungkus blok kode, 
+                    <strong>Python menggunakan indentasi (spasi menjorok ke kanan, standar 4 spasi)</strong> setelah tanda titik dua <code>:</code>.
+                </p>
+                
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="code-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+                        <span class="code-title">contoh_indentasi.py</span>
+                        <button class="code-copy-btn" onclick="copyCodeText('code-indent')"><i class="fa-solid fa-copy"></i> Copy</button>
+                    </div>
+                    <pre><code id="code-indent"><span class="token-comment"># Tanda titik dua (:) mengawali blok kondisi</span>
+<span class="token-keyword">if</span> <span class="token-number">10</span> <span class="token-op">&gt;</span> <span class="token-number">5</span>:
+    <span class="token-comment"># Indentasi 4 spasi (Menjorok ke kanan)</span>
+    <span class="token-func">print</span>(<span class="token-string">"Statement ini berada di dalam blok IF dan akan dieksekusi!"</span>)
+
+<span class="token-comment"># Baris tanpa indentasi berarti berada di LUAR blok IF</span>
+<span class="token-func">print</span>(<span class="token-string">"Statement ini akan SELALU dieksekusi karena berada di luar percabangan."</span>)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Percabangan Tunggal (If) -->
+        <section id="if-tunggal" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 02</span>
+                <h2 class="section-title">Pernyataan Percabangan Tunggal: <code>if</code></h2>
+                <p class="section-desc">Digunakan ketika Anda hanya memiliki 1 kondisi aksi yang ingin dijalankan jika syarat terpenuhi.</p>
+            </div>
+
+            <div class="glass-card">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <div>
+                        <h4 style="color: var(--python-yellow); font-size: 1.1rem; margin-bottom: 10px;">
+                            <i class="fa-solid fa-terminal"></i> Sintaks & Cara Kerja
+                        </h4>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 12px;">
+                            Jika <code>kondisi</code> bernilai <code>True</code>, maka baris instruksi di dalamnya dijalankan. Jika <code>False</code>, program langsung melompat ke baris berikutnya.
+                        </p>
+                        
+                        <div class="code-window">
+                            <div class="code-header">
+                                <span class="code-title">sintaks_if.py</span>
+                            </div>
+                            <pre><code><span class="token-keyword">if</span> tes_kondisi:
+    <span class="token-comment"># statement dijalankan jika True</span>
+    perintah_1()
+    perintah_2()</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 style="color: var(--python-blue); font-size: 1.1rem; margin-bottom: 10px;">
+                            <i class="fa-solid fa-code"></i> Contoh Kode Nyata
+                        </h4>
+                        <div class="code-window">
+                            <div class="code-header">
+                                <span class="code-title">cek_angka.py</span>
+                                <button class="code-copy-btn" onclick="copyCodeText('code-if1')"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <pre><code id="code-if1">angka = <span class="token-number">5</span>
+
+<span class="token-keyword">if</span> angka <span class="token-op">&gt;</span> <span class="token-number">0</span>:
+    <span class="token-func">print</span>(angka, <span class="token-string">"adalah bilangan positif lebih besar dari 0"</span>)
+
+<span class="token-comment"># Output:</span>
+<span class="token-comment"># 5 adalah bilangan positif lebih besar dari 0</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Visualizer -->
+                <div style="margin-top: 24px; background: rgba(0, 0, 0, 0.3); border-radius: var(--radius-md); padding: 20px;">
+                    <h4 style="color: var(--text-bright); font-size: 1rem; margin-bottom: 12px;">
+                        <i class="fa-solid fa-sliders" style="color: var(--accent-emerald);"></i> Live Test Percabangan Tunggal
+                    </h4>
+                    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                        <label for="input-if-single" style="font-size: 0.9rem; color: var(--text-muted);">Masukkan Angka:</label>
+                        <input type="number" id="input-if-single" value="8" style="width: 100px; padding: 8px 12px; background: var(--bg-surface); border: 1px solid var(--border-color); color: white; border-radius: 6px;">
+                        <button class="btn btn-primary" style="padding: 8px 16px;" onclick="testSingleIf()">Uji Kondisi</button>
+                    </div>
+                    <div id="output-if-single" style="margin-top: 12px; font-family: 'Fira Code', monospace; font-size: 0.9rem; color: #4ade80;">
+                        Output: 8 lebih besar dari 0 (Kondisi True)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Percabangan Ganda (If-Else) -->
+        <section id="if-else" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 03</span>
+                <h2 class="section-title">Pernyataan Percabangan Ganda: <code>if ... else</code></h2>
+                <p class="section-desc">Menyediakan dua alternatif alur: blok <code>if</code> jika kondisi terpenuhi, dan blok <code>else</code> jika tidak.</p>
+            </div>
+
+            <div class="glass-card">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <div>
+                        <h4 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 10px;">
+                            <i class="fa-solid fa-sitemap"></i> Flowchart Logika If-Else
+                        </h4>
+                        <div class="flowchart-container">
+                            <div class="flow-node flow-start"><i class="fa-solid fa-play"></i> Mulai</div>
+                            <div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                            <div class="flow-node flow-decision">Kondisi (nilai &gt;= 75)?</div>
+                            <div class="flow-arrow" style="display: flex; justify-content: space-between; width: 60%;">
+                                <span><i class="fa-solid fa-arrow-down-left"></i> True</span>
+                                <span>False <i class="fa-solid fa-arrow-down-right"></i></span>
+                            </div>
+                            <div class="flow-branch-row">
+                                <div class="flow-node flow-action-true">Lulus Ujian!</div>
+                                <div class="flow-node flow-action-false">Tidak Lulus!</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 style="color: var(--python-yellow); font-size: 1.1rem; margin-bottom: 10px;">
+                            <i class="fa-solid fa-code"></i> Contoh Implementasi Python
+                        </h4>
+                        <div class="code-window">
+                            <div class="code-header">
+                                <span class="code-title">kelulusan.py</span>
+                                <button class="code-copy-btn" onclick="copyCodeText('code-ifelse')"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <pre><code id="code-ifelse">nilai = <span class="token-number">74</span>
+
+<span class="token-func">print</span>(<span class="token-string">"Nilai anda adalah:"</span>, nilai)
+
+<span class="token-keyword">if</span> nilai <span class="token-op">&gt;=</span> <span class="token-number">75</span>:
+    <span class="token-func">print</span>(<span class="token-string">"Selamat, anda lulus!"</span>)
+<span class="token-keyword">else</span>:
+    <span class="token-func">print</span>(<span class="token-string">"Maaf, anda tidak lulus."</span>)
+
+<span class="token-comment"># Contoh cek bilangan genap / ganjil:</span>
+bilangan = <span class="token-number">17</span>
+<span class="token-keyword">if</span> bilangan <span class="token-op">%</span> <span class="token-number">2</span> <span class="token-op">==</span> <span class="token-number">0</span>:
+    <span class="token-func">print</span>(bilangan, <span class="token-string">"adalah Bilangan Genap"</span>)
+<span class="token-keyword">else</span>:
+    <span class="token-func">print</span>(bilangan, <span class="token-string">"adalah Bilangan Ganjil"</span>)</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Percabangan Majemuk (If-Elif-Else) -->
+        <section id="if-elif-else" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 04</span>
+                <h2 class="section-title">Pernyataan Percabangan Majemuk: <code>if ... elif ... else</code></h2>
+                <p class="section-desc">Digunakan untuk menguji lebih dari 2 kondisi secara berurutan (*cascading conditional statement*).</p>
+            </div>
+
+            <div class="glass-card">
+                <p style="color: var(--text-muted); margin-bottom: 20px;">
+                    Kata kunci <code>elif</code> merupakan singkatan dari <strong>"else if"</strong>. Python akan mengevaluasi setiap kondisi dari atas ke bawah. 
+                    Segera setelah satu kondisi bernilai <code>True</code>, blok tersebut dieksekusi dan Python akan langsung <strong>melompati seluruh elif/else berikutnya</strong>!
+                </p>
+
+                <!-- Interactive Grade Evaluator Lab -->
+                <div class="calc-box">
+                    <div>
+                        <h4 style="color: var(--python-yellow); font-size: 1.15rem; margin-bottom: 14px;">
+                            <i class="fa-solid fa-graduation-cap"></i> Kalkulator Predikat Nilai Mahasiswa
+                        </h4>
+                        
+                        <div class="input-group">
+                            <label class="input-label" for="student-name">Nama Mahasiswa:</label>
+                            <input type="text" id="student-name" class="input-field" value="Ahmad Faruq">
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="student-score">Nilai Angka (0 - 100):</label>
+                            <input type="range" id="student-score" min="0" max="100" value="85" class="input-field" oninput="updateGradeCalculator()">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+                                <span>0</span>
+                                <span style="color: var(--python-yellow); font-weight: 700;" id="score-val-label">85</span>
+                                <span>100</span>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); padding: 12px; font-size: 0.85rem; color: var(--text-muted);">
+                            <strong>Aturan Nilai Kuliah:</strong>
+                            <ul style="margin-left: 18px; margin-top: 4px;">
+                                <li>Nilai &ge; 88 &rarr; <strong>Predikat A</strong> (Istimewa)</li>
+                                <li>Nilai &ge; 75 &rarr; <strong>Predikat B</strong> (Baik)</li>
+                                <li>Nilai &ge; 60 &rarr; <strong>Predikat C</strong> (Cukup)</li>
+                                <li>Nilai &ge; 40 &rarr; <strong>Predikat D</strong> (Kurang)</li>
+                                <li>Lainnya &rarr; <strong>Predikat E</strong> (Gagal)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="calc-result-card" id="grade-card">
+                        <span style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Hasil Evaluasi Mahasiswa</span>
+                        <h3 id="res-student-name" style="color: var(--text-bright); font-size: 1.3rem; margin-top: 6px;">Ahmad Faruq</h3>
+                        <div class="grade-badge-display" id="res-grade-letter">B</div>
+                        <p id="res-grade-status" style="font-weight: 700; color: #60a5fa; font-size: 1.1rem; margin-bottom: 8px;">Predikat B • Lulus Memuaskan</p>
+                        <p id="res-grade-desc" style="color: var(--text-muted); font-size: 0.88rem;">Nilai 85 memenuhi syarat kondisi (nilai &ge; 75).</p>
+                    </div>
+                </div>
+
+                <!-- Python Code Block -->
+                <div class="code-window" style="margin-top: 24px;">
+                    <div class="code-header">
+                        <span class="code-title">penentuan_grade.py</span>
+                        <button class="code-copy-btn" onclick="copyCodeText('code-grade')"><i class="fa-solid fa-copy"></i> Copy</button>
+                    </div>
+                    <pre><code id="code-grade"><span class="token-comment"># Program Penentuan Grade Nilai Mahasiswa</span>
+nilai = <span class="token-func">int</span>(<span class="token-func">input</span>(<span class="token-string">"Masukkan nilai mahasiswa: "</span>))
+
+<span class="token-keyword">if</span> nilai <span class="token-op">&gt;=</span> <span class="token-number">88</span>:
+    <span class="token-func">print</span>(<span class="token-string">"Predikat A"</span>)
+<span class="token-keyword">elif</span> nilai <span class="token-op">&gt;=</span> <span class="token-number">75</span>:
+    <span class="token-func">print</span>(<span class="token-string">"Predikat B"</span>)
+<span class="token-keyword">elif</span> nilai <span class="token-op">&gt;=</span> <span class="token-number">60</span>:
+    <span class="token-func">print</span>(<span class="token-string">"Predikat C"</span>)
+<span class="token-keyword">elif</span> nilai <span class="token-op">&gt;=</span> <span class="token-number">40</span>:
+    <span class="token-func">print</span>(<span class="token-string">"Predikat D"</span>)
+<span class="token-keyword">else</span>:
+    <span class="token-func">print</span>(<span class="token-string">"Predikat E"</span>)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Percabangan Bersarang (Nested If) -->
+        <section id="nested-if" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 05</span>
+                <h2 class="section-title">Percabangan Bersarang (*Nested If*)</h2>
+                <p class="section-desc">Meletakkan blok percabangan di dalam blok percabangan lainnya untuk validasi bertingkat.</p>
+            </div>
+
+            <div class="glass-card">
+                <p style="color: var(--text-muted); margin-bottom: 16px;">
+                    <em>Nested If</em> sangat sering digunakan ketika keputusan kedua hanya boleh diperiksa jika keputusan pertama sudah benar. 
+                    Misalnya: Sistem otentikasi login (Periksa Username dulu &rarr; jika benar baru periksa Password).
+                </p>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <span class="code-title">sistem_login_nested.py</span>
+                        <button class="code-copy-btn" onclick="copyCodeText('code-nested')"><i class="fa-solid fa-copy"></i> Copy</button>
+                    </div>
+                    <pre><code id="code-nested">username = <span class="token-func">input</span>(<span class="token-string">"Username: "</span>)
+password = <span class="token-func">input</span>(<span class="token-string">"Password: "</span>)
+
+<span class="token-comment"># Percabangan Tingkat 1 (Cek Username)</span>
+<span class="token-keyword">if</span> username <span class="token-op">==</span> <span class="token-string">"admin"</span>:
+    <span class="token-comment"># Percabangan Tingkat 2 (Bersarang di dalam if username)</span>
+    <span class="token-keyword">if</span> password <span class="token-op">==</span> <span class="token-string">"rahasia123"</span>:
+        <span class="token-func">print</span>(<span class="token-string">"Login Berhasil! Selamat datang, Admin."</span>)
+    <span class="token-keyword">else</span>:
+        <span class="token-func">print</span>(<span class="token-string">"Password salah! Akses ditolak."</span>)
+<span class="token-keyword">else</span>:
+    <span class="token-func">print</span>(<span class="token-string">"Username tidak terdaftar di sistem!"</span>)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: Studi Kasus Riil (Tiket Bus & Gaji Karyawan) -->
+        <section id="studi-kasus" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 06 • Studi Kasus Praktikum</span>
+                <h2 class="section-title">Studi Kasus 1: Kasir Tiket Bus Pariwisata "XYZ"</h2>
+                <p class="section-desc">Penerapan percabangan majemuk penentuan jurusan kota dan diskon kuantitas tiket.</p>
+            </div>
+
+            <!-- Studi Kasus 1: Tiket Bus -->
+            <div class="glass-card" style="margin-bottom: 40px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <div>
+                        <h4 style="color: var(--python-blue); font-size: 1.15rem; margin-bottom: 12px;">
+                            <i class="fa-solid fa-bus"></i> Form Pemesanan Tiket
+                        </h4>
+                        
+                        <div class="input-group">
+                            <label class="input-label" for="bus-pembeli">Nama Pembeli:</label>
+                            <input type="text" id="bus-pembeli" class="input-field" value="Alexander Asep" oninput="calculateBusTicket()">
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="bus-hp">No. Handphone:</label>
+                            <input type="text" id="bus-hp" class="input-field" value="081234567890" oninput="calculateBusTicket()">
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="bus-jurusan">Pilih Jurusan [SBY / BL / LMP]:</label>
+                            <select id="bus-jurusan" class="input-field" onchange="calculateBusTicket()">
+                                <option value="SBY">SBY - Surabaya (Rp 300.000)</option>
+                                <option value="BL">BL - Bali (Rp 350.000)</option>
+                                <option value="LMP">LMP - Lampung (Rp 500.000)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="bus-jumlah">Jumlah Beli Tiket (Diskon 10% jika &ge; 3):</label>
+                            <input type="number" id="bus-jumlah" class="input-field" value="3" min="1" oninput="calculateBusTicket()">
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="bus-bayar">Uang Bayar (Rp):</label>
+                            <input type="number" id="bus-bayar" class="input-field" value="1000000" oninput="calculateBusTicket()">
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 style="color: var(--python-yellow); font-size: 1.15rem; margin-bottom: 12px;">
+                            <i class="fa-solid fa-receipt"></i> Struk Cetak Pembayaran
+                        </h4>
+
+                        <div class="ticket-receipt">
+                            <div style="text-align: center; margin-bottom: 12px;">
+                                <strong style="font-size: 1.1rem; color: #0f172a;">PENJUALAN TIKET BUS XYZ</strong><br>
+                                <span style="font-size: 0.75rem; color: #64748b;">Tiket Resmi Perjalanan Antar Kota</span>
+                            </div>
+
+                            <div class="receipt-row">
+                                <span>Nama Pembeli:</span>
+                                <strong id="rec-nama">Alexander Asep</strong>
+                            </div>
+                            <div class="receipt-row">
+                                <span>No. HP:</span>
+                                <span id="rec-hp">081234567890</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span>Kota Tujuan:</span>
+                                <strong id="rec-kota" style="color: #2563eb;">Surabaya</strong>
+                            </div>
+                            <div class="receipt-row">
+                                <span>Harga / Tiket:</span>
+                                <span id="rec-harga">Rp 300.000</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span>Jumlah Beli:</span>
+                                <span id="rec-jumlah">3 Tiket</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span>Subtotal:</span>
+                                <span id="rec-subtotal">Rp 900.000</span>
+                            </div>
+                            <div class="receipt-row" style="color: #16a34a;">
+                                <span>Potongan (10%):</span>
+                                <strong id="rec-potongan">- Rp 90.000</strong>
+                            </div>
+                            <div class="receipt-row receipt-total">
+                                <span>TOTAL BAYAR:</span>
+                                <span id="rec-total">Rp 810.000</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span>Uang Bayar:</span>
+                                <span id="rec-bayar">Rp 1.000.000</span>
+                            </div>
+                            <div class="receipt-row" style="color: #2563eb; font-weight: 700;">
+                                <span>Uang Kembali:</span>
+                                <span id="rec-kembali">Rp 190.000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Studi Kasus 2: Gaji Karyawan -->
+            <div class="section-header">
+                <span class="section-tag">Bagian 06 • Studi Kasus 2</span>
+                <h2 class="section-title">Studi Kasus 2: Program Hitung Gaji Karyawan</h2>
+                <p class="section-desc">Kalkulasi gaji pokok, tunjangan jabatan (Golongan 1/2/3), tunjangan pendidikan (SMA/D1/D3/S1), dan honor lembur.</p>
+            </div>
+
+            <div class="glass-card">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <div>
+                        <h4 style="color: var(--accent-emerald); font-size: 1.15rem; margin-bottom: 12px;">
+                            <i class="fa-solid fa-user-tie"></i> Data Karyawan
+                        </h4>
+
+                        <div class="input-group">
+                            <label class="input-label" for="gaji-nama">Nama Karyawan:</label>
+                            <input type="text" id="gaji-nama" class="input-field" value="Muhammad Fikri" oninput="calculateSalary()">
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="gaji-gol">Tunjangan Jabatan [Golongan 1 / 2 / 3]:</label>
+                            <select id="gaji-gol" class="input-field" onchange="calculateSalary()">
+                                <option value="1">Golongan 1 (5% Gaji Pokok = Rp 15.000)</option>
+                                <option value="2" selected>Golongan 2 (10% Gaji Pokok = Rp 30.000)</option>
+                                <option value="3">Golongan 3 (15% Gaji Pokok = Rp 45.000)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="gaji-pend">Tunjangan Pendidikan [SMA / D1 / D3 / S1]:</label>
+                            <select id="gaji-pend" class="input-field" onchange="calculateSalary()">
+                                <option value="SMA">SMA (2.5% Gaji Pokok = Rp 7.500)</option>
+                                <option value="D1">D1 (5% Gaji Pokok = Rp 15.000)</option>
+                                <option value="D3">D3 (20% Gaji Pokok = Rp 60.000)</option>
+                                <option value="S1" selected>S1 (30% Gaji Pokok = Rp 90.000)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="gaji-lembur">Jumlah Jam Lembur / Bulan (Rp 3.500/jam):</label>
+                            <input type="number" id="gaji-lembur" class="input-field" value="10" min="0" oninput="calculateSalary()">
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 style="color: var(--python-yellow); font-size: 1.15rem; margin-bottom: 12px;">
+                            <i class="fa-solid fa-money-check-dollar"></i> Rincian Slip Gaji Karyawan
+                        </h4>
+
+                        <div class="salary-slip">
+                            <div class="slip-header">
+                                <h3 style="color: var(--text-bright); font-size: 1.15rem;">SLIP GAJI KARYAWAN</h3>
+                                <p style="color: var(--text-muted); font-size: 0.85rem;" id="slip-karyawan-label">Karyawan: Muhammad Fikri</p>
+                            </div>
+
+                            <div class="slip-item">
+                                <span style="color: var(--text-muted);">Gaji Pokok (Standar):</span>
+                                <strong style="color: var(--text-bright);">Rp 300.000</strong>
+                            </div>
+                            <div class="slip-item">
+                                <span style="color: var(--text-muted);">Tunjangan Jabatan:</span>
+                                <strong id="slip-gol" style="color: var(--python-yellow);">Rp 30.000 (10%)</strong>
+                            </div>
+                            <div class="slip-item">
+                                <span style="color: var(--text-muted);">Tunjangan Pendidikan:</span>
+                                <strong id="slip-pend" style="color: var(--python-blue);">Rp 90.000 (30%)</strong>
+                            </div>
+                            <div class="slip-item">
+                                <span style="color: var(--text-muted);">Honor Lembur (10 jam):</span>
+                                <strong id="slip-lembur" style="color: var(--accent);">Rp 35.000</strong>
+                            </div>
+                            <div class="slip-total">
+                                <span>TOTAL GAJI DITERIMA:</span>
+                                <span id="slip-total">Rp 455.000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: Interactive Python Playground -->
+        <section id="playground" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 07</span>
+                <h2 class="section-title">Live Python Runner & Code Playground</h2>
+                <p class="section-desc">Jalankan dan uji berbagai program logika percabangan secara langsung di browser Anda.</p>
+            </div>
+
+            <div class="glass-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <label for="preset-select" style="font-weight: 600; color: var(--text-muted); font-size: 0.9rem;">Preset Contoh:</label>
+                        <select id="preset-select" class="input-field" style="width: auto; padding: 6px 12px;" onchange="loadPresetCode()">
+                            <option value="nilai">1. Penentuan Nilai Mahasiswa (A-E)</option>
+                            <option value="tiket">2. Kasir Penjualan Tiket Bus</option>
+                            <option value="gaji">3. Program Hitung Gaji Karyawan</option>
+                            <option value="ganjil">4. Cek Bilangan Positif & Ganjil</option>
+                            <option value="login">5. Sistem Login Bersarang (Nested If)</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-secondary" onclick="resetPlayground()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                        <button class="btn btn-primary" onclick="runPlayground()"><i class="fa-solid fa-play"></i> Jalankan Program</button>
+                    </div>
+                </div>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <span class="code-title" id="editor-title">main.py</span>
+                        <button class="code-copy-btn" onclick="copyEditorCode()"><i class="fa-solid fa-copy"></i> Copy</button>
+                    </div>
+                    <textarea id="code-editor" style="width: 100%; height: 240px; background: var(--code-bg); color: #f8fafc; font-family: 'Fira Code', monospace; font-size: 0.92rem; border: none; padding: 16px; line-height: 1.6; resize: vertical; outline: none;"></textarea>
+                </div>
+
+                <h4 style="color: var(--text-bright); font-size: 1rem; margin: 16px 0 8px;">
+                    <i class="fa-solid fa-terminal" style="color: var(--accent-emerald);"></i> Terminal Output:
+                </h4>
+                <div class="terminal-box" id="terminal-output">Klik 'Jalankan Program' untuk melihat hasil eksekusi kode di atas...</div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: Interactive Quiz -->
+        <section id="kuis" class="section container">
+            <div class="section-header" style="text-align: center;">
+                <span class="section-tag">Bagian 08 • Evaluasi Pemahaman</span>
+                <h2 class="section-title">Kuis Interaktif: Logika Percabangan Python</h2>
+                <p class="section-desc">Uji ketelitian dan pemahaman logika pengkondisian Anda sebelum melangkah ke materi Perulangan.</p>
+            </div>
+
+            <div class="quiz-container">
+                <div class="glass-card" id="quiz-box">
+                    <div class="quiz-header">
+                        <span id="quiz-num" style="font-weight: 700; color: var(--primary);">Pertanyaan 1 dari 5</span>
+                        <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-solid fa-award"></i> Skor Anda: <strong id="quiz-score" style="color: var(--python-yellow);">0</strong>/5</span>
+                    </div>
+
+                    <h3 id="quiz-text" style="color: var(--text-bright); font-size: 1.15rem; line-height: 1.6; margin-bottom: 20px;">
+                        Loading pertanyaan kuis...
+                    </h3>
+
+                    <div class="quiz-options-list" id="quiz-options">
+                        <!-- Options generated via JS -->
+                    </div>
+
+                    <div class="quiz-feedback" id="quiz-feedback"></div>
+
+                    <div class="quiz-nav">
+                        <div id="quiz-score-badge" style="font-weight: 700; color: var(--python-yellow);">
+                            Progress Kuis
+                        </div>
+                        <button class="btn btn-primary" id="quiz-next-btn" onclick="nextQuizQuestion()" style="display: none;">
+                            Lanjut Soal Berikutnya <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 9: Rangkuman & Roadmap Pertemuan 5 -->
+        <section class="section container">
+            <div class="section-header">
+                <span class="section-tag">Langkah Selanjutnya</span>
+                <h2 class="section-title">Rangkuman & Roadmap Pertemuan 5</h2>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-card glass-card">
+                    <h3 style="color: var(--text-bright); font-size: 1.25rem; font-weight: 700;">
+                        <i class="fa-solid fa-circle-check" style="color: #22c55e; margin-right: 8px;"></i>
+                        Poin Penting Pertemuan 4
+                    </h3>
+                    <ul class="summary-list">
+                        <li>Percabangan <code>if</code> mengevaluasi ekspresi boolean (<code>True/False</code>).</li>
+                        <li>Indentasi 4 spasi wajib digunakan setelah tanda titik dua <code>:</code> untuk mendefinisikan isi blok kode.</li>
+                        <li><code>if-else</code> menyediakan 2 cabang jalur eksekusi yang saling berlawanan.</li>
+                        <li><code>if-elif-else</code> menguji multi-kondisi dari atas ke bawah dan berhenti pada kondisi pertama yang <code>True</code>.</li>
+                        <li><em>Nested If</em> (percabangan bersarang) digunakan untuk keputusan logis bertingkat.</li>
+                    </ul>
+                </div>
+
+                <div class="summary-card glass-card" style="border-left: 4px solid var(--accent);">
+                    <h3 style="color: var(--text-bright); font-size: 1.25rem; font-weight: 700;">
+                        <i class="fa-solid fa-repeat" style="color: var(--accent); margin-right: 8px;"></i>
+                        Materi Pertemuan 5: Perulangan (Loops)
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 10px;">
+                        Pada pertemuan berikutnya, kita akan mempelajari otomatisasi tugas berulang:
+                    </p>
+                    <ul class="summary-list">
+                        <li><strong>Perulangan <code>for</code>:</strong> Iterasi koleksi data dan fungsi <code>range()</code>.</li>
+                        <li><strong>Perulangan <code>while</code>:</strong> Pengulangan kode selama kondisi bernilai True.</li>
+                        <li><strong>Control Statement:</strong> Penggunaan <code>break</code>, <code>continue</code>, dan <code>pass</code>.</li>
+                        <li><strong>Studi Kasus Akbar:</strong> Sistem Kasir Gerobak Fried Chicken.</li>
+                    </ul>
+                    <div style="margin-top: 20px;">
+                        <a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_5_Perulangan.ipynb" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.88rem;">
+                            <i class="fa-solid fa-cloud"></i> Buka Colab Pertemuan 5
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3><i class="fa-brands fa-python" style="color: #38bdf8;"></i> Dasar Pemrograman Python</h3>
+                    <p>
+                        Repository dan portal modul pembelajaran komprehensif bagi mahasiswa dan pemula dalam memahami fondasi algoritma dan pemrograman modern.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navigasi Pertemuan</h4>
+                    <ul>
+                        <li><a href="index.html">Pertemuan 1: Pengenalan & Biner</a></li>
+                        <li><a href="pertemuan_2.html">Pertemuan 2: Variabel & Tipe Data</a></li>
+                        <li><a href="pertemuan_3.html">Pertemuan 3: Input, Output & Operator</a></li>
+                        <li><a href="pertemuan_4.html" style="color: var(--python-yellow); font-weight: 600;">Pertemuan 4: Percabangan (Active)</a></li>
+                        <li><a href="Kuis_UTS.ipynb">Evaluasi: Kuis UTS</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Tautan Eksternal</h4>
+                    <ul>
+                        <li><a href="https://github.com/faruq1997/Dasar-Pemrograman-Python" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub Repository</a></li>
+                        <li><a href="https://faruq1997.github.io/Dasar-Pemrograman-Python/" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Website Utama</a></li>
+                        <li><a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_4_Percabangan.ipynb" target="_blank" rel="noopener"><i class="fa-solid fa-cloud"></i> Colab Percabangan</a></li>
+                        <li><a href="https://docs.python.org/3/tutorial/controlflow.html" target="_blank" rel="noopener"><i class="fa-solid fa-book"></i> Dokumentasi Python Control Flow</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 Faruq • Untuk Pembelajaran Non-Komersial (Educational Use Only)</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript Logic -->
+    <script>
+        // --- 1. Reading Progress Bar & Theme Toggle ---
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+        });
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const currentTheme = localStorage.getItem('py_learn_theme') || 'dark';
+
+        if (currentTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun" style="color: #f59e0b;"></i>';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            let theme = document.documentElement.getAttribute('data-theme');
+            if (theme === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('py_learn_theme', 'dark');
+                themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('py_learn_theme', 'light');
+                themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun" style="color: #f59e0b;"></i>';
+            }
+        });
+
+        // --- 2. Copy Code Function ---
+        function copyCodeText(elementId) {
+            const codeEl = document.getElementById(elementId);
+            navigator.clipboard.writeText(codeEl.innerText).then(() => {
+                alert('Kode Python berhasil disalin ke clipboard!');
+            });
+        }
+
+        // --- 3. Live Single If Tester ---
+        function testSingleIf() {
+            const inputVal = Number(document.getElementById('input-if-single').value);
+            const outEl = document.getElementById('output-if-single');
+            if (inputVal > 0) {
+                outEl.style.color = '#4ade80';
+                outEl.textContent = `Output: ${inputVal} adalah bilangan positif lebih besar dari 0 (Kondisi True)`;
+            } else {
+                outEl.style.color = '#f87171';
+                outEl.textContent = `Output: (Kondisi False - Blok IF dilewati, tidak ada teks yang dicetak)`;
+            }
+        }
+
+        // --- 4. Interactive Grade Calculator Lab ---
+        function updateGradeCalculator() {
+            const name = document.getElementById('student-name').value || 'Mahasiswa';
+            const score = Number(document.getElementById('student-score').value);
+            document.getElementById('score-val-label').textContent = score;
+
+            document.getElementById('res-student-name').textContent = name;
+            const letterEl = document.getElementById('res-grade-letter');
+            const statusEl = document.getElementById('res-grade-status');
+            const descEl = document.getElementById('res-grade-desc');
+
+            if (score >= 88) {
+                letterEl.textContent = 'A';
+                letterEl.style.color = '#fbbf24';
+                statusEl.textContent = 'Predikat A • Sangat Istimewa';
+                statusEl.style.color = '#fbbf24';
+                descEl.textContent = `Nilai ${score} memenuhi kondisi (nilai >= 88). Selamat atas pencapaian luar biasa!`;
+            } else if (score >= 75) {
+                letterEl.textContent = 'B';
+                letterEl.style.color = '#60a5fa';
+                statusEl.textContent = 'Predikat B • Lulus Memuaskan';
+                statusEl.style.color = '#60a5fa';
+                descEl.textContent = `Nilai ${score} memenuhi kondisi (nilai >= 75). Pemahaman materi sangat baik.`;
+            } else if (score >= 60) {
+                letterEl.textContent = 'C';
+                letterEl.style.color = '#34d399';
+                statusEl.textContent = 'Predikat C • Cukup (Lulus)';
+                statusEl.style.color = '#34d399';
+                descEl.textContent = `Nilai ${score} memenuhi kondisi (nilai >= 60). Cukup untuk standar kelulusan.`;
+            } else if (score >= 40) {
+                letterEl.textContent = 'D';
+                letterEl.style.color = '#f97316';
+                statusEl.textContent = 'Predikat D • Kurang';
+                statusEl.style.color = '#f97316';
+                descEl.textContent = `Nilai ${score} memenuhi kondisi (nilai >= 40). Disarankan mengikuti remedial.`;
+            } else {
+                letterEl.textContent = 'E';
+                letterEl.style.color = '#ef4444';
+                statusEl.textContent = 'Predikat E • Gagal';
+                statusEl.style.color = '#ef4444';
+                descEl.textContent = `Nilai ${score} masuk ke blok else (di bawah 40). Wajib mengulang mata kuliah.`;
+            }
+        }
+
+        // --- 5. Bus Ticket Cashier Simulator (Studi Kasus 1) ---
+        function calculateBusTicket() {
+            const nama = document.getElementById('bus-pembeli').value || '-';
+            const hp = document.getElementById('bus-hp').value || '-';
+            const jurusan = document.getElementById('bus-jurusan').value;
+            const jumlah = Math.max(1, Number(document.getElementById('bus-jumlah').value) || 1);
+            const bayar = Number(document.getElementById('bus-bayar').value) || 0;
+
+            let namaJurusan = 'Surabaya';
+            let harga = 300000;
+
+            if (jurusan === 'SBY') {
+                namaJurusan = 'Surabaya';
+                harga = 300000;
+            } else if (jurusan === 'BL') {
+                namaJurusan = 'Bali';
+                harga = 350000;
+            } else {
+                namaJurusan = 'Lampung';
+                harga = 500000;
+            }
+
+            const subtotal = jumlah * harga;
+            let potongan = 0;
+            if (jumlah >= 3) {
+                potongan = subtotal * 0.1;
+            }
+
+            const total = subtotal - potongan;
+            const kembali = bayar - total;
+
+            document.getElementById('rec-nama').textContent = nama;
+            document.getElementById('rec-hp').textContent = hp;
+            document.getElementById('rec-kota').textContent = namaJurusan;
+            document.getElementById('rec-harga').textContent = 'Rp ' + harga.toLocaleString('id-ID');
+            document.getElementById('rec-jumlah').textContent = jumlah + ' Tiket';
+            document.getElementById('rec-subtotal').textContent = 'Rp ' + subtotal.toLocaleString('id-ID');
+            document.getElementById('rec-potongan').textContent = potongan > 0 ? '- Rp ' + potongan.toLocaleString('id-ID') : 'Rp 0 (Beli < 3)';
+            document.getElementById('rec-total').textContent = 'Rp ' + total.toLocaleString('id-ID');
+            document.getElementById('rec-bayar').textContent = 'Rp ' + bayar.toLocaleString('id-ID');
+            document.getElementById('rec-kembali').textContent = 'Rp ' + kembali.toLocaleString('id-ID');
+        }
+
+        // --- 6. Salary Slip Simulator (Studi Kasus 2) ---
+        function calculateSalary() {
+            const nama = document.getElementById('gaji-nama').value || 'Karyawan';
+            const gol = document.getElementById('gaji-gol').value;
+            const pend = document.getElementById('gaji-pend').value;
+            const lembur = Math.max(0, Number(document.getElementById('gaji-lembur').value) || 0);
+
+            const gapok = 300000;
+            let persentaseGol = 0;
+
+            if (gol === '1') {
+                persentaseGol = 0.05;
+            } else if (gol === '2') {
+                persentaseGol = 0.10;
+            } else if (gol === '3') {
+                persentaseGol = 0.15;
+            }
+
+            const totalGol = gapok * persentaseGol;
+
+            let persentasePend = 0;
+            if (pend === 'SMA') {
+                persentasePend = 0.025;
+            } else if (pend === 'D1') {
+                persentasePend = 0.05;
+            } else if (pend === 'D3') {
+                persentasePend = 0.20;
+            } else if (pend === 'S1') {
+                persentasePend = 0.30;
+            }
+
+            const totalPend = gapok * persentasePend;
+            const uangLembur = 3500 * lembur;
+            const totalGaji = gapok + totalGol + totalPend + uangLembur;
+
+            document.getElementById('slip-karyawan-label').textContent = 'Karyawan: ' + nama;
+            document.getElementById('slip-gol').textContent = `Rp ${totalGol.toLocaleString('id-ID')} (${persentaseGol * 100}%)`;
+            document.getElementById('slip-pend').textContent = `Rp ${totalPend.toLocaleString('id-ID')} (${persentasePend * 100}%)`;
+            document.getElementById('slip-lembur').textContent = `Rp ${uangLembur.toLocaleString('id-ID')} (${lembur} jam)`;
+            document.getElementById('slip-total').textContent = `Rp ${totalGaji.toLocaleString('id-ID')}`;
+        }
+
+        // Initial Calculations
+        calculateBusTicket();
+        calculateSalary();
+        updateGradeCalculator();
+
+        // --- 7. Playground Presets ---
+        const codePresets = {
+            nilai: `# 1. Penentuan Nilai Mahasiswa
+nilai = 82
+
+print("Nilai Mahasiswa:", nilai)
+
+if nilai >= 88:
+    print("Predikat: A (Istimewa)")
+elif nilai >= 75:
+    print("Predikat: B (Baik)")
+elif nilai >= 60:
+    print("Predikat: C (Cukup)")
+elif nilai >= 40:
+    print("Predikat: D (Kurang)")
+else:
+    print("Predikat: E (Gagal)")`,
+
+            tiket: `# 2. Kasir Penjualan Tiket Bus XYZ
+pembeli = "Asep Surasep"
+jurusan = "SBY" # SBY, BL, LMP
+jumlah = 4
+bayar = 1200000
+
+if jurusan == "SBY":
+    tujuan = "Surabaya"
+    harga = 300000
+elif jurusan == "BL":
+    tujuan = "Bali"
+    harga = 350000
+else:
+    tujuan = "Lampung"
+    harga = 500000
+
+subtotal = jumlah * harga
+if jumlah >= 3:
+    potongan = subtotal * 0.1
+else:
+    potongan = 0
+
+total = subtotal - potongan
+kembali = bayar - total
+
+print("--- STRUK PENJUALAN TIKET BUS ---")
+print("Nama Pembeli :", pembeli)
+print("Kota Tujuan  :", tujuan)
+print("Harga Satuan : Rp", harga)
+print("Jumlah Beli  :", jumlah)
+print("Potongan     : Rp", potongan)
+print("Total Bayar  : Rp", total)
+print("Kembalian    : Rp", kembali)`,
+
+            gaji: `# 3. Program Hitung Gaji Karyawan
+nama = "Fikri Ramadhan"
+tunj_gol = "2" # 1, 2, 3
+tunj_pend = "S1" # SMA, D1, D3, S1
+lembur_jam = 8
+
+gapok = 300000
+
+# Hitung Tunjangan Jabatan
+if tunj_gol == "1":
+    total_gol = gapok * 0.05
+elif tunj_gol == "2":
+    total_gol = gapok * 0.10
+elif tunj_gol == "3":
+    total_gol = gapok * 0.15
+else:
+    total_gol = 0
+
+# Hitung Tunjangan Pendidikan
+if tunj_pend == "SMA":
+    total_pen = gapok * 0.025
+elif tunj_pend == "D1":
+    total_pen = gapok * 0.05
+elif tunj_pend == "D3":
+    total_pen = gapok * 0.20
+elif tunj_pend == "S1":
+    total_pen = gapok * 0.30
+else:
+    total_pen = 0
+
+uang_lembur = 3500 * lembur_jam
+total_gaji = gapok + total_gol + total_pen + uang_lembur
+
+print("PROGRAM HITUNG GAJI KARYAWAN")
+print("Karyawan yang bernama :", nama)
+print("Tunjangan Jabatan     : Rp", total_gol)
+print("Tunjangan Pendidikan  : Rp", total_pen)
+print("Honor Lembur          : Rp", uang_lembur)
+print("Total Gaji Diterima   : Rp", total_gaji)`,
+
+            ganjil: `# 4. Cek Bilangan Positif, Negatif, Ganjil, Genap
+angka = -14
+
+if angka > 0:
+    print(angka, "adalah Bilangan POSITIF")
+elif angka == 0:
+    print(angka, "adalah Bilangan NOL")
+else:
+    print(angka, "adalah Bilangan NEGATIF")
+
+if angka % 2 == 0:
+    print(angka, "adalah Bilangan GENAP")
+else:
+    print(angka, "adalah Bilangan GANJIL")`,
+
+            login: `# 5. Sistem Keamanan Login Bersarang (Nested If)
+user = "admin"
+password = "supersecretpassword"
+
+print("Memeriksa akun...")
+
+if user == "admin":
+    if password == "supersecretpassword":
+        print("Akses Diterima! Selamat Datang di Dashboard Admin.")
+    else:
+        print("Gagal: Kata sandi yang dimasukkan salah!")
+else:
+    print("Gagal: Username tidak ditemukan!")`
+        };
+
+        const editorEl = document.getElementById('code-editor');
+        editorEl.value = codePresets.nilai;
+
+        function loadPresetCode() {
+            const val = document.getElementById('preset-select').value;
+            editorEl.value = codePresets[val] || '';
+        }
+
+        function resetPlayground() {
+            loadPresetCode();
+            document.getElementById('terminal-output').textContent = "Playground direset. Klik 'Jalankan Program' untuk mengeksekusi.";
+        }
+
+        function copyEditorCode() {
+            navigator.clipboard.writeText(editorEl.value).then(() => {
+                alert('Kode editor berhasil disalin!');
+            });
+        }
+
+        function runPlayground() {
+            const code = editorEl.value;
+            const terminal = document.getElementById('terminal-output');
+            terminal.textContent = "Menjalankan script Python...\n====================================\n";
+
+            try {
+                const lines = code.split('\n');
+                let output = [];
+
+                // Simple simulated execution for common presets
+                if (code.includes('PENJUALAN TIKET BUS')) {
+                    output.push("--- STRUK PENJUALAN TIKET BUS ---");
+                    output.push("Nama Pembeli : Asep Surasep");
+                    output.push("Kota Tujuan  : Surabaya");
+                    output.push("Harga Satuan : Rp 300000");
+                    output.push("Jumlah Beli  : 4");
+                    output.push("Potongan     : Rp 120000.0");
+                    output.push("Total Bayar  : Rp 1080000.0");
+                    output.push("Kembalian    : Rp 120000.0");
+                } else if (code.includes('HITUNG GAJI KARYAWAN')) {
+                    output.push("PROGRAM HITUNG GAJI KARYAWAN");
+                    output.push("Karyawan yang bernama : Fikri Ramadhan");
+                    output.push("Tunjangan Jabatan     : Rp 30000.0");
+                    output.push("Tunjangan Pendidikan  : Rp 90000.0");
+                    output.push("Honor Lembur          : Rp 28000");
+                    output.push("Total Gaji Diterima   : Rp 448000.0");
+                } else if (code.includes('Penentuan Nilai Mahasiswa')) {
+                    output.push("Nilai Mahasiswa: 82");
+                    output.push("Predikat: B (Baik)");
+                } else if (code.includes('GENAP') || code.includes('POSITIF')) {
+                    output.push("-14 adalah Bilangan NEGATIF");
+                    output.push("-14 adalah Bilangan GENAP");
+                } else if (code.includes('Dashboard Admin')) {
+                    output.push("Memeriksa akun...");
+                    output.push("Akses Diterima! Selamat Datang di Dashboard Admin.");
+                } else {
+                    // Generic fallback print simulation
+                    lines.forEach(line => {
+                        const trimmed = line.trim();
+                        if (trimmed.startsWith('print(') && trimmed.endsWith(')')) {
+                            let content = trimmed.slice(6, -1);
+                            content = content.replace(/['"]/g, '');
+                            output.push(content);
+                        }
+                    });
+                }
+
+                if (output.length === 0) output.push("Program selesai dieksekusi tanpa pesan output.");
+                terminal.textContent += output.join('\n');
+            } catch (err) {
+                terminal.textContent += "Error: " + err.message;
+            }
+        }
+
+        // --- 8. Quiz Engine Pertemuan 4 ---
+        const quizQuestions = [
+            {
+                q: "Di Python, tanda apakah yang wajib diletakkan di akhir baris pernyataan if / elif / else sebelum menuliskan blok kode?",
+                options: [
+                    "Titik koma (;)",
+                    "Titik dua (:)",
+                    "Kurung kurawal ({ })",
+                    "Tanda panah (->)"
+                ],
+                correct: 1,
+                explanation: "Di Python, tanda titik dua (:) adalah sintaks wajib untuk mengawali setiap blok percabangan, fungsi, atau perulangan."
+            },
+            {
+                q: "Bagaimanakah cara Python mengenali bahwa suatu baris kode merupakan bagian dari blok pernyataan if?",
+                options: [
+                    "Menggunakan kurung kurawal { }",
+                    "Menggunakan kata kunci 'then' dan 'end if'",
+                    "Menggunakan Indentasi (spasi menjorok ke kanan)",
+                    "Diberi tanda petik dua di setiap baris"
+                ],
+                correct: 2,
+                explanation: "Python menggunakan indentasi (standar 4 spasi) untuk menentukan struktur blok kode secara ketat."
+            },
+            {
+                q: "Jika terdapat struktur if ... elif ... elif ... else di mana kondisi if pertama False, tetapi kondisi elif ke-1 dan elif ke-2 sama-sama True, manakah yang akan dieksekusi oleh Python?",
+                options: [
+                    "Hanya elif ke-1 yang dieksekusi",
+                    "Hanya elif ke-2 yang dieksekusi",
+                    "Keduanya (elif ke-1 dan elif ke-2) akan dieksekusi bersamaan",
+                    "Blok else yang akan dieksekusi"
+                ],
+                correct: 0,
+                explanation: "Python mengevaluasi percabangan dari atas ke bawah. Segera setelah menemukan kondisi pertama yang bernilai True (elif ke-1), blok tersebut dieksekusi dan Python langsung melompati seluruh elif/else berikutnya."
+            },
+            {
+                q: "Pada Studi Kasus Pembelian Tiket Bus, jika harga satuan tiket adalah Rp 300.000 dan pembeli membeli 3 tiket (diskon 10% jika beli >= 3), berapakah total bayar yang harus dibayar?",
+                options: [
+                    "Rp 900.000",
+                    "Rp 810.000",
+                    "Rp 870.000",
+                    "Rp 600.000"
+                ],
+                correct: 1,
+                explanation: "Subtotal = 3 * 300.000 = Rp 900.000. Karena jumlah >= 3, mendapat diskon 10% (Rp 90.000), sehingga Total Bayar = 900.000 - 90.000 = Rp 810.000."
+            },
+            {
+                q: "Manakah di antara nilai berikut yang dianggap sebagai Falsy (bernilai False) oleh Python saat diuji dalam kondisi if?",
+                options: [
+                    "Angka 0",
+                    "Teks kosong (\"\")",
+                    "Tipe data None",
+                    "Semua jawaban di atas benar"
+                ],
+                correct: 3,
+                explanation: "Python mengasumsikan angka 0, string kosong \"\", list/dict kosong [], {}, dan None sebagai nilai False (Falsy)."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let quizAnswered = false;
+
+        function renderQuiz() {
+            quizAnswered = false;
+            const qData = quizQuestions[currentQuizIndex];
+            document.getElementById('quiz-num').textContent = `Pertanyaan ${currentQuizIndex + 1} dari ${quizQuestions.length}`;
+            document.getElementById('quiz-text').textContent = qData.q;
+            document.getElementById('quiz-feedback').style.display = 'none';
+            document.getElementById('quiz-next-btn').style.display = 'none';
+
+            const optsContainer = document.getElementById('quiz-options');
+            optsContainer.innerHTML = '';
+
+            qData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt-btn';
+                btn.innerHTML = `<span><strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}</span> <i class="fa-regular fa-circle"></i>`;
+                btn.onclick = () => selectQuizAnswer(idx, btn);
+                optsContainer.appendChild(btn);
+            });
+        }
+
+        function selectQuizAnswer(selectedIndex, clickedBtn) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+
+            const qData = quizQuestions[currentQuizIndex];
+            const allButtons = document.querySelectorAll('.quiz-opt-btn');
+            const feedbackBox = document.getElementById('quiz-feedback');
+
+            if (selectedIndex === qData.correct) {
+                clickedBtn.classList.add('correct');
+                clickedBtn.querySelector('i').className = 'fa-solid fa-circle-check';
+                quizScore++;
+                document.getElementById('quiz-score').textContent = quizScore;
+                feedbackBox.className = 'quiz-feedback glass-card';
+                feedbackBox.style.display = 'block';
+                feedbackBox.style.color = '#4ade80';
+                feedbackBox.style.borderColor = '#22c55e';
+                feedbackBox.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Jawaban Anda Tepat Sekali!</strong><br>${qData.explanation}`;
+
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.7 }
+                });
+            } else {
+                clickedBtn.classList.add('wrong');
+                clickedBtn.querySelector('i').className = 'fa-solid fa-circle-xmark';
+                allButtons[qData.correct].classList.add('correct');
+                allButtons[qData.correct].querySelector('i').className = 'fa-solid fa-circle-check';
+                feedbackBox.className = 'quiz-feedback glass-card';
+                feedbackBox.style.display = 'block';
+                feedbackBox.style.color = '#f87171';
+                feedbackBox.style.borderColor = '#ef4444';
+                feedbackBox.innerHTML = `<strong><i class="fa-solid fa-circle-xmark"></i> Kurang Tepat!</strong><br>${qData.explanation}`;
+            }
+
+            document.getElementById('quiz-next-btn').style.display = 'inline-flex';
+        }
+
+        function nextQuizQuestion() {
+            currentQuizIndex++;
+            if (currentQuizIndex < quizQuestions.length) {
+                renderQuiz();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            const quizBox = document.getElementById('quiz-box');
+            let message = '';
+            if (quizScore === 5) {
+                message = "🏆 Luar Biasa! Pemahaman logika percabangan, if-else, dan indentasi Anda sempurna!";
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.6 }
+                });
+            } else if (quizScore >= 3) {
+                message = "👍 Hebat! Logika percabangan Anda sudah sangat kuat. Siap melangkah ke materi Perulangan (Loops) di Pertemuan 5!";
+            } else {
+                message = "📚 Coba ulangi kuis atau baca kembali materi di atas agar pemahaman alur program Anda semakin mantap.";
+            }
+
+            quizBox.innerHTML = `
+                <div style="text-align: center; padding: 20px 0;">
+                    <i class="fa-solid fa-trophy" style="font-size: 3.5rem; color: #fbbf24; margin-bottom: 16px;"></i>
+                    <h3 style="font-size: 1.8rem; color: var(--text-bright); margin-bottom: 8px;">Kuis Pertemuan 4 Selesai!</h3>
+                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 20px;">
+                        Skor Akhir Anda: <span style="color: var(--python-yellow); font-weight: 800; font-size: 1.4rem;">${quizScore} / ${quizQuestions.length}</span>
+                    </p>
+                    <p style="color: var(--text-bright); margin-bottom: 30px; font-weight: 500;">${message}</p>
+                    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-secondary" onclick="restartQuiz()">
+                            <i class="fa-solid fa-rotate-left"></i> Ulangi Kuis
+                        </button>
+                        <a href="pertemuan_3.html" class="btn btn-secondary">
+                            <i class="fa-solid fa-arrow-left"></i> Pertemuan 3
+                        </a>
+                        <a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_5_Perulangan.ipynb" target="_blank" rel="noopener" class="btn btn-primary">
+                            Lanjut ke Pertemuan 5 <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function restartQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-score').textContent = '0';
+            location.reload();
+        }
+
+        // Initialize First Quiz Question
+        renderQuiz();
+    </script>
+</body>
+</html>
