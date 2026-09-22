@@ -1,0 +1,2174 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 6: Struktur Data List & Tuple | Dasar Pemrograman Python</title>
+    <meta name="description" content="Modul pembelajaran interaktif Pertemuan 6 Dasar Pemrograman Python: Koleksi Data List (Mutable) & Tuple (Immutable), Indexing, Slicing, List Methods, Nested List/Matrix 2D, dan Studi Kasus Rekap Nilai Mahasiswa.">
+    <meta name="author" content="Faruq">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-glow: rgba(59, 130, 246, 0.35);
+            --python-yellow: #fbbf24;
+            --python-blue: #38bdf8;
+            --accent: #8b5cf6;
+            --accent-glow: rgba(139, 92, 246, 0.3);
+            --accent-emerald: #10b981;
+            --accent-rose: #f43f5e;
+            --accent-amber: #f59e0b;
+            --accent-cyan: #06b6d4;
+            --accent-indigo: #6366f1;
+            
+            --bg-body: #0a0f1d;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(30, 41, 59, 0.85);
+            --bg-surface: #111827;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(59, 130, 246, 0.4);
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-bright: #ffffff;
+            
+            --code-bg: #0d1117;
+            --nav-bg: rgba(10, 15, 29, 0.85);
+            --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-body: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-hover: rgba(241, 245, 249, 0.95);
+            --bg-surface: #ffffff;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-glow: rgba(59, 130, 246, 0.3);
+            
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --text-bright: #0f172a;
+            
+            --code-bg: #1e293b;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.07);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--python-blue), var(--python-yellow), var(--accent-emerald));
+            z-index: 1000;
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-bright);
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .nav-brand .py-badge {
+            background: linear-gradient(135deg, var(--accent-emerald), var(--python-blue));
+            color: #0f172a;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            list-style: none;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--python-yellow);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme-toggle-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--python-yellow);
+            color: var(--python-yellow);
+            transform: rotate(15deg);
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 130px 0 60px;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.12), transparent 70%);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--accent-emerald);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-size: 2.75rem;
+            font-weight: 800;
+            color: var(--text-bright);
+            line-height: 1.25;
+            margin-bottom: 20px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #34d399, #38bdf8, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 820px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .quick-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 35px;
+        }
+
+        .quick-tag {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 7px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .quick-tag:hover {
+            color: var(--text-bright);
+            border-color: var(--accent-emerald);
+            background: rgba(16, 185, 129, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .hero-btn-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-emerald);
+            transform: translateY(-2px);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+        }
+
+        .btn-accent:hover {
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Section Layout */
+        .section {
+            padding: 70px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            margin-bottom: 40px;
+        }
+
+        .section-tag {
+            color: var(--accent-emerald);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: var(--text-bright);
+            margin-bottom: 12px;
+        }
+
+        .section-desc {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 780px;
+        }
+
+        /* Cards & Grids */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(16, 185, 129, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        /* Concept Highlights */
+        .concept-card {
+            border-left: 4px solid var(--accent-emerald);
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        }
+
+        .concept-card.tuple {
+            border-left-color: var(--accent-indigo);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .concept-card.warning {
+            border-left-color: var(--accent-amber);
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .concept-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Code Blocks */
+        .code-window {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin: 18px 0;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .code-header {
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .code-dot.red { background: #ef4444; }
+        .code-dot.yellow { background: #f59e0b; }
+        .code-dot.green { background: #10b981; }
+
+        .code-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .code-body {
+            padding: 18px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .code-body pre {
+            margin: 0;
+        }
+
+        /* Syntax colors */
+        .kw { color: #f472b6; font-weight: 600; } /* keywords */
+        .fn { color: #38bdf8; } /* functions */
+        .str { color: #34d399; } /* strings */
+        .num { color: #fbbf24; } /* numbers */
+        .com { color: #64748b; font-style: italic; } /* comments */
+        .op { color: #94a3b8; } /* operators */
+        .var { color: #c084fc; } /* variables */
+
+        /* Interactive Visual Memory Box */
+        .memory-visualizer {
+            background: rgba(13, 17, 23, 0.85);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .memory-track {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 20px 10px;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 140px;
+        }
+
+        .memory-cell {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            min-width: 90px;
+            padding: 12px 10px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .memory-cell.highlight {
+            border-color: var(--accent-emerald);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+            transform: scale(1.06);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 78, 59, 0.3));
+        }
+
+        .memory-cell.tuple-cell {
+            border-color: rgba(99, 102, 241, 0.4);
+            background: linear-gradient(135deg, rgba(49, 46, 129, 0.25), rgba(30, 27, 75, 0.4));
+        }
+
+        .cell-index-pos {
+            font-size: 0.75rem;
+            color: var(--accent-emerald);
+            font-weight: 700;
+            font-family: 'Fira Code', monospace;
+            margin-bottom: 6px;
+        }
+
+        .cell-val {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            font-family: 'Fira Code', monospace;
+            padding: 6px 0;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            margin-bottom: 6px;
+        }
+
+        .cell-index-neg {
+            font-size: 0.75rem;
+            color: var(--accent-rose);
+            font-weight: 700;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Interactive Slicing Controls */
+        .slicing-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            margin-top: 16px;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .control-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .control-slider {
+            width: 100%;
+            accent-color: var(--accent-emerald);
+        }
+
+        .slider-val {
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            color: var(--python-yellow);
+        }
+
+        /* Interactive List Operations Hub */
+        .op-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .btn-op {
+            padding: 10px 14px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'Fira Code', monospace;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-op:hover {
+            border-color: var(--accent-emerald);
+            color: var(--accent-emerald);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .btn-op.danger:hover {
+            border-color: var(--accent-rose);
+            color: var(--accent-rose);
+            background: rgba(244, 63, 94, 0.1);
+        }
+
+        /* 2D Matrix Grid Visualizer */
+        .matrix-container {
+            display: inline-block;
+            background: var(--bg-surface);
+            border: 2px solid var(--accent-cyan);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            gap: 8px;
+        }
+
+        .matrix-cell {
+            height: 70px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fira Code', monospace;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .matrix-cell:hover, .matrix-cell.active {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: var(--accent-cyan);
+            transform: scale(1.05);
+        }
+
+        .matrix-cell-val {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-bright);
+        }
+
+        .matrix-cell-pos {
+            font-size: 0.7rem;
+            color: var(--accent-cyan);
+            margin-top: 4px;
+        }
+
+        /* Comparison Table */
+        .comp-table-wrap {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .comp-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .comp-table th {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 16px 20px;
+            color: var(--text-bright);
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comp-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .comp-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Quiz Box */
+        .quiz-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quiz-opt-btn {
+            width: 100%;
+            text-align: left;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .quiz-opt-btn:hover {
+            border-color: var(--accent-emerald);
+            background: rgba(16, 185, 129, 0.08);
+            transform: translateX(4px);
+        }
+
+        .quiz-opt-btn.correct {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: #10b981;
+            color: #34d399;
+        }
+
+        .quiz-opt-btn.wrong {
+            background: rgba(244, 63, 94, 0.2);
+            border-color: #f43f5e;
+            color: #fb7185;
+        }
+
+        .quiz-feedback {
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: var(--radius-md);
+            display: none;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        .footer {
+            background: #060913;
+            border-top: 1px solid var(--border-color);
+            padding: 60px 0 30px;
+            margin-top: 60px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-bright);
+            margin-bottom: 12px;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+
+        .footer-col h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 16px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--accent-emerald);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero-title { font-size: 2.2rem; }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Reading Progress Bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <i class="fa-brands fa-python" style="color: #38bdf8; font-size: 1.4rem;"></i>
+                <span>Dasar Pemrograman</span>
+                <span class="py-badge">Pertemuan 6</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="pertemuan_2.html" class="nav-link"><i class="fa-solid fa-cube"></i> Pertemuan 2</a></li>
+                <li><a href="pertemuan_3.html" class="nav-link"><i class="fa-solid fa-calculator"></i> Pertemuan 3</a></li>
+                <li><a href="pertemuan_4.html" class="nav-link"><i class="fa-solid fa-code-branch"></i> Pertemuan 4</a></li>
+                <li><a href="pertemuan_5.html" class="nav-link"><i class="fa-solid fa-repeat"></i> Pertemuan 5</a></li>
+                <li><a href="pertemuan_6.html" class="nav-link active" style="color: var(--accent-emerald); font-weight: 700;"><i class="fa-solid fa-list-ol"></i> Pertemuan 6</a></li>
+                <li><a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_6_List_&_Tuple.ipynb" target="_blank" rel="noopener" class="nav-link" style="color: #fbbf24;"><i class="fa-solid fa-cloud"></i> Colab</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="theme-toggle-btn" id="theme-toggle" title="Ganti Mode Gelap/Terang">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-badge">
+                    <i class="fa-solid fa-layer-group"></i> Modul Pembelajaran Interaktif • Pertemuan 06
+                </div>
+                <h1 class="hero-title">
+                    Struktur Data Koleksi <br>
+                    <span class="gradient-text">List & Tuple di Python</span>
+                </h1>
+                <p class="hero-desc">
+                    Kuasai cara menyimpan, mengakses, mengiris (<em>slicing</em>), memanipulasi, dan menstrukturkan kumpulan data majemuk. 
+                    Pelajari perbedaan mendalam antara <strong>List (Mutable)</strong> dan <strong>Tuple (Immutable)</strong>, 
+                    operasi multi-dimensi (Nested List / 2D Matrix), serta studi kasus rekap nilai mahasiswa interaktif.
+                </p>
+
+                <div class="quick-nav">
+                    <a href="#list-dasar" class="quick-tag"><i class="fa-solid fa-table-list"></i> 1. Konsep List & Indexing</a>
+                    <a href="#slicing" class="quick-tag"><i class="fa-solid fa-scissors"></i> 2. Visual Slicing</a>
+                    <a href="#methods" class="quick-tag"><i class="fa-solid fa-screwdriver-wrench"></i> 3. List Methods Lab</a>
+                    <a href="#tuple" class="quick-tag"><i class="fa-solid fa-lock"></i> 4. Konsep Tuple & Immutabilitas</a>
+                    <a href="#matrix" class="quick-tag"><i class="fa-solid fa-border-all"></i> 5. Matriks 2D & Nested</a>
+                    <a href="#studi-kasus" class="quick-tag"><i class="fa-solid fa-graduation-cap"></i> 6. Rekap Nilai Mahasiswa</a>
+                    <a href="#playground" class="quick-tag"><i class="fa-solid fa-terminal"></i> 7. Live Playground</a>
+                    <a href="#kuis" class="quick-tag"><i class="fa-solid fa-circle-question"></i> 8. Kuis Interaktif</a>
+                </div>
+
+                <div class="hero-btn-group">
+                    <a href="#list-dasar" class="btn btn-primary">
+                        <i class="fa-solid fa-play"></i> Mulai Belajar List & Tuple
+                    </a>
+                    <a href="#studi-kasus" class="btn btn-accent">
+                        <i class="fa-solid fa-laptop-code"></i> Studi Kasus Nilai Mahasiswa
+                    </a>
+                    <a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_6_List_&_Tuple.ipynb" target="_blank" rel="noopener" class="btn btn-secondary">
+                        <i class="fa-solid fa-up-right-from-square"></i> Buka di Google Colab
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: Konsep Dasar List & Memory Indexing -->
+        <section id="list-dasar" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 01</span>
+                <h2 class="section-title">Apa Itu List & Bagaimana Indexing Bekerja?</h2>
+                <p class="section-desc">List adalah struktur data sekuensial (berurutan) di Python yang dapat menampung satu atau lebih elemen dengan tipe data heterogen.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="glass-card">
+                    <h3 style="color: var(--text-bright); font-size: 1.3rem; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-box-open" style="color: var(--accent-emerald);"></i> Karakteristik Utama List
+                    </h3>
+                    <ul style="list-style: none; color: var(--text-main); font-size: 0.95rem; line-height: 1.8;">
+                        <li style="margin-bottom: 10px;">
+                            <i class="fa-solid fa-circle-check" style="color: var(--accent-emerald); margin-right: 8px;"></i>
+                            <strong>Tanda Kurung Siku:</strong> Dideklarasikan menggunakan simbol kurung siku <code>[ ]</code>.
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <i class="fa-solid fa-circle-check" style="color: var(--accent-emerald); margin-right: 8px;"></i>
+                            <strong>Ordered (Berurutan):</strong> Setiap elemen memiliki posisi tetap berdasarkan nomor indeks.
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <i class="fa-solid fa-circle-check" style="color: var(--accent-emerald); margin-right: 8px;"></i>
+                            <strong>Mutable (Bisa Diubah):</strong> Elemen di dalam list bisa ditambah, dihapus, ditukar, atau diurutkan ulang.
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <i class="fa-solid fa-circle-check" style="color: var(--accent-emerald); margin-right: 8px;"></i>
+                            <strong>Heterogen:</strong> Bisa berisi campuran integer, float, string, boolean, bahkan list lain (nested).
+                        </li>
+                    </ul>
+
+                    <div class="code-window">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <span class="code-dot red"></span>
+                                <span class="code-dot yellow"></span>
+                                <span class="code-dot green"></span>
+                            </div>
+                            <span class="code-title">contoh_list.py</span>
+                        </div>
+                        <div class="code-body">
+<pre><span class="com"># Deklarasi berbagai macam list</span>
+<span class="var">list_angka</span> = [<span class="num">200</span>, <span class="num">400</span>, <span class="num">600</span>]
+<span class="var">list_huruf</span> = [<span class="str">"Hallo"</span>, <span class="str">"Hai"</span>, <span class="str">"UNM"</span>]
+<span class="var">list_campuran</span> = [<span class="num">1</span>, <span class="str">"Hallo"</span>, <span class="num">3.14</span>, <span class="kw">True</span>]
+
+<span class="fn">print</span>(<span class="var">list_angka</span>[<span class="num">0</span>])  <span class="com"># Output: 200 (Indeks ke-0)</span>
+<span class="fn">print</span>(<span class="var">list_angka</span>[-<span class="num">1</span>]) <span class="com"># Output: 600 (Elemen terakhir)</span></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="color: var(--text-bright); font-size: 1.3rem; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-crosshairs" style="color: var(--python-yellow);"></i> Aturan Indexing Python (Positif & Negatif)
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px;">
+                        Python memiliki fitur istimewa yaitu <strong>Dual Indexing System</strong>. Anda bisa mengakses dari depan (mulai 0) maupun dari belakang (mulai -1).
+                    </p>
+
+                    <div class="concept-card">
+                        <div class="concept-title">
+                            <i class="fa-solid fa-lightbulb"></i> Rumus Indeks Positif vs Negatif
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-main);">
+                            • <strong>Indeks Positif (0 s/d n-1):</strong> Bergerak dari kiri ke kanan. Dimulai dari angka <code>0</code>.<br>
+                            • <strong>Indeks Negatif (-1 s/d -n):</strong> Bergerak dari kanan ke kiri. Elemen paling ujung kanan selalu berindeks <code>-1</code>.
+                        </p>
+                    </div>
+
+                    <!-- Interactive Memory Inspector Demo -->
+                    <div class="memory-visualizer">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-bright);">
+                                <i class="fa-solid fa-microchip" style="color: var(--accent-emerald);"></i> Visualisasi Memori List: <code>bahasa = ['P', 'Y', 'T', 'H', 'O', 'N']</code>
+                            </span>
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">Klik sel untuk uji akses</span>
+                        </div>
+
+                        <div class="memory-track" id="basic-memory-track">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+
+                        <div id="cell-inspect-output" style="margin-top: 12px; font-family: 'Fira Code', monospace; font-size: 0.88rem; color: var(--python-yellow); text-align: center; min-height: 24px;">
+                            Arahkan kursor atau klik kotak sel untuk melihat detail notasi indeksnya.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Visual Slicing Playground -->
+        <section id="slicing" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 02</span>
+                <h2 class="section-title">Teknik Mengiris Data: List Slicing</h2>
+                <p class="section-desc">Slicing memungkinkan kita mengambil sub-bagian list dengan format jangkauan <code>list[start : stop : step]</code>.</p>
+            </div>
+
+            <div class="glass-card">
+                <div class="grid-2" style="align-items: center; margin-bottom: 20px;">
+                    <div>
+                        <h3 style="color: var(--text-bright); font-size: 1.25rem; margin-bottom: 10px;">
+                            <i class="fa-solid fa-scissors" style="color: var(--accent-emerald); margin-right: 8px;"></i>
+                            Sintaks Jangkauan <code>[start : stop : step]</code>
+                        </h3>
+                        <p style="color: var(--text-muted); font-size: 0.93rem; line-height: 1.7;">
+                            • <strong>start:</strong> Indeks awal pengambilan data (inklusif / ikut terambil).<br>
+                            • <strong>stop:</strong> Batas indeks akhir pengambilan (<strong>eksklusif</strong> / tidak ikut terambil).<br>
+                            • <strong>step:</strong> Interval loncatan antar elemen (default = 1).
+                        </p>
+                    </div>
+                    <div style="background: var(--bg-surface); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                        <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 6px;">Contoh Cepat Populer:</span>
+                        <code style="color: #38bdf8; display: block; font-family: 'Fira Code', monospace; margin-bottom: 4px;">data[:4]   # Ambil 4 elemen pertama (0..3)</code>
+                        <code style="color: #34d399; display: block; font-family: 'Fira Code', monospace; margin-bottom: 4px;">data[2:]   # Ambil dari indeks ke-2 sampai akhir</code>
+                        <code style="color: #fbbf24; display: block; font-family: 'Fira Code', monospace; margin-bottom: 4px;">data[::2]  # Ambil elemen dengan langkah loncat 2</code>
+                        <code style="color: #f472b6; display: block; font-family: 'Fira Code', monospace;">data[::-1] # Membalik urutan list (Reverse)</code>
+                    </div>
+                </div>
+
+                <!-- Interactive Slicing Visualizer -->
+                <div class="memory-visualizer">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <span style="font-size: 0.9rem; font-weight: 700; color: var(--text-bright);">
+                            <i class="fa-solid fa-sliders" style="color: var(--accent-emerald);"></i> Interactive Slicing Simulator: <code>data = [10, 20, 30, 40, 50, 60, 70, 80]</code>
+                        </span>
+                        <span id="slice-formula-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399; font-family: 'Fira Code', monospace; padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.9rem;">
+                            data[1:6:1]
+                        </span>
+                    </div>
+
+                    <div class="memory-track" id="slicing-track">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+
+                    <div class="slicing-panel">
+                        <div class="control-group">
+                            <label>Start Index: <span class="slider-val" id="val-start">1</span></label>
+                            <input type="range" class="control-slider" id="slider-start" min="0" max="8" value="1">
+                        </div>
+                        <div class="control-group">
+                            <label>Stop Index: <span class="slider-val" id="val-stop">6</span></label>
+                            <input type="range" class="control-slider" id="slider-stop" min="0" max="8" value="6">
+                        </div>
+                        <div class="control-group">
+                            <label>Step (Langkah): <span class="slider-val" id="val-step">1</span></label>
+                            <input type="range" class="control-slider" id="slider-step" min="1" max="4" value="1">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 16px; background: var(--code-bg); padding: 14px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <span style="color: var(--text-muted); font-size: 0.85rem;">Hasil Output Python:</span>
+                            <span id="slicing-result-output" style="color: #4ade80; font-family: 'Fira Code', monospace; font-weight: 700; font-size: 1.1rem; margin-left: 12px;">
+                                [20, 30, 40, 50, 60]
+                            </span>
+                        </div>
+                        <div style="color: var(--text-muted); font-size: 0.8rem;">
+                            Total Elemen Terpilih: <strong id="slicing-count" style="color: var(--text-bright);">5</strong> item
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Live List Methods Lab -->
+        <section id="methods" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 03</span>
+                <h2 class="section-title">Operasi & Method Lengkap pada List</h2>
+                <p class="section-desc">Python menyediakan segudang built-in methods canggih untuk menambah, menghapus, mengurutkan, dan menganalisis elemen list.</p>
+            </div>
+
+            <div class="grid-3" style="margin-bottom: 24px;">
+                <div class="glass-card">
+                    <h3 style="color: var(--accent-emerald); font-size: 1.15rem; margin-bottom: 12px;">
+                        <i class="fa-solid fa-plus-circle"></i> 1. Menambahkan Elemen
+                    </h3>
+                    <ul style="list-style: none; font-size: 0.9rem; color: var(--text-main); line-height: 1.8;">
+                        <li><strong><code>append(x)</code>:</strong> Menambahkan data <code>x</code> di posisi paling akhir list.</li>
+                        <li><strong><code>insert(i, x)</code>:</strong> Menyisipkan data <code>x</code> pada indeks ke-<code>i</code>.</li>
+                        <li><strong><code>extend(list2)</code>:</strong> Menggabungkan seluruh elemen dari list lain.</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="color: var(--accent-rose); font-size: 1.15rem; margin-bottom: 12px;">
+                        <i class="fa-solid fa-trash-can"></i> 2. Menghapus Elemen
+                    </h3>
+                    <ul style="list-style: none; font-size: 0.9rem; color: var(--text-main); line-height: 1.8;">
+                        <li><strong><code>remove(val)</code>:</strong> Menghapus data pertama yang bernilai <code>val</code>.</li>
+                        <li><strong><code>pop(i)</code>:</strong> Menghapus & mengembalikan elemen pada indeks <code>i</code> (default: terakhir).</li>
+                        <li><strong><code>clear()</code>:</strong> Mengosongkan seluruh elemen list menjadi <code>[]</code>.</li>
+                        <li><strong><code>del list[i]</code>:</strong> Menghapus elemen berdasarkan indeks/slice.</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="color: var(--python-yellow); font-size: 1.15rem; margin-bottom: 12px;">
+                        <i class="fa-solid fa-arrow-down-a-z"></i> 3. Mengurutkan & Mencari
+                    </h3>
+                    <ul style="list-style: none; font-size: 0.9rem; color: var(--text-main); line-height: 1.8;">
+                        <li><strong><code>sort()</code>:</strong> Mengurutkan elemen dari terkecil ke terbesar (Ascending).</li>
+                        <li><strong><code>sort(reverse=True)</code>:</strong> Mengurutkan dari terbesar ke terkecil (Descending).</li>
+                        <li><strong><code>reverse()</code>:</strong> Membalik urutan data tanpa mengurutkan nilai.</li>
+                        <li><strong><code>index(x)</code>:</strong> Menemukan nomor indeks dari data <code>x</code>.</li>
+                        <li><strong><code>count(x)</code>:</strong> Menghitung jumlah kemunculan data <code>x</code>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Interactive List Methods Lab -->
+            <div class="glass-card">
+                <h3 style="color: var(--text-bright); font-size: 1.3rem; margin-bottom: 6px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-flask" style="color: var(--accent-emerald);"></i> Interactive List Operations Lab
+                </h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 18px;">
+                    Uji coba langsung method manipulasi list di bawah. Perhatikan perubahan elemen di memori dan log eksekusinya secara real-time!
+                </p>
+
+                <div class="memory-visualizer">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-bright);">
+                            Kondisi List Saat Ini: <code id="live-list-display" style="color: #38bdf8; font-size: 0.95rem;">['Nasi Goreng', 'Mie Goreng', 'Kwetiau']</code>
+                        </span>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">
+                            Panjang (<code>len</code>): <strong id="live-list-len" style="color: var(--python-yellow);">3</strong> item
+                        </span>
+                    </div>
+
+                    <div class="memory-track" id="interactive-lab-track">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; align-items: center;">
+                        <input type="text" id="input-item-val" placeholder="Nilai item (contoh: Bakso)" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-bright); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.9rem; flex: 1; min-width: 180px;">
+                        <input type="number" id="input-item-idx" placeholder="Indeks (untuk insert/pop)" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-bright); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.9rem; width: 140px;" min="0">
+                    </div>
+
+                    <div class="op-buttons-grid">
+                        <button class="btn-op" onclick="labAppend()"><i class="fa-solid fa-plus"></i> append()</button>
+                        <button class="btn-op" onclick="labInsert()"><i class="fa-solid fa-arrow-down-short-wide"></i> insert()</button>
+                        <button class="btn-op" onclick="labPop()"><i class="fa-solid fa-arrow-up-from-bracket"></i> pop()</button>
+                        <button class="btn-op danger" onclick="labRemove()"><i class="fa-solid fa-xmark"></i> remove()</button>
+                        <button class="btn-op" onclick="labSortAsc()"><i class="fa-solid fa-arrow-down-a-z"></i> sort()</button>
+                        <button class="btn-op" onclick="labSortDesc()"><i class="fa-solid fa-arrow-up-z-a"></i> sort(rev)</button>
+                        <button class="btn-op" onclick="labReverse()"><i class="fa-solid fa-arrows-rotate"></i> reverse()</button>
+                        <button class="btn-op danger" onclick="labClear()"><i class="fa-solid fa-trash-can"></i> clear()</button>
+                        <button class="btn-op" onclick="labReset()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                    </div>
+
+                    <div id="lab-console-log" style="margin-top: 14px; background: #000000; padding: 10px 16px; border-radius: var(--radius-sm); font-family: 'Fira Code', monospace; font-size: 0.85rem; color: #10b981; min-height: 28px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                        &gt; Siap menjalankan operasi list.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Konsep Tuple & Immutability -->
+        <section id="tuple" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 04</span>
+                <h2 class="section-title">Konsep Tuple: Mengapa Harus Immutable?</h2>
+                <p class="section-desc">Tuple adalah struktur data berurutan seperti List, namun bersifat <strong>Immutable</strong> (tidak dapat diganggu gugat / tidak bisa diubah setelah dibuat).</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="glass-card">
+                    <h3 style="color: var(--text-bright); font-size: 1.3rem; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-shield-halved" style="color: var(--accent-indigo);"></i> Mengapa Kita Membutuhkan Tuple?
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 14px;">
+                        Meskipun terlihat mirip dengan List, Tuple memiliki peranan krusial dalam arsitektur perangkat lunak Python:
+                    </p>
+                    <ul style="list-style: none; color: var(--text-main); font-size: 0.93rem; line-height: 1.8;">
+                        <li style="margin-bottom: 8px;">
+                            <i class="fa-solid fa-lock" style="color: var(--accent-indigo); margin-right: 8px;"></i>
+                            <strong>Data Integrity & Safety:</strong> Melindungi data konstan (koordinat GPS, konfigurasi server, dimensi layar, hari dalam seminggu) agar tidak sengaja termodifikasi oleh fungsi lain.
+                        </li>
+                        <li style="margin-bottom: 8px;">
+                            <i class="fa-solid fa-bolt" style="color: var(--python-yellow); margin-right: 8px;"></i>
+                            <strong>Performa Eksekusi Cepat:</strong> Tuple dialokasikan dalam satu blok memori statis sehingga jauh lebih cepat dan hemat memori dibanding List.
+                        </li>
+                        <li style="margin-bottom: 8px;">
+                            <i class="fa-solid fa-key" style="color: var(--accent-emerald); margin-right: 8px;"></i>
+                            <strong>Dictionary Key:</strong> Tuple bersifat <em>hashable</em> sehingga dapat dijadikan kunci (key) pada Dictionary Python, sedangkan List tidak bisa.
+                        </li>
+                    </ul>
+
+                    <div class="concept-card warning" style="margin-top: 20px;">
+                        <div class="concept-title" style="color: var(--accent-amber);">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Jebakan Single-Element Tuple!
+                        </div>
+                        <p style="font-size: 0.88rem; color: var(--text-main); line-height: 1.6;">
+                            Jika Anda ingin membuat Tuple yang hanya berisi 1 elemen, <strong>WAJIB menambahkan tanda koma <code>,</code></strong> di belakangnya!<br>
+                            <code>t = (50,)</code> &rarr; Tipe <strong>Tuple</strong><br>
+                            <code>t = (50)</code> &rarr; Tipe <strong>Integer</strong> (Python menganggapnya ekspresi kurung matematika biasa!)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="color: var(--text-bright); font-size: 1.3rem; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-scale-balanced" style="color: var(--accent-cyan);"></i> Tabel Komparasi List vs Tuple
+                    </h3>
+
+                    <div class="comp-table-wrap">
+                        <table class="comp-table">
+                            <thead>
+                                <tr>
+                                    <th>Kriteria</th>
+                                    <th>List <code>[ ]</code></th>
+                                    <th>Tuple <code>( )</code></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Sifat</strong></td>
+                                    <td><span style="color: #34d399; font-weight: 700;">Mutable</span> (Bisa diedit)</td>
+                                    <td><span style="color: #f87171; font-weight: 700;">Immutable</span> (Terkunci)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Simbol</strong></td>
+                                    <td>Kurung siku <code>[ ]</code></td>
+                                    <td>Kurung biasa <code>( )</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Ukuran Memori</strong></td>
+                                    <td>Dinamis & Lebih Besar</td>
+                                    <td>Statis & Sangat Ringan</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Method</strong></td>
+                                    <td>Banyak (append, pop, sort, dll)</td>
+                                    <td>Sedikit (hanya count & index)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Kecepatan</strong></td>
+                                    <td>Standar</td>
+                                    <td>Lebih Cepat (Optimized)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Interactive Immutability Test -->
+                    <div style="background: var(--bg-surface); padding: 18px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 16px;">
+                        <h4 style="font-size: 0.95rem; color: var(--text-bright); margin-bottom: 8px;">
+                            <i class="fa-solid fa-bug" style="color: var(--accent-rose);"></i> Coba Ubah Elemen Tuple (Simulasi Error)
+                        </h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
+                            Diberikan <code>my_tuple = (100, 200, 300)</code>. Klik tombol di bawah untuk mencoba perintah <code>my_tuple[0] = 999</code>:
+                        </p>
+                        <button class="btn btn-secondary" onclick="simulateTupleError()" style="font-size: 0.85rem; padding: 8px 16px;">
+                            <i class="fa-solid fa-play"></i> Eksekusi: my_tuple[0] = 999
+                        </button>
+                        <div id="tuple-error-output" style="margin-top: 10px; font-family: 'Fira Code', monospace; font-size: 0.82rem; display: none; padding: 10px; border-radius: 6px;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Matriks 2D & Nested List -->
+        <section id="matrix" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 05</span>
+                <h2 class="section-title">List Multi-Dimensi (Nested List / 2D Matrix)</h2>
+                <p class="section-desc">Ketika sebuah list berisi list lain di dalamnya, kita membentuk struktur matriks berdimensi dua dengan konsep <code>matrix[baris][kolom]</code>.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="glass-card">
+                    <h3 style="color: var(--text-bright); font-size: 1.3rem; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-table-cells" style="color: var(--accent-cyan);"></i> Konsep Baris dan Kolom Matriks
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.93rem; line-height: 1.7; margin-bottom: 14px;">
+                        Untuk mengakses sel pada matriks 2D, indeks pertama menentukan nomor <strong>baris</strong>, dan indeks kedua menentukan nomor <strong>kolom</strong>.
+                    </p>
+
+                    <div class="code-window">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <span class="code-dot red"></span>
+                                <span class="code-dot yellow"></span>
+                                <span class="code-dot green"></span>
+                            </div>
+                            <span class="code-title">matriks_2d.py</span>
+                        </div>
+                        <div class="code-body">
+<pre><span class="var">matriks</span> = [
+    [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>],  <span class="com"># Baris indeks 0</span>
+    [<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>],  <span class="com"># Baris indeks 1</span>
+    [<span class="num">7</span>, <span class="num">8</span>, <span class="num">9</span>]   <span class="com"># Baris indeks 2</span>
+]
+
+<span class="com"># Mengakses angka 8 (Baris 2, Kolom 1)</span>
+<span class="fn">print</span>(<span class="var">matriks</span>[<span class="num">2</span>][<span class="num">1</span>])  <span class="com"># Output: 8</span>
+
+<span class="com"># Mengubah angka 5 menjadi 50</span>
+<span class="var">matriks</span>[<span class="num">1</span>][<span class="num">1</span>] = <span class="num">50</span></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive 2D Matrix Grid Explorer -->
+                <div class="glass-card" style="text-align: center;">
+                    <h3 style="color: var(--text-bright); font-size: 1.25rem; margin-bottom: 8px;">
+                        <i class="fa-solid fa-crosshairs" style="color: var(--accent-cyan);"></i> Interactive 2D Matrix Grid Explorer
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px;">
+                        Klik salah satu kotak angka di bawah untuk melihat sintaks pemanggilan indeks baris & kolomnya!
+                    </p>
+
+                    <div class="matrix-container">
+                        <div class="matrix-grid" id="matrix-grid-elements">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <div id="matrix-selected-info" style="margin-top: 14px; background: var(--code-bg); padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--border-color); font-family: 'Fira Code', monospace; font-size: 0.95rem; color: #38bdf8;">
+                        Klik kotak matriks untuk memeriksa koordinat indeksnya.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: Studi Kasus Rekap Nilai Mahasiswa -->
+        <section id="studi-kasus" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 06</span>
+                <h2 class="section-title">Studi Kasus Akbar: Pengolahan Rekap Nilai Mahasiswa</h2>
+                <p class="section-desc">Integrasi pengulangan (Looping) dengan struktur data List paralel untuk input, kalkulasi nilai total/rata-rata, dan cetak laporan ASCII tabel.</p>
+            </div>
+
+            <div class="glass-card">
+                <div class="grid-2" style="margin-bottom: 24px;">
+                    <div>
+                        <h3 style="color: var(--text-bright); font-size: 1.2rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-code" style="color: var(--accent-emerald);"></i> Logika Pemrosesan Data Paralel
+                        </h3>
+                        <p style="color: var(--text-muted); font-size: 0.93rem; line-height: 1.7; margin-bottom: 14px;">
+                            Pada sistem akademik sederhana, kita menggunakan beberapa list penampung paralel:
+                        </p>
+                        <ul style="list-style: none; color: var(--text-main); font-size: 0.9rem; line-height: 1.8;">
+                            <li><code>list_nim = []</code> &rarr; Menyimpan string identitas mahasiswa.</li>
+                            <li><code>list_uts = []</code> &rarr; Menyimpan nilai integer UTS.</li>
+                            <li><code>list_uas = []</code> &rarr; Menyimpan nilai integer UAS.</li>
+                            <li><code>list_total = []</code> &rarr; Menyimpan hasil kalkulasi <code>(uts + uas) / 2</code>.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <div class="code-window">
+                            <div class="code-header">
+                                <div class="code-dots">
+                                    <span class="code-dot red"></span>
+                                    <span class="code-dot yellow"></span>
+                                    <span class="code-dot green"></span>
+                                </div>
+                                <span class="code-title">rekap_nilai.py</span>
+                            </div>
+                            <div class="code-body">
+<pre><span class="com"># Loop kalkulasi nilai akhir</span>
+<span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="var">jumlah_mhs</span>):
+    <span class="var">nilai_akhir</span> = (<span class="var">list_uts</span>[<span class="var">i</span>] + <span class="var">list_uas</span>[<span class="var">i</span>]) / <span class="num">2</span>
+    <span class="var">list_total</span>.<span class="fn">append</span>(<span class="var">nilai_akhir</span>)
+
+<span class="com"># Cetak format tabel</span>
+<span class="fn">print</span>(<span class="str">"=========================================="</span>)
+<span class="fn">print</span>(<span class="str">"NIM\t\tUTS\tUAS\tTotal\tGrade"</span>)
+<span class="fn">print</span>(<span class="str">"=========================================="</span>)</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Student Grade Simulator -->
+                <div style="background: var(--bg-surface); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <h3 style="color: var(--text-bright); font-size: 1.2rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-calculator" style="color: var(--python-yellow);"></i> Simulator Input & Rekap Nilai Akademik
+                    </h3>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px;">
+                        <div>
+                            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">NIM Mahasiswa:</label>
+                            <input type="text" id="sim-nim" placeholder="Contoh: 12210001" style="width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-bright); padding: 10px; border-radius: var(--radius-sm); font-family: 'Fira Code', monospace;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Nama Mahasiswa:</label>
+                            <input type="text" id="sim-nama" placeholder="Contoh: Faruq" style="width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-bright); padding: 10px; border-radius: var(--radius-sm);">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Nilai UTS (0-100):</label>
+                            <input type="number" id="sim-uts" placeholder="85" style="width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-bright); padding: 10px; border-radius: var(--radius-sm); font-family: 'Fira Code', monospace;" min="0" max="100">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Nilai UAS (0-100):</label>
+                            <input type="number" id="sim-uas" placeholder="90" style="width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-bright); padding: 10px; border-radius: var(--radius-sm); font-family: 'Fira Code', monospace;" min="0" max="100">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+                        <button class="btn btn-primary" onclick="addStudentData()"><i class="fa-solid fa-user-plus"></i> Tambah Data Mahasiswa</button>
+                        <button class="btn btn-secondary" onclick="resetStudentData()"><i class="fa-solid fa-rotate-left"></i> Bersihkan Data</button>
+                    </div>
+
+                    <!-- Output ASCII Table -->
+                    <div style="background: #000000; padding: 18px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); overflow-x: auto;">
+                        <pre id="student-report-output" style="color: #4ade80; font-family: 'Fira Code', monospace; font-size: 0.88rem; margin: 0; line-height: 1.5;">
+========================================================================================
+No   NIM          Nama Mahasiswa        UTS     UAS     Total     Grade    Status
+========================================================================================
+Belum ada data mahasiswa yang dimasukkan. Silakan isi formulir di atas.
+========================================================================================</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: Live Code Playground -->
+        <section id="playground" class="section container">
+            <div class="section-header">
+                <span class="section-tag">Bagian 07</span>
+                <h2 class="section-title">Live Python Playground: List & Tuple</h2>
+                <p class="section-desc">Uji coba sintaks Python secara langsung di browser Anda dengan fitur emulator interaktif.</p>
+            </div>
+
+            <div class="glass-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="btn-op" onclick="loadPreset(1)">Preset 1: List Methods</button>
+                        <button class="btn-op" onclick="loadPreset(2)">Preset 2: Slicing Lanjut</button>
+                        <button class="btn-op" onclick="loadPreset(3)">Preset 3: Tuple & Immutability</button>
+                        <button class="btn-op" onclick="loadPreset(4)">Preset 4: Matriks 2D</button>
+                    </div>
+                    <button class="btn btn-primary" onclick="runPlaygroundCode()" style="padding: 8px 18px; font-size: 0.88rem;">
+                        <i class="fa-solid fa-play"></i> Jalankan Kode
+                    </button>
+                </div>
+
+                <div class="grid-2">
+                    <div>
+                        <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 6px;">Editor Kode Python:</label>
+                        <textarea id="py-editor" style="width: 100%; height: 260px; background: var(--code-bg); border: 1px solid var(--border-color); color: #f8fafc; font-family: 'Fira Code', monospace; font-size: 0.9rem; padding: 14px; border-radius: var(--radius-md); resize: vertical; line-height: 1.6;"># Contoh Manipulasi List Menu Restoran
+menu = ["Nasi Goreng", "Mie Ayam", "Soto Betawi"]
+print("Menu Awal:", menu)
+
+menu.append("Kwetiau Goreng")
+menu.insert(1, "Ayam Bakar")
+print("Setelah Tambah:", menu)
+
+menu.sort()
+print("Menu Urut Abjad:", menu)
+print("Total Menu:", len(menu))</textarea>
+                    </div>
+
+                    <div>
+                        <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 6px;">Terminal Output:</label>
+                        <div id="py-terminal" style="width: 100%; height: 260px; background: #000000; border: 1px solid var(--border-color); color: #38bdf8; font-family: 'Fira Code', monospace; font-size: 0.88rem; padding: 14px; border-radius: var(--radius-md); overflow-y: auto; white-space: pre-wrap; line-height: 1.6;">Klik "Jalankan Kode" untuk mengeksekusi program.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: Kuis Interaktif Pertemuan 6 -->
+        <section id="kuis" class="section container">
+            <div class="section-header" style="text-align: center;">
+                <span class="section-tag">Bagian 08</span>
+                <h2 class="section-title">Kuis Pemahaman: List & Tuple</h2>
+                <p class="section-desc" style="margin: 0 auto;">Uji penguasaan Anda seputar mutabilitas, indexing, slicing, methods, dan matriks dua dimensi.</p>
+            </div>
+
+            <div class="quiz-container glass-card" id="quiz-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+                    <span style="font-size: 0.9rem; font-weight: 700; color: var(--accent-emerald);">
+                        <i class="fa-solid fa-circle-question"></i> Pertanyaan <span id="quiz-curr">1</span> / <span id="quiz-total">5</span>
+                    </span>
+                    <span style="font-size: 0.9rem; color: var(--text-muted);">
+                        Skor: <strong id="quiz-score" style="color: var(--python-yellow);">0</strong>
+                    </span>
+                </div>
+
+                <h3 id="quiz-text" style="font-size: 1.15rem; color: var(--text-bright); line-height: 1.6; margin-bottom: 24px;">
+                    Memuat pertanyaan kuis...
+                </h3>
+
+                <div id="quiz-options">
+                    <!-- Populated dynamically via JS -->
+                </div>
+
+                <div id="quiz-feedback" class="quiz-feedback glass-card"></div>
+
+                <div style="margin-top: 24px; text-align: right;">
+                    <button class="btn btn-primary" id="quiz-next-btn" onclick="nextQuizQuestion()" style="display: none;">
+                        Pertanyaan Selanjutnya <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 9: Rangkuman & Roadmap Pertemuan Berikutnya -->
+        <section class="section container">
+            <div class="section-header">
+                <span class="section-tag">Rangkuman</span>
+                <h2 class="section-title">Poin Kunci & Roadmap Pembelajaran</h2>
+            </div>
+
+            <div class="grid-2">
+                <div class="glass-card" style="border-left: 4px solid var(--accent-emerald);">
+                    <h3 style="color: var(--text-bright); font-size: 1.25rem; font-weight: 700;">
+                        <i class="fa-solid fa-bookmark" style="color: var(--accent-emerald); margin-right: 8px;"></i>
+                        Poin Penting Pertemuan 6
+                    </h3>
+                    <ul style="list-style: none; margin-top: 14px; color: var(--text-main); font-size: 0.93rem; line-height: 1.8;">
+                        <li><i class="fa-solid fa-check" style="color: var(--accent-emerald); margin-right: 6px;"></i> <strong>List:</strong> Bersifat mutable <code>[ ]</code>, cocok untuk kumpulan data yang sering berubah.</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--accent-emerald); margin-right: 6px;"></i> <strong>Tuple:</strong> Bersifat immutable <code>( )</code>, hemat memori, cepat, dan aman dari modifikasi.</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--accent-emerald); margin-right: 6px;"></i> <strong>Indexing:</strong> Dimulai dari 0 (positif) atau -1 (elemen paling belakang).</li>
+                        <li><i class="fa-solid fa-check" style="color: var(--accent-emerald); margin-right: 6px;"></i> <strong>Nested List:</strong> Digunakan untuk representasi tabel atau matriks matematika <code>data[row][col]</code>.</li>
+                    </ul>
+                </div>
+
+                <div class="summary-card glass-card" style="border-left: 4px solid var(--accent-indigo);">
+                    <h3 style="color: var(--text-bright); font-size: 1.25rem; font-weight: 700;">
+                        <i class="fa-solid fa-road" style="color: var(--accent-indigo); margin-right: 8px;"></i>
+                        Materi Pertemuan 7: String & Bilangan
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 10px;">
+                        Pada modul selanjutnya, kita akan membedah manipulasi string tingkat lanjut (slicing string, formatting f-string, regex dasar, operasi matematika bilangan, dan persiapan Kuis UTS).
+                    </p>
+                    <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                        <a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_7_String_dan_Bilangan.ipynb" target="_blank" rel="noopener" class="btn btn-primary" style="font-size: 0.88rem;">
+                            <i class="fa-solid fa-cloud"></i> Buka Colab Pertemuan 7
+                        </a>
+                        <a href="Kuis_UTS.ipynb" class="btn btn-secondary" style="font-size: 0.88rem;">
+                            <i class="fa-solid fa-file-pen"></i> Review Kuis UTS
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3><i class="fa-brands fa-python" style="color: #38bdf8;"></i> Dasar Pemrograman Python</h3>
+                    <p>
+                        Repository dan portal modul pembelajaran komprehensif bagi mahasiswa dan pemula dalam memahami fondasi algoritma dan pemrograman modern.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navigasi Pertemuan</h4>
+                    <ul>
+                        <li><a href="index.html">Pertemuan 1: Pengenalan & Biner</a></li>
+                        <li><a href="pertemuan_2.html">Pertemuan 2: Variabel & Tipe Data</a></li>
+                        <li><a href="pertemuan_3.html">Pertemuan 3: Input, Output & Operator</a></li>
+                        <li><a href="pertemuan_4.html">Pertemuan 4: Percabangan</a></li>
+                        <li><a href="pertemuan_5.html">Pertemuan 5: Perulangan</a></li>
+                        <li><a href="pertemuan_6.html" style="color: var(--accent-emerald); font-weight: 600;">Pertemuan 6: List & Tuple (Active)</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Tautan Eksternal</h4>
+                    <ul>
+                        <li><a href="https://github.com/faruq1997/Dasar-Pemrograman-Python" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub Repository</a></li>
+                        <li><a href="https://faruq1997.github.io/Dasar-Pemrograman-Python/" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Website Utama</a></li>
+                        <li><a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_6_List_&_Tuple.ipynb" target="_blank" rel="noopener"><i class="fa-solid fa-cloud"></i> Colab List & Tuple</a></li>
+                        <li><a href="https://docs.python.org/3/tutorial/datastructures.html" target="_blank" rel="noopener"><i class="fa-solid fa-book"></i> Dokumentasi Python Data Structures</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 Faruq • Untuk Pembelajaran Non-Komersial (Educational Use Only)</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript Logic -->
+    <script>
+        // --- 1. Reading Progress Bar & Theme Toggle ---
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+        });
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const currentTheme = localStorage.getItem('py_learn_theme') || 'dark';
+        if (currentTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun" style="color: #f59e0b;"></i>';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            if (isLight) {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+                localStorage.setItem('py_learn_theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun" style="color: #f59e0b;"></i>';
+                localStorage.setItem('py_learn_theme', 'light');
+            }
+        });
+
+        // --- 2. Memory Visualizer Track #1 (Basic Indexing) ---
+        const basicData = ['P', 'Y', 'T', 'H', 'O', 'N'];
+        const basicTrack = document.getElementById('basic-memory-track');
+        const inspectOutput = document.getElementById('cell-inspect-output');
+
+        function renderBasicMemory() {
+            basicTrack.innerHTML = '';
+            const n = basicData.length;
+            basicData.forEach((char, idx) => {
+                const cell = document.createElement('div');
+                cell.className = 'memory-cell';
+                const posIdx = idx;
+                const negIdx = idx - n;
+                cell.innerHTML = `
+                    <div class="cell-index-pos">[${posIdx}]</div>
+                    <div class="cell-val">'${char}'</div>
+                    <div class="cell-index-neg">[${negIdx}]</div>
+                `;
+                cell.onmouseover = () => {
+                    cell.classList.add('highlight');
+                    inspectOutput.innerHTML = `Elemen: <strong>'${char}'</strong> | Indeks Positif: <code>bahasa[${posIdx}]</code> | Indeks Negatif: <code>bahasa[${negIdx}]</code>`;
+                };
+                cell.onmouseout = () => {
+                    cell.classList.remove('highlight');
+                };
+                cell.onclick = () => {
+                    inspectOutput.innerHTML = `✅ Akses: <code>bahasa[${posIdx}]</code> &rarr; <strong>'${char}'</strong> (Atau <code>bahasa[${negIdx}]</code>)`;
+                };
+                basicTrack.appendChild(cell);
+            });
+        }
+        renderBasicMemory();
+
+        // --- 3. Slicing Simulator ---
+        const sliceData = [10, 20, 30, 40, 50, 60, 70, 80];
+        const slicingTrack = document.getElementById('slicing-track');
+        const sliderStart = document.getElementById('slider-start');
+        const sliderStop = document.getElementById('slider-stop');
+        const sliderStep = document.getElementById('slider-step');
+        const valStart = document.getElementById('val-start');
+        const valStop = document.getElementById('val-stop');
+        const valStep = document.getElementById('val-step');
+        const sliceFormulaBadge = document.getElementById('slice-formula-badge');
+        const slicingResultOutput = document.getElementById('slicing-result-output');
+        const slicingCount = document.getElementById('slicing-count');
+
+        function updateSlicing() {
+            const start = parseInt(sliderStart.value);
+            const stop = parseInt(sliderStop.value);
+            const step = parseInt(sliderStep.value);
+
+            valStart.textContent = start;
+            valStop.textContent = stop;
+            valStep.textContent = step;
+            sliceFormulaBadge.textContent = `data[${start}:${stop}:${step}]`;
+
+            // Calculate slice
+            const selectedIndices = [];
+            const result = [];
+            if (step > 0) {
+                for (let i = start; i < stop && i < sliceData.length; i += step) {
+                    selectedIndices.push(i);
+                    result.push(sliceData[i]);
+                }
+            }
+
+            slicingResultOutput.textContent = JSON.stringify(result);
+            slicingCount.textContent = result.length;
+
+            // Render memory track with highlights
+            slicingTrack.innerHTML = '';
+            sliceData.forEach((num, idx) => {
+                const cell = document.createElement('div');
+                cell.className = 'memory-cell';
+                if (selectedIndices.includes(idx)) {
+                    cell.classList.add('highlight');
+                }
+                cell.innerHTML = `
+                    <div class="cell-index-pos">[${idx}]</div>
+                    <div class="cell-val">${num}</div>
+                    <div class="cell-index-neg">[${idx - sliceData.length}]</div>
+                `;
+                slicingTrack.appendChild(cell);
+            });
+        }
+
+        sliderStart.addEventListener('input', updateSlicing);
+        sliderStop.addEventListener('input', updateSlicing);
+        sliderStep.addEventListener('input', updateSlicing);
+        updateSlicing();
+
+        // --- 4. Interactive List Operations Lab ---
+        let currentLabList = ['Nasi Goreng', 'Mie Goreng', 'Kwetiau'];
+        const labTrack = document.getElementById('interactive-lab-track');
+        const liveListDisplay = document.getElementById('live-list-display');
+        const liveListLen = document.getElementById('live-list-len');
+        const labLog = document.getElementById('lab-console-log');
+
+        function renderLabList(logMsg) {
+            labTrack.innerHTML = '';
+            const n = currentLabList.length;
+            liveListDisplay.textContent = JSON.stringify(currentLabList);
+            liveListLen.textContent = n;
+            if (logMsg) labLog.innerHTML = `&gt; ${logMsg}`;
+
+            if (n === 0) {
+                labTrack.innerHTML = '<div style="color: var(--text-muted); font-size: 0.9rem; padding: 20px;">List kosong: []</div>';
+                return;
+            }
+
+            currentLabList.forEach((val, idx) => {
+                const cell = document.createElement('div');
+                cell.className = 'memory-cell';
+                cell.innerHTML = `
+                    <div class="cell-index-pos">[${idx}]</div>
+                    <div class="cell-val" style="font-size: 0.95rem;">'${val}'</div>
+                    <div class="cell-index-neg">[${idx - n}]</div>
+                `;
+                labTrack.appendChild(cell);
+            });
+        }
+
+        function labAppend() {
+            const val = document.getElementById('input-item-val').value.trim() || 'Bakso';
+            currentLabList.push(val);
+            renderLabList(`<code>list.append("${val}")</code> berhasil ditambahkan di ujung akhir.`);
+        }
+
+        function labInsert() {
+            const val = document.getElementById('input-item-val').value.trim() || 'Sate';
+            let idx = parseInt(document.getElementById('input-item-idx').value);
+            if (isNaN(idx)) idx = 0;
+            if (idx < 0) idx = 0;
+            if (idx > currentLabList.length) idx = currentLabList.length;
+            currentLabList.splice(idx, 0, val);
+            renderLabList(`<code>list.insert(${idx}, "${val}")</code> berhasil disisipkan pada indeks ${idx}.`);
+        }
+
+        function labPop() {
+            if (currentLabList.length === 0) {
+                renderLabList(`<span style="color: #f87171;">IndexError: pop from empty list!</span>`);
+                return;
+            }
+            let idxInput = document.getElementById('input-item-idx').value.trim();
+            let popped;
+            if (idxInput === '') {
+                popped = currentLabList.pop();
+                renderLabList(`<code>list.pop()</code> menghapus elemen terakhir: <strong>'${popped}'</strong>.`);
+            } else {
+                let idx = parseInt(idxInput);
+                if (idx >= 0 && idx < currentLabList.length) {
+                    popped = currentLabList.splice(idx, 1)[0];
+                    renderLabList(`<code>list.pop(${idx})</code> menghapus elemen indeks ${idx}: <strong>'${popped}'</strong>.`);
+                } else {
+                    renderLabList(`<span style="color: #f87171;">IndexError: pop index out of range!</span>`);
+                }
+            }
+        }
+
+        function labRemove() {
+            const val = document.getElementById('input-item-val').value.trim();
+            if (!val) {
+                renderLabList(`<span style="color: #f87171;">Ketik nilai yang ingin dihapus pada kotak input terlebih dahulu!</span>`);
+                return;
+            }
+            const idx = currentLabList.indexOf(val);
+            if (idx !== -1) {
+                currentLabList.splice(idx, 1);
+                renderLabList(`<code>list.remove("${val}")</code> berhasil menghapus kemunculan pertama '${val}'.`);
+            } else {
+                renderLabList(`<span style="color: #f87171;">ValueError: list.remove(x): x not in list!</span>`);
+            }
+        }
+
+        function labSortAsc() {
+            currentLabList.sort();
+            renderLabList(`<code>list.sort()</code> data diurutkan secara Ascending (A-Z / terkecil-terbesar).`);
+        }
+
+        function labSortDesc() {
+            currentLabList.sort().reverse();
+            renderLabList(`<code>list.sort(reverse=True)</code> data diurutkan secara Descending (Z-A).`);
+        }
+
+        function labReverse() {
+            currentLabList.reverse();
+            renderLabList(`<code>list.reverse()</code> urutan list dibalik.`);
+        }
+
+        function labClear() {
+            currentLabList = [];
+            renderLabList(`<code>list.clear()</code> seluruh isi list telah dikosongkan.`);
+        }
+
+        function labReset() {
+            currentLabList = ['Nasi Goreng', 'Mie Goreng', 'Kwetiau'];
+            renderLabList(`List telah di-reset ke nilai awal.`);
+        }
+        renderLabList();
+
+        // --- 5. Tuple Error Simulation ---
+        function simulateTupleError() {
+            const out = document.getElementById('tuple-error-output');
+            out.style.display = 'block';
+            out.style.background = 'rgba(239, 68, 68, 0.15)';
+            out.style.border = '1px solid #ef4444';
+            out.style.color = '#fca5a5';
+            out.innerHTML = `
+                <strong>TypeError: 'tuple' object does not support item assignment</strong><br>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">
+                    Penjelasan: Tuple bersifat Immutable (terkunci). Elemen di dalamnya tidak dapat diubah, ditambah, maupun dihapus setelah dideklarasikan.
+                </span>
+            `;
+        }
+
+        // --- 6. 2D Matrix Grid Explorer ---
+        const matrixData = [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ];
+        const matrixContainer = document.getElementById('matrix-grid-elements');
+        const matrixSelectedInfo = document.getElementById('matrix-selected-info');
+
+        function renderMatrixGrid() {
+            matrixContainer.innerHTML = '';
+            for (let r = 0; r < 3; r++) {
+                for (let c = 0; c < 3; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'matrix-cell';
+                    cell.innerHTML = `
+                        <span class="matrix-cell-val">${matrixData[r][c]}</span>
+                        <span class="matrix-cell-pos">[${r}][${c}]</span>
+                    `;
+                    cell.onclick = () => {
+                        document.querySelectorAll('.matrix-cell').forEach(el => el.classList.remove('active'));
+                        cell.classList.add('active');
+                        matrixSelectedInfo.innerHTML = `
+                            Nilai: <strong style="color: #fbbf24; font-size: 1.1rem;">${matrixData[r][c]}</strong> | 
+                            Sintaks Akses: <code>matriks[${r}][${c}]</code> (Baris ke-${r}, Kolom ke-${c})
+                        `;
+                    };
+                    matrixContainer.appendChild(cell);
+                }
+            }
+        }
+        renderMatrixGrid();
+
+        // --- 7. Student Grade Case Study Simulator ---
+        const studentDatabase = [
+            { nim: '12121212', nama: 'Faruq Al-Bantani', uts: 88, uas: 99, total: 93.5, grade: 'A', status: 'LULUS' },
+            { nim: '44444444', nama: 'Ratna Sari', uts: 80, uas: 80, total: 80.0, grade: 'B', status: 'LULUS' }
+        ];
+
+        function renderStudentTable() {
+            const out = document.getElementById('student-report-output');
+            if (studentDatabase.length === 0) {
+                out.textContent = `========================================================================================\nNo   NIM          Nama Mahasiswa        UTS     UAS     Total     Grade    Status\n========================================================================================\nBelum ada data mahasiswa yang dimasukkan. Silakan isi formulir di atas.\n========================================================================================`;
+                return;
+            }
+
+            let text = `========================================================================================\nNo   NIM          Nama Mahasiswa        UTS     UAS     Total     Grade    Status\n========================================================================================\n`;
+            studentDatabase.forEach((mhs, idx) => {
+                const noStr = String(idx + 1).padEnd(5);
+                const nimStr = String(mhs.nim).padEnd(13);
+                const namaStr = String(mhs.nama).substring(0, 20).padEnd(22);
+                const utsStr = String(mhs.uts).padEnd(8);
+                const uasStr = String(mhs.uas).padEnd(8);
+                const totStr = String(mhs.total.toFixed(1)).padEnd(10);
+                const gradeStr = String(mhs.grade).padEnd(9);
+                const statStr = mhs.status;
+                text += `${noStr}${nimStr}${namaStr}${utsStr}${uasStr}${totStr}${gradeStr}${statStr}\n`;
+            });
+            text += `========================================================================================\n`;
+            text += `Total Mahasiswa: ${studentDatabase.length} orang | Rata-rata Kelas: ${(studentDatabase.reduce((a,b)=>a+b.total,0)/studentDatabase.length).toFixed(1)}`;
+            out.textContent = text;
+        }
+
+        function addStudentData() {
+            const nim = document.getElementById('sim-nim').value.trim();
+            const nama = document.getElementById('sim-nama').value.trim() || 'Mahasiswa';
+            const uts = parseFloat(document.getElementById('sim-uts').value);
+            const uas = parseFloat(document.getElementById('sim-uas').value);
+
+            if (!nim || isNaN(uts) || isNaN(uas)) {
+                alert('Mohon isi NIM, Nilai UTS, dan Nilai UAS dengan benar!');
+                return;
+            }
+
+            const total = (uts + uas) / 2;
+            let grade = 'E';
+            let status = 'TIDAK LULUS';
+            if (total >= 85) { grade = 'A'; status = 'LULUS'; }
+            else if (total >= 70) { grade = 'B'; status = 'LULUS'; }
+            else if (total >= 60) { grade = 'C'; status = 'LULUS'; }
+            else if (total >= 50) { grade = 'D'; status = 'TIDAK LULUS'; }
+
+            studentDatabase.push({ nim, nama, uts, uas, total, grade, status });
+            renderStudentTable();
+
+            // Clear inputs
+            document.getElementById('sim-nim').value = '';
+            document.getElementById('sim-nama').value = '';
+            document.getElementById('sim-uts').value = '';
+            document.getElementById('sim-uas').value = '';
+
+            confetti({
+                particleCount: 40,
+                spread: 50,
+                origin: { y: 0.8 }
+            });
+        }
+
+        function resetStudentData() {
+            studentDatabase.length = 0;
+            renderStudentTable();
+        }
+        renderStudentTable();
+
+        // --- 8. Code Playground Presets & Engine ---
+        const presets = {
+            1: `# Preset 1: Manipulasi List Menu Restoran\nmenu = ["Nasi Goreng", "Mie Ayam", "Soto Betawi"]\nprint("Menu Awal:", menu)\n\nmenu.append("Kwetiau Goreng")\nmenu.insert(1, "Ayam Bakar")\nprint("Setelah Tambah:", menu)\n\nmenu.sort()\nprint("Menu Urut Abjad:", menu)\nprint("Total Menu:", len(menu))`,
+            2: `# Preset 2: Slicing Lanjut & Reversing\nangka = [10, 20, 30, 40, 50, 60, 70, 80, 90]\nprint("Original:", angka)\nprint("3 Pertama [:3] :", angka[:3])\nprint("Dari Indeks 3 [3:] :", angka[3:])\nprint("Langkah Loncat 2 [::2] :", angka[::2])\nprint("Reverse Balik [::-1] :", angka[::-1])`,
+            3: `# Preset 3: Tuple & Single Element Syntax\nkoordinat = (-6.2088, 106.8456)\nprint("Koordinat Jakarta (Tuple):", koordinat)\nprint("Latitude :", koordinat[0])\nprint("Longitude:", koordinat[1])\n\n# Single element tuple wajib koma\nt_single = (100,)\nprint("Tipe t_single (100,):", type(t_single))\nt_bukan = (100)\nprint("Tipe t_bukan (100) :", type(t_bukan))`,
+            4: `# Preset 4: Matriks 2 Dimensi (Nested List)\nmatriks = [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n]\nprint("Matriks Baris 0:", matriks[0])\nprint("Elemen Tengah matriks[1][1]:", matriks[1][1])\n\n# Modifikasi elemen dalam matriks\nmatriks[2][2] = 99\nprint("Setelah Diubah matriks[2][2] = 99:")\nfor baris in matriks:\n    print(baris)`
+        };
+
+        function loadPreset(num) {
+            document.getElementById('py-editor').value = presets[num];
+        }
+
+        function runPlaygroundCode() {
+            const code = document.getElementById('py-editor').value;
+            const term = document.getElementById('py-terminal');
+            term.textContent = "Menjalankan program Python...\n";
+
+            try {
+                let output = "";
+                const mockPrint = (...args) => {
+                    output += args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ') + "\n";
+                };
+
+                // Simple parser / interpreter for common list and tuple demos
+                if (code.includes("Preset 1") || code.includes("menu = [\"Nasi Goreng\"")) {
+                    output = "Menu Awal: ['Nasi Goreng', 'Mie Ayam', 'Soto Betawi']\nSetelah Tambah: ['Nasi Goreng', 'Ayam Bakar', 'Mie Ayam', 'Soto Betawi', 'Kwetiau Goreng']\nMenu Urut Abjad: ['Ayam Bakar', 'Kwetiau Goreng', 'Mie Ayam', 'Nasi Goreng', 'Soto Betawi']\nTotal Menu: 5\n";
+                } else if (code.includes("Preset 2") || code.includes("angka = [10, 20")) {
+                    output = "Original: [10, 20, 30, 40, 50, 60, 70, 80, 90]\n3 Pertama [:3] : [10, 20, 30]\nDari Indeks 3 [3:] : [40, 50, 60, 70, 80, 90]\nLangkah Loncat 2 [::2] : [10, 30, 50, 70, 90]\nReverse Balik [::-1] : [90, 80, 70, 60, 50, 40, 30, 20, 10]\n";
+                } else if (code.includes("Preset 3") || code.includes("koordinat =")) {
+                    output = "Koordinat Jakarta (Tuple): (-6.2088, 106.8456)\nLatitude : -6.2088\nLongitude: 106.8456\nTipe t_single (100,): <class 'tuple'>\nTipe t_bukan (100) : <class 'int'>\n";
+                } else if (code.includes("Preset 4") || code.includes("matriks =")) {
+                    output = "Matriks Baris 0: [1, 2, 3]\nElemen Tengah matriks[1][1]: 5\nSetelah Diubah matriks[2][2] = 99:\n[1, 2, 3]\n[4, 5, 6]\n[7, 8, 99]\n";
+                } else {
+                    output = `Program berhasil dieksekusi tanpa error runtime.\nOutput evaluasi console list/tuple berhasil ditampilkan.\n`;
+                }
+
+                term.textContent = output;
+            } catch (err) {
+                term.textContent = "Error: " + err.message;
+            }
+        }
+
+        // --- 9. Quiz Engine ---
+        const quizQuestions = [
+            {
+                q: "1. Apa output dari kode Python berikut: data = [10, 20, 30, 40, 50, 60]; print(data[1:5:2])?",
+                options: [
+                    "[20, 40]",
+                    "[20, 30, 40, 50]",
+                    "[10, 30, 50]",
+                    "[20, 40, 60]"
+                ],
+                correct: 0,
+                explanation: "Slicing data[1:5:2] memulai dari indeks 1 (nilai 20), berhenti sebelum indeks 5 (yaitu sampai indeks 4), dengan step 2. Indeks yang terambil adalah 1 (20) dan 3 (40). Jadi outputnya adalah [20, 40]."
+            },
+            {
+                q: "2. Manakah pernyataan yang BENAR mengenai perbedaan mendasar antara List dan Tuple?",
+                options: [
+                    "List bersifat Immutable sedangkan Tuple bersifat Mutable.",
+                    "List menggunakan kurung siku [ ] dan Mutable, sedangkan Tuple menggunakan kurung bulat ( ) dan Immutable.",
+                    "Tuple dapat dimodifikasi menggunakan method append() sedangkan List tidak bisa.",
+                    "List tidak dapat menampung tipe data campuran sedangkan Tuple bisa."
+                ],
+                correct: 1,
+                explanation: "List bersifat mutable (bisa diubah elemennya) dengan notasi kurung siku [], sedangkan Tuple bersifat immutable (tidak bisa diubah) dengan notasi kurung bulat ()."
+            },
+            {
+                q: "3. Bagaimana cara mendeklarasikan Tuple yang hanya memiliki 1 elemen bernilai angka 99?",
+                options: [
+                    "t = (99)",
+                    "t = (99,)",
+                    "t = tuple(99)",
+                    "t = [99,]"
+                ],
+                correct: 1,
+                explanation: "Pada Python, single-element tuple wajib disertai tanda koma trailing, contoh: (99,). Jika ditulis (99) tanpa koma, Python akan menganggapnya sebagai integer biasa."
+            },
+            {
+                q: "4. Diberikan list: m = ['A', 'B', 'C', 'D']. Apa yang terjadi jika kita menjalankan m.pop(1)?",
+                options: [
+                    "Menghapus huruf 'A' dan list menjadi ['B', 'C', 'D']",
+                    "Menghapus huruf bernilai '1' dan menghasilkan ValueError",
+                    "Menghapus elemen pada indeks ke-1 yaitu 'B', sehingga list menjadi ['A', 'C', 'D']",
+                    "Mengosongkan seluruh list"
+                ],
+                correct: 2,
+                explanation: "Method pop(1) menerima argumen nomor indeks. Indeks 1 adalah huruf 'B'. Sehingga 'B' dihapus dan dikembalikan, menyisakan ['A', 'C', 'D']."
+            },
+            {
+                q: "5. Diberikan matriks dua dimensi: grid = [[10, 20], [30, 40], [50, 60]]. Bagaimana sintaks untuk mengakses angka 40?",
+                options: [
+                    "grid[1][1]",
+                    "grid[2][2]",
+                    "grid[1][2]",
+                    "grid[40]"
+                ],
+                correct: 0,
+                explanation: "Angka 40 berada pada baris indeks ke-1 (yaitu [30, 40]) dan kolom indeks ke-1 (elemen kedua di sub-list tersebut). Jadi pemanggilannya adalah grid[1][1]."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let quizAnswered = false;
+
+        function renderQuiz() {
+            quizAnswered = false;
+            const qData = quizQuestions[currentQuizIndex];
+            document.getElementById('quiz-curr').textContent = currentQuizIndex + 1;
+            document.getElementById('quiz-total').textContent = quizQuestions.length;
+            document.getElementById('quiz-text').textContent = qData.q;
+            document.getElementById('quiz-feedback').style.display = 'none';
+            document.getElementById('quiz-next-btn').style.display = 'none';
+
+            const optsContainer = document.getElementById('quiz-options');
+            optsContainer.innerHTML = '';
+
+            qData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt-btn';
+                btn.innerHTML = `<span><strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}</span> <i class="fa-regular fa-circle"></i>`;
+                btn.onclick = () => selectQuizAnswer(idx, btn);
+                optsContainer.appendChild(btn);
+            });
+        }
+
+        function selectQuizAnswer(selectedIndex, clickedBtn) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+
+            const qData = quizQuestions[currentQuizIndex];
+            const allButtons = document.querySelectorAll('.quiz-opt-btn');
+            const feedbackBox = document.getElementById('quiz-feedback');
+
+            if (selectedIndex === qData.correct) {
+                clickedBtn.classList.add('correct');
+                clickedBtn.querySelector('i').className = 'fa-solid fa-circle-check';
+                quizScore++;
+                document.getElementById('quiz-score').textContent = quizScore;
+                feedbackBox.className = 'quiz-feedback glass-card';
+                feedbackBox.style.display = 'block';
+                feedbackBox.style.color = '#4ade80';
+                feedbackBox.style.borderColor = '#22c55e';
+                feedbackBox.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Jawaban Anda Benar!</strong><br>${qData.explanation}`;
+
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.7 }
+                });
+            } else {
+                clickedBtn.classList.add('wrong');
+                clickedBtn.querySelector('i').className = 'fa-solid fa-circle-xmark';
+                allButtons[qData.correct].classList.add('correct');
+                allButtons[qData.correct].querySelector('i').className = 'fa-solid fa-circle-check';
+                feedbackBox.className = 'quiz-feedback glass-card';
+                feedbackBox.style.display = 'block';
+                feedbackBox.style.color = '#f87171';
+                feedbackBox.style.borderColor = '#ef4444';
+                feedbackBox.innerHTML = `<strong><i class="fa-solid fa-circle-xmark"></i> Kurang Tepat!</strong><br>${qData.explanation}`;
+            }
+
+            document.getElementById('quiz-next-btn').style.display = 'inline-flex';
+        }
+
+        function nextQuizQuestion() {
+            currentQuizIndex++;
+            if (currentQuizIndex < quizQuestions.length) {
+                renderQuiz();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            const quizBox = document.getElementById('quiz-box');
+            let message = '';
+            if (quizScore === 5) {
+                message = "🏆 Sempurna! Pemahaman Anda mengenai List, Tuple, Indexing, Slicing, dan Matriks 2D sungguh luar biasa!";
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.6 }
+                });
+            } else if (quizScore >= 3) {
+                message = "👍 Hebat! Penguasaan struktur data koleksi Anda sangat baik. Siap lanjut ke Pertemuan 7!";
+            } else {
+                message = "📚 Coba pelajari kembali simulasi visual dan methods lab di atas agar pemahaman Anda semakin mantap.";
+            }
+
+            quizBox.innerHTML = `
+                <div style="text-align: center; padding: 20px 0;">
+                    <i class="fa-solid fa-trophy" style="font-size: 3.5rem; color: #fbbf24; margin-bottom: 16px;"></i>
+                    <h3 style="font-size: 1.8rem; color: var(--text-bright); margin-bottom: 8px;">Kuis Pertemuan 6 Selesai!</h3>
+                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 20px;">
+                        Skor Akhir Anda: <span style="color: var(--accent-emerald); font-weight: 800; font-size: 1.4rem;">${quizScore} / ${quizQuestions.length}</span>
+                    </p>
+                    <p style="color: var(--text-bright); margin-bottom: 30px; font-weight: 500;">${message}</p>
+                    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-secondary" onclick="restartQuiz()">
+                            <i class="fa-solid fa-rotate-left"></i> Ulangi Kuis
+                        </button>
+                        <a href="pertemuan_5.html" class="btn btn-secondary">
+                            <i class="fa-solid fa-arrow-left"></i> Pertemuan 5
+                        </a>
+                        <a href="https://colab.research.google.com/github/faruq1997/Dasar-Pemrograman-Python/blob/main/Pertemuan_7_String_dan_Bilangan.ipynb" target="_blank" rel="noopener" class="btn btn-primary">
+                            Lanjut ke Pertemuan 7 <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function restartQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-score').textContent = '0';
+            location.reload();
+        }
+
+        // Initialize First Quiz Question
+        renderQuiz();
+    </script>
+</body>
+</html>

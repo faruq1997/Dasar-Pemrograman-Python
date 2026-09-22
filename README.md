@@ -38,9 +38,9 @@ Repositori ini **didesain untuk pembelajaran**, bukan penggunaan komersial.
 | 3 | Input, Output, dan Operator | [Web Interaktif (pertemuan_3.html)](pertemuan_3.html) / [Pertemuan 3.ipynb](Pertemuan%203.ipynb) |
 | 4 | Percabangan (If / Else) | [Web Interaktif (pertemuan_4.html)](pertemuan_4.html) / [Pertemuan_4_Percabangan.ipynb](Pertemuan_4_Percabangan.ipynb) |
 | 4B | Latihan Percabangan | [Pertemuan 4_Percabangan_latihan.ipynb](Pertemuan%204_Percabangan_latihan.ipynb) |
-| 5 | Perulangan (For / While) | [Pertemuan 5_Perulangan.ipynb](Pertemuan%205_Perulangan.ipynb) |
+| 5 | Perulangan (For / While) | [Web Interaktif (pertemuan_5.html)](pertemuan_5.html) / [Pertemuan 5_Perulangan.ipynb](Pertemuan%205_Perulangan.ipynb) |
 | 5B | Studi Kasus: Gerobak Fried Chicken | [Pertemuan 5_Gerobak_Fried_Chickens.ipynb](Pertemuan%205_Gerobak_Fried_Chickens.ipynb) |
-| 6 | List dan Tuple | [Pertemuan 6_List_&_Tuple.ipynb](Pertemuan%206_List_%26_Tuple.ipynb) |
+| 6 | List dan Tuple | [Web Interaktif (pertemuan_6.html)](pertemuan_6.html) / [Pertemuan 6_List_&_Tuple.ipynb](Pertemuan%206_List_%26_Tuple.ipynb) |
 | 6B | Latihan Tambahan Struktur Data | [Pertemuan 6_tambahan.ipynb](Pertemuan%206_tambahan.ipynb) |
 | 7 | String dan Bilangan | [Pertemuan 7_String_dan_Bilangan.ipynb](Pertemuan%207_String_dan_Bilangan.ipynb) |
 | 🧩 | **Kuis UTS (Evaluasi Tengah Semester)** | [Kuis_UTS.ipynb](Kuis_UTS.ipynb) |
