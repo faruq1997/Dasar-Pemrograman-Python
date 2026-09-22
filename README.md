@@ -42,7 +42,7 @@ Repositori ini **didesain untuk pembelajaran**, bukan penggunaan komersial.
 | 5B | Studi Kasus: Gerobak Fried Chicken | [Pertemuan 5_Gerobak_Fried_Chickens.ipynb](Pertemuan%205_Gerobak_Fried_Chickens.ipynb) |
 | 6 | List dan Tuple | [Web Interaktif (pertemuan_6.html)](pertemuan_6.html) / [Pertemuan 6_List_&_Tuple.ipynb](Pertemuan%206_List_%26_Tuple.ipynb) |
 | 6B | Latihan Tambahan Struktur Data | [Pertemuan 6_tambahan.ipynb](Pertemuan%206_tambahan.ipynb) |
-| 7 | String dan Bilangan | [Pertemuan 7_String_dan_Bilangan.ipynb](Pertemuan%207_String_dan_Bilangan.ipynb) |
+| 7 | String dan Bilangan | [Web Interaktif (pertemuan_7.html)](pertemuan_7.html) / [Pertemuan 7_String_dan_Bilangan.ipynb](Pertemuan%207_String_dan_Bilangan.ipynb) |
 | 🧩 | **Kuis UTS (Evaluasi Tengah Semester)** | [Kuis_UTS.ipynb](Kuis_UTS.ipynb) |
 | 8 | Fungsi (Definisi, Parameter, Return) | [Pertemuan 9_Fungsi.ipynb](Pertemuan%209_Fungsi.ipynb) |
 | 9 | Penanganan Error / Exception | [Pertemuan 10_Eksepsi_Exception.ipynb](Pertemuan%2010_Eksepsi_Exception.ipynb) |
