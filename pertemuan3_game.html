@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Py-Man: Petualangan Koding Python</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        python: {
+                            blue: '#0284c7',
+                            yellow: '#d97706',
+                            lightBg: '#f8fafc',
+                            cardBg: '#ffffff'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        code: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        canvas {
+            touch-action: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-full flex flex-col justify-between selection:bg-sky-200 selection:text-sky-900">
+
+    <!-- Header / Navbar Light Theme -->
+    <header class="bg-white/90 backdrop-blur border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-amber-400 to-yellow-300 text-slate-900 p-2.5 rounded-2xl shadow-md flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-ghost text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg sm:text-xl bg-gradient-to-r from-sky-600 via-amber-600 to-emerald-600 bg-clip-text text-transparent">
+                        Py-Man Quest
+                    </h1>
+                    <p class="text-xs text-slate-500 font-medium">Belajar Python via Pac-Man Interaktif</p>
+                </div>
+            </div>
+
+            <!-- Header Game Stats -->
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <div class="flex items-center space-x-1.5 bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200 shadow-sm">
+                    <i class="fa-solid fa-coins text-amber-500 text-sm"></i>
+                    <span class="text-xs sm:text-sm font-bold text-amber-800" id="header-score">0 Pts</span>
+                </div>
+                <div class="flex items-center space-x-1.5 bg-rose-50 px-3 py-1.5 rounded-full border border-rose-200 shadow-sm">
+                    <i class="fa-solid fa-heart text-rose-500 text-sm"></i>
+                    <span class="text-xs sm:text-sm font-bold text-rose-800" id="header-hp">HP: 3</span>
+                </div>
+                <button onclick="toggleHelpModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-bold transition flex items-center gap-1">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span class="hidden sm:inline">Panduan</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-4 py-4 w-full flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+        <!-- Left Column: Pac-Man Game Canvas & Controls -->
+        <section class="lg:col-span-7 flex flex-col space-y-4">
+            
+            <!-- Game Canvas Box -->
+            <div class="bg-white p-3 sm:p-4 rounded-2xl border border-slate-200 shadow-xl flex flex-col items-center justify-center relative">
+                
+                <!-- Game Status Banner -->
+                <div id="game-status-banner" class="w-full bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold px-3 py-2 rounded-xl mb-3 flex justify-between items-center">
+                    <span id="banner-message">🕹️ Gunakan Tombol Arah / Touch D-Pad untuk Menggerakkan Py-Man!</span>
+                    <button onclick="initGame()" class="bg-sky-600 text-white px-2.5 py-1 rounded-lg hover:bg-sky-700 transition text-[11px]">
+                        <i class="fa-solid fa-rotate-right mr-1"></i>Reset Game
+                    </button>
+                </div>
+
+                <!-- Canvas -->
+                <div class="relative w-full aspect-square max-w-[460px] bg-slate-900 rounded-xl overflow-hidden border-2 border-sky-400 shadow-inner flex items-center justify-center">
+                    <canvas id="pacmanCanvas" width="440" height="440" class="w-full h-full block"></canvas>
+                    
+                    <!-- Overlay Start/Game Over Screen -->
+                    <div id="canvas-overlay" class="absolute inset-0 bg-slate-900/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center z-10 transition-all duration-300">
+                        <div class="w-16 h-16 bg-amber-400 rounded-full flex items-center justify-center text-slate-900 text-3xl mb-3 shadow-lg animate-bounce">
+                            <i class="fa-solid fa-ghost"></i>
+                        </div>
+                        <h2 class="text-2xl font-black text-white mb-2" id="overlay-title">Py-Man Quest!</h2>
+                        <p class="text-xs text-slate-300 max-w-xs mb-4" id="overlay-desc">Makan pelet Python untuk mempelajari variabel, matematika pangkat/akar, dan logika game!</p>
+                        <button onclick="startGame()" class="bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-500 hover:to-yellow-600 text-slate-950 font-extrabold px-6 py-2.5 rounded-xl shadow-lg transition transform hover:scale-105">
+                            <i class="fa-solid fa-play mr-1.5"></i> Mulai Main
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Touch D-Pad Controller -->
+                <div class="mt-4 flex flex-col items-center justify-center space-y-1 sm:hidden">
+                    <button onclick="handleDpad('up')" class="w-12 h-10 bg-slate-200 active:bg-sky-500 active:text-white rounded-lg font-bold text-slate-700 shadow border border-slate-300 flex items-center justify-center">▲</button>
+                    <div class="flex space-x-2">
+                        <button onclick="handleDpad('left')" class="w-12 h-10 bg-slate-200 active:bg-sky-500 active:text-white rounded-lg font-bold text-slate-700 shadow border border-slate-300 flex items-center justify-center">◄</button>
+                        <button onclick="handleDpad('down')" class="w-12 h-10 bg-slate-200 active:bg-sky-500 active:text-white rounded-lg font-bold text-slate-700 shadow border border-slate-300 flex items-center justify-center">▼</button>
+                        <button onclick="handleDpad('right')" class="w-12 h-10 bg-slate-200 active:bg-sky-500 active:text-white rounded-lg font-bold text-slate-700 shadow border border-slate-300 flex items-center justify-center">►</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Column: Python Live Inspector & Theory Hub -->
+        <section class="lg:col-span-5 flex flex-col space-y-4">
+            
+            <!-- Live Python Variable Inspector -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xl space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-code text-sky-600 text-base"></i>
+                        <h3 class="font-bold text-sm text-slate-800">Inspektor Variabel Python (Live)</h3>
+                    </div>
+                    <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Real-time Game State</span>
+                </div>
+
+                <!-- Python Code Display Box -->
+                <div class="bg-slate-900 text-slate-100 p-3.5 rounded-xl font-code text-xs space-y-2 border border-slate-800 shadow-inner">
+                    <div class="text-slate-400 text-[11px]">// Data Jenis Variabel Karakter:</div>
+                    <div><span class="text-sky-400">hp</span> = <span class="text-amber-300 font-bold" id="py-val-hp">3</span> <span class="text-slate-500 text-[10px]"># Integer</span></div>
+                    <div><span class="text-sky-400">player_name</span> = <span class="text-emerald-300" id="py-val-name">"Py-Man"</span> <span class="text-slate-500 text-[10px]"># String</span></div>
+                    <div><span class="text-sky-400">inventory</span> = <span class="text-purple-300" id="py-val-inv">["Super-Power"]</span> <span class="text-slate-500 text-[10px]"># List/Array</span></div>
+                    <div><span class="text-sky-400">is_super_mode</span> = <span class="text-rose-400 font-bold" id="py-val-super">False</span> <span class="text-slate-500 text-[10px]"># Boolean</span></div>
+                    
+                    <div class="pt-2 border-t border-slate-800 text-slate-400 text-[11px]">// Live Math & Logika Game:</div>
+                    <div><span class="text-amber-400">score</span> = <span class="text-amber-200" id="py-val-score">0</span></div>
+                    <div><span class="text-amber-400">power_damage</span> = score ** 2 <span class="text-slate-400">-></span> <span class="text-amber-300 font-bold" id="py-val-pow">0</span> <span class="text-slate-500 text-[10px]"># Pangkat (**2)</span></div>
+                    <div><span class="text-amber-400">sqrt_speed</span> = score ** 0.5 <span class="text-slate-400">-></span> <span class="text-emerald-300 font-bold" id="py-val-sqrt">0.0</span> <span class="text-slate-500 text-[10px]"># Akar (**0.5)</span></div>
+                    <div><span class="text-sky-400">can_eat_bugs</span> = is_super_mode and (hp > 0) <span class="text-slate-400">-></span> <span class="text-sky-300 font-bold" id="py-val-caneat">False</span></div>
+                </div>
+            </div>
+
+            <!-- Learning Module Tabs Light Theme -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xl space-y-3 flex-1 flex flex-col justify-between">
+                <div>
+                    <div class="flex space-x-2 border-b border-slate-200 pb-2 overflow-x-auto custom-scrollbar">
+                        <button onclick="switchTheoryTab('vars')" id="tab-theory-vars" class="theory-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white transition whitespace-nowrap">
+                            1. Variabel
+                        </button>
+                        <button onclick="switchTheoryTab('math')" id="tab-theory-math" class="theory-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-100 transition whitespace-nowrap">
+                            2. Pangkat & Akar
+                        </button>
+                        <button onclick="switchTheoryTab('logic')" id="tab-theory-logic" class="theory-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-100 transition whitespace-nowrap">
+                            3. Logika & Gates
+                        </button>
+                    </div>
+
+                    <!-- Theory Tab Content 1: Variables -->
+                    <div id="theory-content-vars" class="theory-content pt-3 space-y-2 text-xs text-slate-600">
+                        <h4 class="font-bold text-slate-800 text-sm">Empat Tipe Data Dasar Python:</h4>
+                        <ul class="space-y-1.5 list-disc list-inside">
+                            <li><strong class="text-amber-600 font-code">Integer</strong>: Angka bulat tanpa desimal. Contoh: <code class="bg-slate-100 px-1 py-0.5 rounded border text-slate-800">hp = 3</code></li>
+                            <li><strong class="text-emerald-600 font-code">String</strong>: Teks dalam petik. Contoh: <code class="bg-slate-100 px-1 py-0.5 rounded border text-slate-800">name = "Py-Man"</code></li>
+                            <li><strong class="text-purple-600 font-code">Array / List</strong>: Wadah banyak data dalam kurung <code class="bg-slate-100 px-1 py-0.5 rounded border text-slate-800">[...]</code></li>
+                            <li><strong class="text-rose-600 font-code">Boolean</strong>: Kondisi pasti <code class="bg-slate-100 px-1 py-0.5 rounded border text-slate-800">True</code> atau <code class="bg-slate-100 px-1 py-0.5 rounded border text-slate-800">False</code>.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Theory Tab Content 2: Math Exponents & Sqrt -->
+                    <div id="theory-content-math" class="theory-content hidden pt-3 space-y-2 text-xs text-slate-600">
+                        <h4 class="font-bold text-slate-800 text-sm">Operasi Pangkat & Akar Kuadrat:</h4>
+                        <div class="bg-amber-50 p-2.5 rounded-xl border border-amber-200 text-amber-900 space-y-1">
+                            <p>⚡ <strong>Pangkat (<code class="font-code">**</code>):</strong> <code class="font-code">3 ** 2</code> artinya 3 × 3 = <strong>9</strong>.</p>
+                            <p>🌱 <strong>Akar Kuadrat (<code class="font-code">** 0.5</code>):</strong> Memangkatkan dengan <code class="font-code">0.5</code> sama dengan akar kuadrat! Contoh: <code class="font-code">16 ** 0.5</code> = <strong>4.0</strong> (Atau pakai <code class="font-code">math.sqrt(16)</code>).</p>
+                        </div>
+                    </div>
+
+                    <!-- Theory Tab Content 3: Logic & Operators -->
+                    <div id="theory-content-logic" class="theory-content hidden pt-3 space-y-2 text-xs text-slate-600">
+                        <h4 class="font-bold text-slate-800 text-sm">Operator Logika Python:</h4>
+                        <div class="space-y-1.5 font-code">
+                            <div class="p-2 bg-slate-50 border rounded-lg"><span class="text-sky-600 font-bold">and</span>: True jika SEMUA kondisi bernilai True.</div>
+                            <div class="p-2 bg-slate-50 border rounded-lg"><span class="text-amber-600 font-bold">or</span>: True jika SALAH SATU kondisi bernilai True.</div>
+                            <div class="p-2 bg-slate-50 border rounded-lg"><span class="text-rose-600 font-bold">not</span>: Membalikkan boolean (<code class="text-slate-700">not False</code> -> <code class="text-emerald-600">True</code>).</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Quiz Challenge Button -->
+                <button onclick="openQuestionModal()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 font-bold py-2.5 px-4 rounded-xl shadow transition text-xs flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-graduation-cap text-base"></i>
+                    <span>Buka Tantangan Soal Python (+Bonus Poin)</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Interactive Question / Gate Modal -->
+    <div id="question-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
+            <div class="bg-gradient-to-r from-sky-600 to-blue-700 p-4 text-white flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-puzzle-piece text-amber-300 text-lg"></i>
+                    <h3 class="font-bold text-base">Tantangan Koding Py-Man</h3>
+                </div>
+                <button onclick="closeQuestionModal()" class="text-white/80 hover:text-white text-lg font-bold">&times;</button>
+            </div>
+
+            <div class="p-5 space-y-4">
+                <div class="text-xs font-bold text-sky-600 uppercase tracking-wider" id="modal-topic-tag">Tipe Data</div>
+                <div class="text-sm font-semibold text-slate-800" id="modal-question-text">
+                    Berapakah hasil ekspresi Python <code class="bg-slate-100 text-amber-600 px-1.5 py-0.5 rounded border font-code">9 ** 0.5</code>?
+                </div>
+
+                <!-- Options -->
+                <div class="space-y-2" id="modal-options-container">
+                    <!-- Dynamic buttons -->
+                </div>
+
+                <!-- Feedback Banner -->
+                <div id="modal-feedback" class="p-3 rounded-xl text-xs font-semibold hidden transition">
+                    <!-- Feedback msg -->
+                </div>
+            </div>
+
+            <div class="bg-slate-50 p-3.5 border-t border-slate-200 flex justify-end">
+                <button onclick="closeQuestionModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-1.5 rounded-lg text-xs font-bold transition">Tutup Modal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guide Help Modal -->
+    <div id="help-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 p-5 space-y-4">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-sky-600"></i> Cara Bermain Py-Man Quest
+                </h3>
+                <button onclick="toggleHelpModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+            </div>
+            <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
+                <p>1. <strong>Kontrol:</strong> Gunakan tombol panah keyboard atau D-Pad di layar untuk menggerakkan Py-Man (kuning).</p>
+                <p>2. <strong>Pelet Koding:</strong> Makan Pelet Kuning untuk menambah skor. Perhatikan variabel di panel kanan yang otomatis terupdate!</p>
+                <p>3. <strong>Question Stars (⭐):</strong> Makan bintang untuk memicu tantangan koding. Jawaban benar memberikan status <code class="text-emerald-600 font-bold">is_super_mode = True</code>!</p>
+                <p>4. <strong>Bug Ghosts (👻):</strong> Hindari Hantu Bug jika belum Super Mode. Saat Super Mode aktif, makan para bug untuk bonus XP besar!</p>
+            </div>
+            <button onclick="toggleHelpModal()" class="w-full bg-sky-600 text-white font-bold py-2 rounded-xl text-xs hover:bg-sky-700 transition">Mengerti!</button>
+        </div>
+    </div>
+
+    <script>
+        /* --- GAME ENGINE & STATE --- */
+        let canvas, ctx;
+        let tileSize = 20;
+        let gridRows = 22;
+        let gridCols = 22;
+
+        let gameLoopId = null;
+        let isGameRunning = false;
+
+        // Player & Game Logic State
+        let player = { x: 1, y: 1, dirX: 0, dirY: 0, nextDirX: 0, nextDirY: 0, mouthAngle: 0.2 };
+        let hp = 3;
+        let score = 0;
+        let isSuperMode = false;
+        let superTimer = 0;
+
+        // Ghosts
+        let ghosts = [
+            { x: 10, y: 10, color: '#ef4444', dirX: 1, dirY: 0, name: 'SyntaxBug' },
+            { x: 11, y: 10, color: '#a855f7', dirX: -1, dirY: 0, name: 'TypeError' },
+            { x: 10, y: 11, color: '#10b981', dirX: 0, dirY: 1, name: 'LogicBug' }
+        ];
+
+        // Maze Grid Representation (1 = Wall, 0 = Pellet, 2 = Question Star, 3 = Empty)
+        const initialMap = [
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,2,1],
+            [1,0,1,1,1,0,1,0,1,1,1,1,1,1,0,1,0,1,1,1,0,1],
+            [1,0,1,3,1,0,0,0,0,0,1,1,0,0,0,0,0,1,3,1,0,1],
+            [1,0,1,1,1,0,1,1,1,0,1,1,0,1,1,1,0,1,1,1,0,1],
+            [1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,1],
+            [1,0,1,1,1,0,1,0,1,1,1,1,1,1,0,1,0,1,1,1,0,1],
+            [1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,1],
+            [1,1,1,1,1,0,1,1,1,3,1,1,3,1,1,1,0,1,1,1,1,1],
+            [3,3,3,3,1,0,1,3,3,3,3,3,3,3,3,1,0,1,3,3,3,3],
+            [1,1,1,1,1,0,1,3,1,1,3,3,1,1,3,1,0,1,1,1,1,1],
+            [1,0,0,0,0,0,3,3,1,3,3,3,3,1,3,3,0,0,0,0,0,1],
+            [1,1,1,1,1,0,1,3,1,1,1,1,1,1,3,1,0,1,1,1,1,1],
+            [3,3,3,3,1,0,1,3,3,3,3,3,3,3,3,1,0,1,3,3,3,3],
+            [1,1,1,1,1,0,1,0,1,1,1,1,1,1,0,1,0,1,1,1,1,1],
+            [1,0,0,0,0,2,0,0,0,0,1,1,0,0,0,0,2,0,0,0,0,1],
+            [1,0,1,1,1,0,1,1,1,0,1,1,0,1,1,1,0,1,1,1,0,1],
+            [1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1],
+            [1,1,1,0,1,0,1,0,1,1,1,1,1,1,0,1,0,1,0,1,1,1],
+            [1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+            [1,2,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,2,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        ];
+
+        let map = JSON.parse(JSON.stringify(initialMap));
+
+        /* --- QUIZ QUESTIONS DATA --- */
+        const quizQuestions = [
+            {
+                topic: "Aritmatika Pangkat (**)",
+                question: "Berapakah hasil dari kode Python berikut: result = 4 ** 2 ?",
+                options: [
+                    { text: "8", correct: false },
+                    { text: "16", correct: true },
+                    { text: "6", correct: false }
+                ],
+                explanation: "Operator ** adalah PANGKAT. Jadi 4 ** 2 artinya 4 × 4 = 16."
+            },
+            {
+                topic: "Akar Kuadrat (** 0.5)",
+                question: "Manakah ekspresi Python yang menghitung Akar Kuadrat dari 25?",
+                options: [
+                    { text: "25 ** 0.5", correct: true },
+                    { text: "25 // 2", correct: false },
+                    { text: "sqrt(25) tanpa import", correct: false }
+                ],
+                explanation: "Memangkatkan dengan 0.5 (25 ** 0.5) menghasilkan 5.0 (Akar Kuadrat)."
+            },
+            {
+                topic: "Operator Logika (and)",
+                question: "Apa hasil dari: True and False di Python?",
+                options: [
+                    { text: "True", correct: false },
+                    { text: "False", correct: true },
+                    { text: "Error", correct: false }
+                ],
+                explanation: "Operator 'and' butuh KEDUA belah pihak True untuk bernilai True."
+            },
+            {
+                topic: "Tipe Data List",
+                question: "Manakah cara membuat variabel List/Array yang benar?",
+                options: [
+                    { text: "items = ['Pedang', 'Perisai']", correct: true },
+                    { text: "items = (Pedang, Perisai)", correct: false },
+                    { text: "items = {Pedang - Perisai}", correct: false }
+                ],
+                explanation: "List di Python selalu dituliskan dengan kurung siku [ ... ]."
+            }
+        ];
+
+        window.onload = function() {
+            canvas = document.getElementById('pacmanCanvas');
+            ctx = canvas.getContext('2d');
+            
+            // Adjust canvas dimensions dynamically
+            tileSize = Math.floor(canvas.width / gridCols);
+
+            // Keyboard Listeners
+            window.addEventListener('keydown', function(e) {
+                if (['ArrowUp', 'KeyW'].includes(e.code)) { player.nextDirX = 0; player.nextDirY = -1; }
+                if (['ArrowDown', 'KeyS'].includes(e.code)) { player.nextDirX = 0; player.nextDirY = 1; }
+                if (['ArrowLeft', 'KeyA'].includes(e.code)) { player.nextDirX = -1; player.nextDirY = 0; }
+                if (['ArrowRight', 'KeyD'].includes(e.code)) { player.nextDirX = 1; player.nextDirY = 0; }
+            });
+
+            initGame();
+        };
+
+        function initGame() {
+            map = JSON.parse(JSON.stringify(initialMap));
+            player = { x: 1, y: 1, dirX: 0, dirY: 0, nextDirX: 0, nextDirY: 0, mouthAngle: 0.2 };
+            hp = 3;
+            score = 0;
+            isSuperMode = false;
+            superTimer = 0;
+            
+            ghosts = [
+                { x: 10, y: 10, color: '#ef4444', dirX: 1, dirY: 0 },
+                { x: 11, y: 10, color: '#a855f7', dirX: -1, dirY: 0 },
+                { x: 10, y: 11, color: '#10b981', dirX: 0, dirY: 1 }
+            ];
+
+            updateUI();
+            draw();
+
+            document.getElementById('canvas-overlay').classList.remove('hidden');
+            document.getElementById('overlay-title').innerText = "Py-Man Quest!";
+            document.getElementById('overlay-desc').innerText = "Kumpulkan pelet dan pelajari koding Python!";
+        }
+
+        function startGame() {
+            document.getElementById('canvas-overlay').classList.add('hidden');
+            if (gameLoopId) clearInterval(gameLoopId);
+            isGameRunning = true;
+            gameLoopId = setInterval(gameLoop, 160); // Game Speed tick
+        }
+
+        function handleDpad(dir) {
+            if (dir === 'up') { player.nextDirX = 0; player.nextDirY = -1; }
+            if (dir === 'down') { player.nextDirX = 0; player.nextDirY = 1; }
+            if (dir === 'left') { player.nextDirX = -1; player.nextDirY = 0; }
+            if (dir === 'right') { player.nextDirX = 1; player.nextDirY = 0; }
+        }
+
+        function gameLoop() {
+            if (!isGameRunning) return;
+
+            // Try changing direction if valid tile ahead
+            if (canMove(player.x + player.nextDirX, player.y + player.nextDirY)) {
+                player.dirX = player.nextDirX;
+                player.dirY = player.nextDirY;
+            }
+
+            // Move Player
+            if (canMove(player.x + player.dirX, player.y + player.dirY)) {
+                player.x += player.dirX;
+                player.y += player.dirY;
+            }
+
+            // Wrap around tunnel
+            if (player.x < 0) player.x = gridCols - 1;
+            if (player.x >= gridCols) player.x = 0;
+
+            // Check Pellet Tile Collections
+            let currentTile = map[player.y][player.x];
+            if (currentTile === 0) { // Yellow Dot
+                map[player.y][player.x] = 3;
+                score += 5;
+            } else if (currentTile === 2) { // Question Star Node
+                map[player.y][player.x] = 3;
+                score += 20;
+                openQuestionModal();
+            }
+
+            // Manage Super Mode Duration
+            if (isSuperMode) {
+                superTimer--;
+                if (superTimer <= 0) {
+                    isSuperMode = false;
+                }
+            }
+
+            // Move Ghosts
+            moveGhosts();
+
+            // Check Collisions with Ghosts
+            checkGhostCollisions();
+
+            // Update UI & Live Variables
+            updateUI();
+
+            // Render Frame
+            draw();
+        }
+
+        function canMove(gx, gy) {
+            if (gx < 0 || gx >= gridCols || gy < 0 || gy >= gridRows) return true; // allow tunnel
+            return map[gy][gx] !== 1;
+        }
+
+        function moveGhosts() {
+            ghosts.forEach(ghost => {
+                let possibleDirs = [
+                    { x: 1, y: 0 }, { x: -1, y: 0 },
+                    { x: 0, y: 1 }, { x: 0, y: -1 }
+                ].filter(d => canMove(ghost.x + d.x, ghost.y + d.y));
+
+                if (possibleDirs.length > 0) {
+                    let chosen = possibleDirs[Math.floor(Math.random() * possibleDirs.length)];
+                    ghost.x += chosen.x;
+                    ghost.y += chosen.y;
+                }
+            });
+        }
+
+        function checkGhostCollisions() {
+            ghosts.forEach(ghost => {
+                if (ghost.x === player.x && ghost.y === player.y) {
+                    if (isSuperMode) {
+                        // Eat Ghost
+                        score += 50;
+                        ghost.x = 10;
+                        ghost.y = 10;
+                        triggerConfetti();
+                    } else {
+                        // Lose HP
+                        hp--;
+                        player.x = 1;
+                        player.y = 1;
+                        if (hp <= 0) {
+                            gameOver();
+                        }
+                    }
+                }
+            });
+        }
+
+        function gameOver() {
+            isGameRunning = false;
+            clearInterval(gameLoopId);
+            document.getElementById('canvas-overlay').classList.remove('hidden');
+            document.getElementById('overlay-title').innerText = "Game Over!";
+            document.getElementById('overlay-desc').innerText = `HP kamu habis! Skor Akhir: ${score}`;
+        }
+
+        function draw() {
+            // Clear Background
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Maze Map
+            for (let r = 0; r < gridRows; r++) {
+                for (let c = 0; c < gridCols; c++) {
+                    let tile = map[r][c];
+                    let x = c * tileSize;
+                    let y = r * tileSize;
+
+                    if (tile === 1) { // Wall
+                        ctx.fillStyle = '#0284c7';
+                        ctx.fillRect(x + 1, y + 1, tileSize - 2, tileSize - 2);
+                    } else if (tile === 0) { // Pellet
+                        ctx.fillStyle = '#fbbf24';
+                        ctx.beginPath();
+                        ctx.arc(x + tileSize / 2, y + tileSize / 2, 3, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else if (tile === 2) { // Question Star
+                        ctx.fillStyle = '#f43f5e';
+                        ctx.beginPath();
+                        ctx.arc(x + tileSize / 2, y + tileSize / 2, 6, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+
+            // Draw Ghosts
+            ghosts.forEach(ghost => {
+                let gx = ghost.x * tileSize + tileSize / 2;
+                let gy = ghost.y * tileSize + tileSize / 2;
+
+                ctx.fillStyle = isSuperMode ? '#38bdf8' : ghost.color;
+                ctx.beginPath();
+                ctx.arc(gx, gy - 2, tileSize / 2.5, Math.PI, 0, false);
+                ctx.lineTo(gx + tileSize / 2.5, gy + tileSize / 2);
+                ctx.lineTo(gx - tileSize / 2.5, gy + tileSize / 2);
+                ctx.fill();
+
+                // Eyes
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(gx - 3, gy - 3, 2.5, 0, Math.PI * 2);
+                ctx.arc(gx + 3, gy - 3, 2.5, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Draw Player (Py-Man)
+            let px = player.x * tileSize + tileSize / 2;
+            let py = player.y * tileSize + tileSize / 2;
+
+            ctx.fillStyle = isSuperMode ? '#10b981' : '#f59e0b';
+            ctx.beginPath();
+
+            let rotation = 0;
+            if (player.dirX === 1) rotation = 0;
+            if (player.dirX === -1) rotation = Math.PI;
+            if (player.dirY === 1) rotation = Math.PI / 2;
+            if (player.dirY === -1) rotation = -Math.PI / 2;
+
+            ctx.arc(px, py, tileSize / 2.2, rotation + 0.2, rotation + Math.PI * 2 - 0.2);
+            ctx.lineTo(px, py);
+            ctx.fill();
+        }
+
+        function updateUI() {
+            document.getElementById('header-score').innerText = `${score} Pts`;
+            document.getElementById('header-hp').innerText = `HP: ${hp}`;
+
+            // Live Python Variables Inspector
+            document.getElementById('py-val-hp').innerText = hp;
+            document.getElementById('py-val-super').innerText = isSuperMode ? "True" : "False";
+            document.getElementById('py-val-score').innerText = score;
+
+            // Math Live calculations
+            let powerVal = Math.pow(score, 2);
+            let sqrtVal = Math.sqrt(score).toFixed(1);
+            let canEat = isSuperMode && (hp > 0);
+
+            document.getElementById('py-val-pow').innerText = powerVal;
+            document.getElementById('py-val-sqrt').innerText = sqrtVal;
+            document.getElementById('py-val-caneat').innerText = canEat ? "True" : "False";
+        }
+
+        function switchTheoryTab(tabId) {
+            document.querySelectorAll('.theory-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.theory-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-sky-600', 'text-white');
+                btn.classList.add('text-slate-600');
+            });
+
+            document.getElementById(`theory-content-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-theory-${tabId}`);
+            activeBtn.classList.remove('text-slate-600');
+            activeBtn.classList.add('bg-sky-600', 'text-white');
+        }
+
+        function openQuestionModal() {
+            let randomQ = quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
+            
+            document.getElementById('modal-topic-tag').innerText = randomQ.topic;
+            document.getElementById('modal-question-text').innerText = randomQ.question;
+
+            const optsContainer = document.getElementById('modal-options-container');
+            optsContainer.innerHTML = '';
+
+            randomQ.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-sky-50 text-xs font-medium text-slate-800 transition flex justify-between items-center';
+                btn.onclick = () => answerModalQuestion(opt.correct, randomQ.explanation);
+                btn.innerHTML = `<span>${opt.text}</span> <i class="fa-regular fa-circle text-slate-400"></i>`;
+                optsContainer.appendChild(btn);
+            });
+
+            document.getElementById('modal-feedback').classList.add('hidden');
+            document.getElementById('question-modal').classList.remove('hidden');
+        }
+
+        function answerModalQuestion(isCorrect, explanation) {
+            const feedback = document.getElementById('modal-feedback');
+            feedback.classList.remove('hidden');
+
+            if (isCorrect) {
+                feedback.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300';
+                feedback.innerHTML = `🎉 <strong>Jawaban Benar!</strong> Super-Power Mode Aktif selama 10 Detik!<br><span class="font-normal mt-1 block">${explanation}</span>`;
+                isSuperMode = true;
+                superTimer = 60; // ~10 sec ticks
+                score += 30;
+                triggerConfetti();
+            } else {
+                feedback.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-300';
+                feedback.innerHTML = `❌ <strong>Kurang Tepat!</strong><br><span class="font-normal mt-1 block">${explanation}</span>`;
+            }
+            updateUI();
+        }
+
+        function closeQuestionModal() {
+            document.getElementById('question-modal').classList.add('hidden');
+        }
+
+        function toggleHelpModal() {
+            const helpModal = document.getElementById('help-modal');
+            helpModal.classList.toggle('hidden');
+        }
+
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 30,
+                    spread: 50,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
